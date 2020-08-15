@@ -4,16 +4,10 @@ import godot.gdnative.*
 import kotlinx.cinterop.*
 import kotlin.native.concurrent.AtomicInt
 import kotlin.native.concurrent.AtomicReference
-import kotlin.native.concurrent.freeze
 
 object Godot {
     private val gdnativeWrapper = AtomicReference<CPointer<godot_gdnative_core_api_struct>?>(null)
     private val nativescriptWrapper = AtomicReference<CPointer<godot_gdnative_ext_nativescript_api_struct>?>(null)
-    private val jvmWrapper = AtomicReference<Jvm?>(null)
-
-    internal val jvm: Jvm
-        get() = nullSafe(jvmWrapper.value)
-
     internal val gdnative: godot_gdnative_core_api_struct
         get() = nullSafe(gdnativeWrapper.value).pointed
 
@@ -55,7 +49,8 @@ object Godot {
 
         gdnativeWrapper.compareAndSwap(null, gdnative)
         nativescriptWrapper.compareAndSwap(null, nativescript)
-        loadBinding()
+        val libraryPath = GdString(requireNotNull(options.active_library_path) { "active_library_path is null!" })
+        Glue.loadBinding(libraryPath.toKString())
     }
 
     fun nativescriptInit(handle: COpaquePointer) {
@@ -78,19 +73,10 @@ object Godot {
     fun terminate(options: godot_gdnative_terminate_options) {
         gdnativeWrapper.compareAndSwap(gdnativeWrapper.value, null)
         nativescriptWrapper.compareAndSwap(nativescriptWrapper.value, null)
-        unloadBinding()
+        Glue.unloadBinding()
 
         if (!options.in_editor) {
-            jvm.destroy()
+            Glue.destroy()
         }
-    }
-
-    private fun loadBinding() {
-        jvmWrapper.compareAndSet(null, Jvm.maybeCreate().freeze())
-        jvm.loadBinding()
-    }
-
-    private fun unloadBinding() {
-        jvm.unloadBinding()
     }
 }

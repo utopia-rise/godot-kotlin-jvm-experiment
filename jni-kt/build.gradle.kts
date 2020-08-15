@@ -16,23 +16,27 @@ kotlin {
 
     targets.withType<KotlinNativeTarget> {
         compilations.getByName("main") {
-            dependencies {
-                implementation(project(":jni-kt"))
-            }
-
             defaultSourceSet {
                 kotlin.srcDirs("src/nativeMain/kotlin")
             }
             val javaHome = System.getProperty("java.home")
-            cinterops {
-                val gdnative by creating {
-                    includeDirs("$rootDir/godot_headers/")
-                }
-            }
 
-            binaries {
-                sharedLib(listOf(DEBUG)) {
-                    linkerOpts("-L$javaHome/lib/server", "-ljvm")
+            cinterops {
+                val jni by creating {
+                    includeDirs("$javaHome/include/")
+
+                    when (val target = this@withType.konanTarget) {
+                        KonanTarget.LINUX_X64 -> {
+                            includeDirs("$javaHome/include/linux/")
+                        }
+                        KonanTarget.MACOS_X64 -> {
+                            // TODO
+                        }
+                        KonanTarget.MINGW_X64 -> {
+                            // TODO
+                        }
+                        else -> throw AssertionError("Unsupported platform $target")
+                    }
                 }
             }
         }

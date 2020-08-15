@@ -1,2 +1,0 @@
-package = jni
-headers = jni.h
