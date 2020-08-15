@@ -2,6 +2,12 @@ package jni
 
 import jni.sys.*
 import kotlinx.cinterop.*
+import platform.posix.RTLD_NOW
+import platform.posix.dlopen
+import platform.posix.dlsym
+
+typealias CreateJavaVM = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, CValuesRef<COpaquePointerVar>?, CValuesRef<*>?) -> jint>>
+typealias GetCreatedJavaVMs = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, jsize, CValuesRef<jsizeVar>?) -> jint>>
 
 class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
     fun <T> attach(block: JNIEnv.() -> T): T {
@@ -43,6 +49,13 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
     fun destroy() {}
 
     companion object {
+        private val jvmLib by lazy {
+            //TODO: windows and macOS switch
+            val jvmLibPath = "jre/lib/server/libjvm.so"
+            val jvmLib = dlopen(jvmLibPath, RTLD_NOW)
+            requireNotNull(jvmLib) { "Could not load jre lib from path $jvmLibPath" }
+        }
+
         fun create(args: JavaVMInitArgs): JavaVM {
             return memScoped {
                 val jvmArgs = cValue<jni.sys.JavaVMInitArgs> {
@@ -54,9 +67,10 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
                         }
                     }
                 }
+
                 val vm = allocPointerTo<JavaVMVar>()
                 val env = allocPointerTo<JNIEnvVar>()
-                val result = JNI_CreateJavaVM(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
+                val result = getCreateJavaVmFunctionFromEmbeddedJvm().invoke(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
                 checkError(result, "Failed to create Java Virtual Machine! err_code=$result")
                 JavaVM(vm.pointed!!, args.version)
             }
@@ -66,7 +80,7 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
             return memScoped {
                 val buffer = allocPointerTo<JavaVMVar>().ptr
                 val vmCounts = alloc<IntVar>()
-                JNI_GetCreatedJavaVMs(buffer, 1, vmCounts.ptr)
+                getGetCreatedJavaVMsFunctionFromEmbeddedJvm().invoke(buffer, 1, vmCounts.ptr)
                 if (vmCounts.value > 0) {
                     val vm = buffer.pointed.value!!
                     JavaVM(vm.pointed, version)
@@ -74,6 +88,18 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
                     null
                 }
             }
+        }
+
+        private fun getCreateJavaVmFunctionFromEmbeddedJvm(): CreateJavaVM {
+            val createJavaVmFunctionPointer = dlsym(jvmLib, "JNI_CreateJavaVM")
+            requireNotNull(createJavaVmFunctionPointer) { "Could not get JNI_CreateJavaVM function pointer" }
+            return createJavaVmFunctionPointer.reinterpret()
+        }
+
+        private fun getGetCreatedJavaVMsFunctionFromEmbeddedJvm(): GetCreatedJavaVMs {
+            val createJavaVmFunctionPointer = dlsym(jvmLib, "JNI_GetCreatedJavaVMs")
+            requireNotNull(createJavaVmFunctionPointer) { "Could not get JNI_GetCreatedJavaVMs function pointer" }
+            return createJavaVmFunctionPointer.reinterpret()
         }
     }
 }
