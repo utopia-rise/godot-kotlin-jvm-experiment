@@ -55,7 +55,7 @@ object Glue {
         val method = fileClass.getMethodID("toURL", "()Ljava/net/URL;")
         val url = method.callObjectMethod(file)
         requireNotNull(url) { "Failed to convert file into a URL" }
-        return urlClass.newObjectArray(1, url).also {
+        return urlClass.newObjectArray(1).also {
             setObjectArrayElement(it, 0, url)
         }
     }
