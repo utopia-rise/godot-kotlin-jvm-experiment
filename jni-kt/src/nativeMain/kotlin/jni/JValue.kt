@@ -1,8 +1,6 @@
 package jni
 
 import jni.sys.*
-import kotlinx.cinterop.MemScope
-import kotlinx.cinterop.alloc
 import kotlin.reflect.KMutableProperty1
 
 sealed class JValue<T> (var value: T, val setter: KMutableProperty1<jvalue, T>) {

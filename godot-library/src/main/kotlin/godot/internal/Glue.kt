@@ -1,6 +1,6 @@
 package godot.internal
 
-object Glue {
+class Glue {
     fun sayHello() {
         println("Hello World!")
     }

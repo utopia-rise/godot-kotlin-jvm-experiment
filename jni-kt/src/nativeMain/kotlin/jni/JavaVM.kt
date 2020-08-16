@@ -72,7 +72,7 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
                 val env = allocPointerTo<JNIEnvVar>()
                 val result = getCreateJavaVmFunctionFromEmbeddedJvm().invoke(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
                 checkError(result, "Failed to create Java Virtual Machine! err_code=$result")
-                JavaVM(vm.pointed!!, args.version)
+                JavaVM(vm.pointed!!, args.version).also { it.detach() }
             }
         }
 
@@ -83,7 +83,7 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
                 getGetCreatedJavaVMsFunctionFromEmbeddedJvm().invoke(buffer, 1, vmCounts.ptr)
                 if (vmCounts.value > 0) {
                     val vm = buffer.pointed.value!!
-                    JavaVM(vm.pointed, version)
+                    JavaVM(vm.pointed, version).also { it.detach() }
                 } else {
                     null
                 }
