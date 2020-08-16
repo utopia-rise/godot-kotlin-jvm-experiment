@@ -11,7 +11,7 @@ class JniEnv(internal val handle: JNIEnvVar) {
     fun findClassOrNull(className: String): JClass? {
         return memScoped {
             val jclass = handle[EnvFn::FindClass](handle.ptr, className.cstr.ptr)
-            jclass?.let { JClass(this@JniEnv, it, className) }
+            jclass?.let { JClass(it, className) }
         }
     }
 
@@ -23,7 +23,7 @@ class JniEnv(internal val handle: JNIEnvVar) {
         return memScoped {
             val jstring = handle[EnvFn::NewStringUTF](handle.ptr, str.cstr.ptr)
             checkNotNull(jstring) { "Failed to create java.lang.String for $str" }
-            JString(this@JniEnv, jstring)
+            JString(jstring)
         }
     }
 

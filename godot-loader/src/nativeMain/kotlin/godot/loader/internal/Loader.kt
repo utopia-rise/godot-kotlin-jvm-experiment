@@ -8,6 +8,8 @@ import jni.extras.newClassLoader
 
 @ThreadLocal
 object Loader {
+    lateinit var classLoader: ClassLoader
+
     fun loadBinding(libraryPath: String) {
         initVm()
         val workingDir = libraryPath.replaceAfterLast("/", "")
@@ -15,19 +17,21 @@ object Loader {
         println("Loading binding, workingDir = $workingDir")
         JavaVm.attach {
             println("Creating class loader ...")
-            val classloader = newClassLoader(listOf(bootstrapJar))
+            classLoader = newClassLoader(listOf(bootstrapJar)).newGlobalRef()
             println("Setting context class loader ...")
-            currentThread().setContextClassLoader(classloader)
+            currentThread().setContextClassLoader(classLoader)
             println("Registering native methods ...")
-            registerNatives(classloader)
-            println("Invoking entry point ...")
-            callEntryPoint(classloader)
+            registerNatives(classLoader)
+            println(classLoader)
         }
 
     }
 
     fun unloadBinding() {
-        println("Unloading binding: $JavaVm")
+        JavaVm.attach {
+            println("Unloading binding: $classLoader")
+            classLoader.deleteGlobalRef()
+        }
     }
 
     fun destroy() {
@@ -44,14 +48,17 @@ object Loader {
         JavaVm.init(args)
     }
 
-    private fun JniEnv.registerNatives(classLoader: ClassLoader) {
+    private fun registerNatives(classLoader: ClassLoader) {
         val registryClass = classLoader.loadClass("godot.registry.Registry")
         registryClass.registerNatives(Registry.nativeMethods())
     }
 
-    private fun JniEnv.callEntryPoint(classLoader: ClassLoader) {
-        val entryClass = classLoader.loadClass("godot.Entry")
-        val entryInstance = entryClass.newInstance()
-        entryInstance.callVoidMethod(entryClass.getMethodID("init", "()V"))
+    fun callEntryPoint() {
+        println("Calling entry point ...")
+        JavaVm.attach {
+            val entryClass = classLoader.loadClass("godot.Entry")
+            val entryInstance = entryClass.newInstance()
+            entryInstance.callVoidMethod(entryClass.getMethodID("init", "()V"))
+        }
     }
 }

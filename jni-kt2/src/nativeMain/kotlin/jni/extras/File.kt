@@ -6,10 +6,10 @@ import jni.sys.jobject
 
 
 fun JniEnv.newFile(path: String): File {
-    return File(this, newInstance("java/io/File", "(Ljava/lang/String;)V", newString(path)).handle)
+    return File(newInstance("java/io/File", "(Ljava/lang/String;)V", newString(path)).handle)
 }
 
-class File(env: JniEnv, handle: jobject) : JObject(env, handle) {
+class File(handle: jobject) : JObject(handle) {
     fun toURL(): JObject {
         val fileClass = env.findClass("java/io/File")
         val toURLMethod = fileClass.getMethodID("toURL", "()Ljava/net/URL;")

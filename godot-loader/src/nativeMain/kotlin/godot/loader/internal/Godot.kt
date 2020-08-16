@@ -1,6 +1,8 @@
 package godot.loader.internal
 
 import godot.gdnative.*
+import godot.loader.registry.Registry
+import jni.JavaVm
 import kotlinx.cinterop.*
 import kotlin.native.concurrent.AtomicInt
 import kotlin.native.concurrent.AtomicReference
@@ -64,6 +66,8 @@ object Godot {
             )
             languageIndexRef.compareAndSet(languageIndexRef.value, index)
         }
+        Registry.handle = handle
+        Loader.callEntryPoint()
     }
 
     fun nativescriptTerminate(handle: COpaquePointer) {

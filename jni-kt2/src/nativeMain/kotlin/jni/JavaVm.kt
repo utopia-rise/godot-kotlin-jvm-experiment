@@ -20,7 +20,11 @@ object JavaVm {
     }
 
     fun <T> attach(block: JniEnv.() -> T): T {
-        return block(attach()).also { detach() }
+        val env = attach()
+        JObject.env = env
+        val result = block(env)
+        detach()
+        return result
     }
 
     fun attach(): JniEnv {

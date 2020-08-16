@@ -13,7 +13,6 @@ fun JniEnv.newClassLoader(classPath: List<String>): ClassLoader {
         urls[i] = newFile(v).toURL()
     }
     return ClassLoader(
-        this,
         newInstance(
             "java/net/URLClassLoader",
             "([Ljava/net/URL;)V",
@@ -22,16 +21,24 @@ fun JniEnv.newClassLoader(classPath: List<String>): ClassLoader {
     )
 }
 
-class ClassLoader(env: JniEnv, handle: jobject) : JObject(env, handle) {
+class ClassLoader(handle: jobject) : JObject(handle) {
     fun loadClassOrNull(className: String): JClass? {
         return memScoped {
             val urlClassLoaderClass = env.findClass("java/net/URLClassLoader")
             val findClassMethodID = urlClassLoaderClass.getMethodID("loadClass", "(Ljava/lang/String;)Ljava/lang/Class;")
-            callObjectMethod(findClassMethodID, env.newString(className))?.let { JClass(env, it.handle, className) }
+            callObjectMethod(findClassMethodID, env.newString(className))?.let { JClass(it.handle, className) }
         }
     }
 
     fun loadClass(className: String): JClass {
         return requireNotNull(loadClassOrNull(className)) { "Failed to load class $className" }
+    }
+
+    override fun newLocalRef(): ClassLoader {
+        return ClassLoader(super.newLocalRef().handle)
+    }
+
+    override fun newGlobalRef(): ClassLoader {
+        return ClassLoader(super.newGlobalRef().handle)
     }
 }

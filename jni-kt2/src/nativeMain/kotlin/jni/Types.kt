@@ -6,7 +6,7 @@ import kotlinx.cinterop.*
 class JMethodId(internal val handle: jmethodID)
 class JFieldId(internal val handle: jfieldID)
 
-class JString(env: JniEnv, handle: jobject) : JObject(env, handle) {
+class JString(handle: jobject) : JObject(handle) {
     fun toKString(): String {
         return memScoped {
             val chars = env.handle[EnvFn::GetStringUTFChars](
@@ -27,7 +27,7 @@ class JString(env: JniEnv, handle: jobject) : JObject(env, handle) {
     }
 }
 
-abstract class JArray<T>(env: JniEnv, handle: jarray) : JObject(env, handle) {
+abstract class JArray<T>(handle: jarray) : JObject(handle) {
     abstract operator fun get(index: Int): T
     abstract operator fun set(index: Int, value: T)
     fun length(): Int {
@@ -40,7 +40,7 @@ abstract class JArray<T>(env: JniEnv, handle: jarray) : JObject(env, handle) {
     }
 }
 
-class JObjectArray(env: JniEnv, handle: jarray) : JArray<JObject?>(env, handle) {
+class JObjectArray(handle: jarray) : JArray<JObject?>(handle) {
     override fun get(index: Int): JObject? {
         return memScoped {
             val value = env.handle[EnvFn::GetObjectArrayElement](
@@ -48,7 +48,7 @@ class JObjectArray(env: JniEnv, handle: jarray) : JArray<JObject?>(env, handle) 
                 handle,
                 index
             )
-            value?.let { JObject(env, it) }
+            value?.let { JObject(it) }
         }
     }
 

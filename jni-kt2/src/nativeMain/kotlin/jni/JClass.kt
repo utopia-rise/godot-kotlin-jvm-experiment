@@ -5,7 +5,7 @@ import jni.sys.JNI_OK
 import jni.sys.jobject
 import kotlinx.cinterop.*
 
-class JClass(env: JniEnv, handle: jobject, val className: String) : JObject(env, handle) {
+class JClass(handle: jobject, val className: String) : JObject(handle) {
     fun getMethodIDOrNull(methodName: String, signature: String): JMethodId? {
         return memScoped {
             val methodID = env.handle[EnvFn::GetMethodID](
@@ -73,7 +73,7 @@ class JClass(env: JniEnv, handle: jobject, val className: String) : JObject(env,
                 convertToJValueArgs(args)
             )
             env.verifyNoErrors()
-            results?.let { JObject(env, it) }
+            results?.let { JObject(it) }
         }
     }
 
@@ -99,7 +99,7 @@ class JClass(env: JniEnv, handle: jobject, val className: String) : JObject(env,
                 convertToJValueArgs(args)
             )
             checkNotNull(instance) { "Failed to create instance for $handle for $className" }
-            JObject(env, instance)
+            JObject(instance)
         }
     }
 
@@ -112,7 +112,7 @@ class JClass(env: JniEnv, handle: jobject, val className: String) : JObject(env,
                 convertToJValueArgs(args)
             )
             checkNotNull(instance) { "Failed to create instance for $handle for $className" }
-            JObject(env, instance)
+            JObject(instance)
         }
     }
 
@@ -125,7 +125,7 @@ class JClass(env: JniEnv, handle: jobject, val className: String) : JObject(env,
                 initial?.handle
             )
             checkNotNull(result) { "Failed to create new object array for class $className!" }
-            JObjectArray(env, result)
+            JObjectArray(result)
         }
     }
 

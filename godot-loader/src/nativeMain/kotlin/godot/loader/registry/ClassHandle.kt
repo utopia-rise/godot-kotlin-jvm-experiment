@@ -12,6 +12,14 @@ class ClassHandle(val wrapped: JObject) {
         return className
     }
 
+    fun getSuperClass(env: JniEnv): String {
+        val cls = jclass(env)
+        val getClassNameMethod = cls.getMethodID("getSuperClass", "()Ljava/lang/String;")
+        val className = wrapped.callObjectMethod(getClassNameMethod)?.toJString()?.toKString()
+        checkNotNull(className) { "Failed to get superClass!" }
+        return className
+    }
+
     companion object {
         fun jclass(env: JniEnv) = env.findClass("godot/registry/ClassHandle")
     }
