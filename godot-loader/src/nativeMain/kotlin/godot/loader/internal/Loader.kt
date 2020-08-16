@@ -22,7 +22,6 @@ object Loader {
             currentThread().setContextClassLoader(classLoader)
             println("Registering native methods ...")
             registerNatives(classLoader)
-            println(classLoader)
         }
 
     }
