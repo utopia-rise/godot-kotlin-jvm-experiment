@@ -7,7 +7,7 @@ reloadable=true
 
 [entry]
 
-X11.64="res://libgodot_glue.so"
+X11.64="res://libgodot_loader.so"
 
 [dependencies]
 

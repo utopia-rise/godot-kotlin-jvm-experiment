@@ -1,7 +1,15 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
 }
 
-dependencies {
-    implementation(kotlin("stdlib"))
+kotlin {
+    jvm()
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib"))
+            }
+        }
+    }
 }

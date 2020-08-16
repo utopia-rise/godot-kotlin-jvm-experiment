@@ -1,4 +1,4 @@
-package godot.internal
+package godot.loader.internal
 
 import godot.gdnative.godot_string
 import kotlinx.cinterop.*
