@@ -3,6 +3,9 @@ package jni
 import jni.sys.*
 import kotlinx.cinterop.*
 
+typealias CreateJavaVM = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, CValuesRef<COpaquePointerVar>?, CValuesRef<*>?) -> jint>>
+typealias GetCreatedJavaVMs = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, jsize, CValuesRef<jsizeVar>?) -> jint>>
+
 @ThreadLocal
 object JavaVm {
     private lateinit var handle: JavaVMVar
@@ -64,7 +67,7 @@ object JavaVm {
             }
             val vm = allocPointerTo<JavaVMVar>()
             val env = allocPointerTo<JNIEnvVar>()
-            val result = JNI_CreateJavaVM(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
+            val result = JvmLoader.getCreateJavaVmFunctionFromEmbeddedJvm().invoke(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
             if (result != JNI_OK)  {
                 throw JniError("Failed to start the jvm!")
             }
@@ -76,7 +79,7 @@ object JavaVm {
         return memScoped {
             val buffer = allocPointerTo<JavaVMVar>().ptr
             val vmCounts = alloc<IntVar>()
-            JNI_GetCreatedJavaVMs(buffer, 1, vmCounts.ptr)
+            JvmLoader.getGetCreatedJavaVMsFunctionFromEmbeddedJvm().invoke(buffer, 1, vmCounts.ptr)
             if (vmCounts.value > 0) {
                 buffer.pointed.value!!.pointed
             } else {

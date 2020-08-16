@@ -3,6 +3,9 @@ package jni
 import jni.sys.*
 import kotlinx.cinterop.*
 
+typealias CreateJavaVM = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, CValuesRef<COpaquePointerVar>?, CValuesRef<*>?) -> jint>>
+typealias GetCreatedJavaVMs = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, jsize, CValuesRef<jsizeVar>?) -> jint>>
+
 class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
     fun <T> attach(block: JNIEnv.() -> T): T {
         return attach().block().also { detach() }
@@ -54,9 +57,10 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
                         }
                     }
                 }
+
                 val vm = allocPointerTo<JavaVMVar>()
                 val env = allocPointerTo<JNIEnvVar>()
-                val result = JNI_CreateJavaVM(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
+                val result = JvmLoader.getCreateJavaVmFunctionFromEmbeddedJvm().invoke(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
                 checkError(result, "Failed to create Java Virtual Machine! err_code=$result")
                 JavaVM(vm.pointed!!, args.version).also { it.detach() }
             }
@@ -66,7 +70,7 @@ class JavaVM(private val handle: JavaVMVar, val version: JNIVersion) {
             return memScoped {
                 val buffer = allocPointerTo<JavaVMVar>().ptr
                 val vmCounts = alloc<IntVar>()
-                JNI_GetCreatedJavaVMs(buffer, 1, vmCounts.ptr)
+                JvmLoader.getGetCreatedJavaVMsFunctionFromEmbeddedJvm().invoke(buffer, 1, vmCounts.ptr)
                 if (vmCounts.value > 0) {
                     val vm = buffer.pointed.value!!
                     JavaVM(vm.pointed, version).also { it.detach() }
