@@ -33,7 +33,7 @@ kotlin {
                             includeDirs("$javaHome/include/darwin/")
                         }
                         KonanTarget.MINGW_X64 -> {
-                            // TODO
+                            includeDirs("$javaHome/include/win32/") //interestingly the folder is named like this for x64 builds ^^
                         }
                         else -> throw AssertionError("Unsupported platform $target")
                     }
