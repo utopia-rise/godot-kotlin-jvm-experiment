@@ -11,7 +11,7 @@ plugins {
 //TODO: this needs to be properly configured! This is just a basic setup to be able to implement the annotations
 kotlin {
     macosX64("macos")
-    //linuxX64("linux")
+    linuxX64("linux")
     mingwX64("windows")
 
     targets.withType<KotlinNativeTarget> {
