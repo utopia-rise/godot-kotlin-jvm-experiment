@@ -2,9 +2,6 @@ package jni
 
 import jni.sys.*
 import kotlinx.cinterop.*
-import platform.posix.RTLD_NOW
-import platform.posix.dlopen
-import platform.posix.dlsym
 
 typealias CreateJavaVM = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, CValuesRef<COpaquePointerVar>?, CValuesRef<*>?) -> jint>>
 typealias GetCreatedJavaVMs = CPointer<CFunction<(CValuesRef<CPointerVar<JavaVMVar>>?, jsize, CValuesRef<jsizeVar>?) -> jint>>

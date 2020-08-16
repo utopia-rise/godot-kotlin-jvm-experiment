@@ -11,7 +11,7 @@ plugins {
 //TODO: this needs to be properly configured! This is just a basic setup to be able to implement the annotations
 kotlin {
     macosX64("macos")
-    linuxX64("linux")
+    //linuxX64("linux")
     mingwX64("windows")
 
     targets.withType<KotlinNativeTarget> {
@@ -30,7 +30,7 @@ kotlin {
                             includeDirs("$javaHome/include/linux/")
                         }
                         KonanTarget.MACOS_X64 -> {
-                            // TODO
+                            includeDirs("$javaHome/include/darwin/")
                         }
                         KonanTarget.MINGW_X64 -> {
                             // TODO
