@@ -1,3 +1,4 @@
 include("jni-kt")
-include("godot-glue")
+include("jni-kt2")
+include("godot-loader")
 include("godot-library")

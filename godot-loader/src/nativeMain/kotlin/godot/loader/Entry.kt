@@ -1,8 +1,8 @@
-package godot.entry
+package godot.loader
 
 import godot.gdnative.godot_gdnative_init_options
 import godot.gdnative.godot_gdnative_terminate_options
-import godot.internal.Godot
+import godot.loader.internal.Godot
 import kotlinx.cinterop.COpaquePointer
 
 @CName("godot_gdnative_init")

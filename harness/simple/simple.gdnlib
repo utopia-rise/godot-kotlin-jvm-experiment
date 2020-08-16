@@ -9,7 +9,7 @@ reloadable=true
 
 OSX.64="res://libgodot_glue.dylib"
 Windows.64="res://godot_glue.dll"
-X11.64="res://libgodot_glue.so"
+X11.64="res://libgodot_loader.so"
 
 [dependencies]
 

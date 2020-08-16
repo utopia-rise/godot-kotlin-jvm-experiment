@@ -1,4 +1,4 @@
-package godot.internal
+package godot.loader.internal
 
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.StableRef
