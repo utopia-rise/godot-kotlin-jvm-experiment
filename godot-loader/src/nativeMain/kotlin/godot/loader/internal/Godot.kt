@@ -1,8 +1,7 @@
 package godot.loader.internal
 
 import godot.gdnative.*
-import godot.loader.registry.Registry
-import jni.JavaVm
+import godot.loader.registry.NativeRegistry
 import kotlinx.cinterop.*
 import kotlin.native.concurrent.AtomicInt
 import kotlin.native.concurrent.AtomicReference
@@ -52,7 +51,7 @@ object Godot {
         gdnativeWrapper.compareAndSwap(null, gdnative)
         nativescriptWrapper.compareAndSwap(null, nativescript)
         val libraryPath = GdString(requireNotNull(options.active_library_path) { "active_library_path is null!" })
-        Loader.loadBinding(libraryPath.toKString())
+        NativeBindingContext.loadBinding(libraryPath.toKString())
     }
 
     fun nativescriptInit(handle: COpaquePointer) {
@@ -66,8 +65,8 @@ object Godot {
             )
             languageIndexRef.compareAndSet(languageIndexRef.value, index)
         }
-        Registry.handle = handle
-        Loader.callEntryPoint()
+        NativeRegistry.nativescriptHandle = handle
+        NativeBindingContext.callEntryPoint()
     }
 
     fun nativescriptTerminate(handle: COpaquePointer) {
@@ -77,10 +76,10 @@ object Godot {
     fun terminate(options: godot_gdnative_terminate_options) {
         gdnativeWrapper.compareAndSwap(gdnativeWrapper.value, null)
         nativescriptWrapper.compareAndSwap(nativescriptWrapper.value, null)
-        Loader.unloadBinding()
+        NativeBindingContext.unloadBinding()
 
         if (!options.in_editor) {
-            Loader.destroy()
+            NativeBindingContext.destroy()
         }
     }
 }

@@ -33,7 +33,7 @@ object JavaVm {
     fun attach(): JniEnv {
         return memScoped {
             val env = allocPointerTo<JNIEnvVar>()
-            val args = cValue<JavaVMAttachArgs>() {
+            val args = cValue<JavaVMAttachArgs> {
                 version = this@JavaVm.version.value
             }
             val result = handle[InvokeFn::AttachCurrentThread](handle.ptr, env.ptr.reinterpret(), args.ptr)

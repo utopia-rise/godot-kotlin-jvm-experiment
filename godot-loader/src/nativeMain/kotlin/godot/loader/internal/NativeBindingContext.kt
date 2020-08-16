@@ -1,13 +1,13 @@
 package godot.loader.internal
 
-import godot.loader.registry.Registry
+import godot.loader.registry.NativeRegistry
 import jni.*
 import jni.extras.ClassLoader
 import jni.extras.currentThread
 import jni.extras.newClassLoader
 
 @ThreadLocal
-object Loader {
+object NativeBindingContext {
     lateinit var classLoader: ClassLoader
 
     fun loadBinding(libraryPath: String) {
@@ -26,8 +26,15 @@ object Loader {
 
     }
 
+    fun <T> bindScope(block: JniEnv.() -> T): T {
+        return JavaVm.attach {
+            currentThread().setContextClassLoader(classLoader)
+            block()
+        }
+    }
+
     fun unloadBinding() {
-        JavaVm.attach {
+        bindScope {
             println("Unloading binding: $classLoader")
             classLoader.deleteGlobalRef()
         }
@@ -49,12 +56,12 @@ object Loader {
 
     private fun registerNatives(classLoader: ClassLoader) {
         val registryClass = classLoader.loadClass("godot.registry.Registry")
-        registryClass.registerNatives(Registry.nativeMethods())
+        registryClass.registerNatives(NativeRegistry.nativeMethods())
     }
 
     fun callEntryPoint() {
         println("Calling entry point ...")
-        JavaVm.attach {
+        bindScope {
             val entryClass = classLoader.loadClass("godot.Entry")
             val entryInstance = entryClass.newInstance()
             entryInstance.callVoidMethod(entryClass.getMethodID("init", "()V"))
