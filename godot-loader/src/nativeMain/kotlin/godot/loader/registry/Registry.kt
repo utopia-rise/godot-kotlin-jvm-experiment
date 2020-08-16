@@ -26,7 +26,7 @@ object Registry {
     }
 
     private fun registerClass(env: JniEnv, handle: ClassHandle) {
-        println("Registering class ${handle.getClassName(env)}")
+        println("Registering class ${handle.getClassName(env)} with superClass ${handle.getSuperClass(env)}")
     }
 }
 
