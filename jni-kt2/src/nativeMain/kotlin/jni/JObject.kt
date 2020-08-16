@@ -19,15 +19,17 @@ open class JObject(val env: JniEnv, internal val handle: jobject) {
         }
     }
 
-    fun callVoidMethod(instance: JObject, method: JMethodId, vararg args: Any?) {
+    fun callVoidMethod(method: JMethodId, vararg args: Any?) {
         memScoped {
             env.handle[EnvFn::CallVoidMethodA](
                 env.handle.ptr,
-                instance.handle,
+                handle,
                 method.handle,
                 convertToJValueArgs(args)
             )
             env.verifyNoErrors()
         }
     }
+
+    fun toJString() = JString(env, handle)
 }

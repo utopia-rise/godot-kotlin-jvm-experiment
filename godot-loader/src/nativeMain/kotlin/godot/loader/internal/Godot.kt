@@ -50,7 +50,7 @@ object Godot {
         gdnativeWrapper.compareAndSwap(null, gdnative)
         nativescriptWrapper.compareAndSwap(null, nativescript)
         val libraryPath = GdString(requireNotNull(options.active_library_path) { "active_library_path is null!" })
-        Glue.loadBinding(libraryPath.toKString())
+        Loader.loadBinding(libraryPath.toKString())
     }
 
     fun nativescriptInit(handle: COpaquePointer) {
@@ -73,10 +73,10 @@ object Godot {
     fun terminate(options: godot_gdnative_terminate_options) {
         gdnativeWrapper.compareAndSwap(gdnativeWrapper.value, null)
         nativescriptWrapper.compareAndSwap(nativescriptWrapper.value, null)
-        Glue.unloadBinding()
+        Loader.unloadBinding()
 
         if (!options.in_editor) {
-            Glue.destroy()
+            Loader.destroy()
         }
     }
 }

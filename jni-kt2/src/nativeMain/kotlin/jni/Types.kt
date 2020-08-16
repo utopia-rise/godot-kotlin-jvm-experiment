@@ -1,21 +1,43 @@
 package jni
 
-import jni.sys.jarray
-import jni.sys.jfieldID
-import jni.sys.jmethodID
-import jni.sys.jobject
-import kotlinx.cinterop.invoke
-import kotlinx.cinterop.memScoped
-import kotlinx.cinterop.ptr
+import jni.sys.*
+import kotlinx.cinterop.*
 
 class JMethodId(internal val handle: jmethodID)
 class JFieldId(internal val handle: jfieldID)
 
-class JString(env: JniEnv, handle: jobject) : JObject(env, handle)
+class JString(env: JniEnv, handle: jobject) : JObject(env, handle) {
+    fun toKString(): String {
+        return memScoped {
+            val chars = env.handle[EnvFn::GetStringUTFChars](
+                env.handle.ptr,
+                handle,
+                alloc<UByteVar>().ptr
+            )
+            checkNotNull(chars) { "Faild to convert java string to native string!" }
+            chars.toKString().also {
+                // clean up
+                env.handle[EnvFn::ReleaseStringUTFChars](
+                    env.handle.ptr,
+                    handle,
+                    chars
+                )
+            }
+        }
+    }
+}
 
 abstract class JArray<T>(env: JniEnv, handle: jarray) : JObject(env, handle) {
     abstract operator fun get(index: Int): T
     abstract operator fun set(index: Int, value: T)
+    fun length(): Int {
+        return memScoped {
+            env.handle[EnvFn::GetArrayLength](
+                env.handle.ptr,
+                handle
+            )
+        }
+    }
 }
 
 class JObjectArray(env: JniEnv, handle: jarray) : JArray<JObject?>(env, handle) {
