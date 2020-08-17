@@ -6,6 +6,7 @@ import godot.loader.internal.Godot
 import godot.loader.internal.NativeKObject
 import godot.loader.internal.nullSafe
 import jni.JObject
+import jni.JString
 import jni.JniEnv
 import jni.extras.currentThread
 import kotlinx.cinterop.*
@@ -18,7 +19,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
     fun getClassName(env: JniEnv): String {
         val cls = jclass(env)
         val getClassNameMethod = cls.getMethodID("getClassName", "()Ljava/lang/String;")
-        val className = wrapped.callObjectMethod(getClassNameMethod)?.toJString()?.toKString()
+        val className = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
         checkNotNull(className) { "Failed to get className!" }
         return className
     }
@@ -26,7 +27,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
     fun getSuperClass(env: JniEnv): String {
         val cls = jclass(env)
         val getClassNameMethod = cls.getMethodID("getSuperClass", "()Ljava/lang/String;")
-        val className = wrapped.callObjectMethod(getClassNameMethod)?.toJString()?.toKString()
+        val className = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
         checkNotNull(className) { "Failed to get superClass!" }
         return className
     }

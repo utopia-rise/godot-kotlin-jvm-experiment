@@ -9,9 +9,5 @@ class Registry {
         handles.add(handle)
     }
 
-    internal fun commit() {
-        registerAll(handles.toTypedArray())
-    }
-
-    private external fun registerAll(classes: Array<ClassHandle<*>>)
+    internal fun getAllClasses() = handles.toList()
 }

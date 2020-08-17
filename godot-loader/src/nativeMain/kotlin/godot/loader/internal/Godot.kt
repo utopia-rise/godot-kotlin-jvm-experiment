@@ -65,8 +65,7 @@ object Godot {
             )
             languageIndexRef.compareAndSet(languageIndexRef.value, index)
         }
-        NativeRegistry.nativescriptHandle = handle
-        NativeBindingContext.callEntryPoint()
+        NativeBindingContext.callEntryPoint(handle)
     }
 
     fun nativescriptTerminate(handle: COpaquePointer) {

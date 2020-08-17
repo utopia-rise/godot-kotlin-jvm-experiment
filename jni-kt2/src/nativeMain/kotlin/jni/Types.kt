@@ -25,6 +25,10 @@ class JString(handle: jobject) : JObject(handle) {
             }
         }
     }
+
+    companion object {
+        fun unsafeCast(obj: JObject) = JString(obj.handle)
+    }
 }
 
 abstract class JArray<T>(handle: jarray) : JObject(handle) {
@@ -61,5 +65,9 @@ class JObjectArray(handle: jarray) : JArray<JObject?>(handle) {
                 value?.handle
             )
         }
+    }
+
+    companion object {
+        fun unsafeCast(obj: JObject) = JObjectArray(obj.handle)
     }
 }

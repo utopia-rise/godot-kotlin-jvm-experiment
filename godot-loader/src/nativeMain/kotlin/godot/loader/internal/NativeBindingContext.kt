@@ -5,6 +5,7 @@ import jni.*
 import jni.extras.ClassLoader
 import jni.extras.currentThread
 import jni.extras.newClassLoader
+import kotlinx.cinterop.COpaquePointer
 
 @ThreadLocal
 object NativeBindingContext {
@@ -21,7 +22,6 @@ object NativeBindingContext {
             println("Setting context class loader ...")
             currentThread().setContextClassLoader(classLoader)
             println("Registering native methods ...")
-            registerNatives(classLoader)
         }
 
     }
@@ -54,17 +54,14 @@ object NativeBindingContext {
         JavaVm.init(args)
     }
 
-    private fun registerNatives(classLoader: ClassLoader) {
-        val registryClass = classLoader.loadClass("godot.registry.Registry")
-        registryClass.registerNatives(NativeRegistry.nativeMethods())
-    }
-
-    fun callEntryPoint() {
+    fun callEntryPoint(nativescriptHandle: COpaquePointer) {
         println("Calling entry point ...")
         bindScope {
             val entryClass = classLoader.loadClass("godot.Entry")
             val entryInstance = entryClass.newInstance()
-            entryInstance.callVoidMethod(entryClass.getMethodID("init", "()V"))
+            val handles = entryInstance.callObjectMethod(entryClass.getMethodID("init", "()[Lgodot/registry/ClassHandle;"))
+            checkNotNull(handles) { "Failed to get class handles!" }
+            NativeRegistry.registerAll(nativescriptHandle, this, JObjectArray.unsafeCast(handles))
         }
     }
 }

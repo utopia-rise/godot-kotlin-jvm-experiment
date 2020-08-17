@@ -59,8 +59,6 @@ open class JObject(internal val handle: jobject) {
         }
     }
 
-    fun toJString() = JString(handle)
-
     @ThreadLocal
     companion object {
         lateinit var env: JniEnv
