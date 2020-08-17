@@ -20,9 +20,22 @@ open class JObject(internal val handle: jobject) {
         }
     }
 
-    fun callIntMethod(method: JMethodId, vararg args: Any?): jint {
+    fun callIntMethod(method: JMethodId, vararg args: Any?): Int {
         return memScoped {
             val result = env.handle[EnvFn::CallIntMethodA](
+                env.handle.ptr,
+                handle,
+                method.handle,
+                convertToJValueArgs(args)
+            )
+            env.verifyNoErrors()
+            result
+        }
+    }
+
+    fun callLongMethod(method: JMethodId, vararg args: Any?): Long {
+        return memScoped {
+            val result = env.handle[EnvFn::CallLongMethodA](
                 env.handle.ptr,
                 handle,
                 method.handle,

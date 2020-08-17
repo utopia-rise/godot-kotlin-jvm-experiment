@@ -10,4 +10,8 @@ class Simple : KObject() {
     fun _ready() {
         println("Simple is ready!")
     }
+
+    fun _process(delta: Double) {
+        println("delta: $delta from godot!")
+    }
 }

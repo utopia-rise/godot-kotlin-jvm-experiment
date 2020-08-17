@@ -20,6 +20,7 @@ class ClassHandle<T: KObject>(@JniExposed val className: String,
         _functions.add(func)
     }
 
+    @JniExposed
     fun wrap(ptr: VoidPtr): T {
         return BindingContext.instantiateWith(ptr, constructor)
     }

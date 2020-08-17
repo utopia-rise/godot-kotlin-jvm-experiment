@@ -1,15 +1,14 @@
 package godot.loader.registry
 
 import godot.gdnative.godot_variant
-import godot.loader.internal.*
+import godot.loader.internal.Disposable
+import godot.loader.internal.NativeKObject
+import godot.loader.internal.NativeKVariant
 import jni.JObject
 import jni.JString
 import jni.JniEnv
 import jni.extras.currentThread
 import kotlinx.cinterop.CValue
-import kotlinx.cinterop.cValue
-import kotlinx.cinterop.invoke
-import kotlinx.cinterop.ptr
 
 class NativeKFunc(_wrapped: JObject) : Disposable {
     val wrapped = _wrapped.newGlobalRef()
@@ -51,24 +50,21 @@ class NativeKFunc(_wrapped: JObject) : Disposable {
         val cls = jclass(env)
         val getClassNameMethod = cls.getMethodID("getParameterCount", "()I")
         val parameterCount = wrapped.callIntMethod(getClassNameMethod)
-        checkNotNull(parameterCount) { "Failed to get parameter count!" }
         return parameterCount.also { _parameterCount = it }
     }
 
-    operator fun invoke(env: JniEnv, instance: NativeKObject, args: Array<CValue<godot_variant>>): CValue<godot_variant> {
+    operator fun invoke(env: JniEnv, instance: NativeKObject, args: Array<NativeKVariant>): NativeKVariant {
         val cls = jclass(env)
         val kvariantCls = env.currentThread().loadClass("godot.internal.KVariant")
-        val jvmArgs = kvariantCls.newObjectArray(0)
+        val jvmArgs = kvariantCls.newObjectArray(args.size)
+        args.forEachIndexed { i, v -> jvmArgs[i] = v.toJava() }
         val invokeMethod = cls.getMethodID(
             "invoke",
-            "(L${NativeKObject.BINARY_NAME};[L${NativeKVariant.BINARY_NAME};)L${NativeKVariant.BINARY_NAME};"
+            "(L${NativeKObject.SGN};[L${NativeKVariant.SGN};)L${NativeKVariant.SGN};"
         )
-        println("calling method!")
-        wrapped.callObjectMethod(invokeMethod, instance.wrapped, jvmArgs)
-        println("done!")
-        return cValue {
-            nullSafe(Godot.gdnative.godot_variant_new_nil)(ptr)
-        }
+        val result = wrapped.callObjectMethod(invokeMethod, instance.wrapped, jvmArgs)
+        checkNotNull(result) { "Expecting a non-null KVariant!" }
+        return NativeKVariant.fromJava(result)
     }
 
     override fun dispose() {
@@ -76,7 +72,7 @@ class NativeKFunc(_wrapped: JObject) : Disposable {
     }
 
     companion object {
-        const val BINARY_NAME = "godot/registry/KFunc"
+        const val SGN = "godot/registry/KFunc"
         fun jclass(env: JniEnv) = env.currentThread().loadClass("godot.registry.KFunc")
     }
 }

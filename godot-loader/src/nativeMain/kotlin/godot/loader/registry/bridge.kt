@@ -1,8 +1,9 @@
 package godot.loader.registry
 
 import godot.gdnative.godot_variant
-import godot.loader.internal.NativeKObject
 import godot.loader.internal.NativeBindingContext
+import godot.loader.internal.NativeKObject
+import godot.loader.internal.NativeKVariant
 import godot.loader.internal.nullSafe
 import kotlinx.cinterop.*
 
@@ -56,10 +57,10 @@ fun invokeMethod(
             emptyArray()
         } else {
             requireNotNull(args) { "args is null!" }
-            Array(numArgs) { i -> args[i]!!.pointed.readValue()}
+            Array(numArgs) { i -> NativeKVariant.fromGodot(this, args[i]!!.pointed.readValue())}
         }
 
-        funcHandle(this, kotlinInstance, variantArgs)
+        funcHandle(this, kotlinInstance, variantArgs).toGodot(this)
     }
 
 }

@@ -58,7 +58,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
 
         val tmp = mutableListOf<NativeKFunc>()
         for (i in 0 until functions.length()) {
-            tmp.add(NativeKFunc(functions[0]!!))
+            tmp.add(NativeKFunc(functions[i]!!))
         }
         return tmp.also { _functions = it }
     }
@@ -97,6 +97,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
     }
 
     private fun registerFunction(nativescriptHandle: COpaquePointer, className: String, funcName: String, funcRef: COpaquePointer) {
+        println("Registering function: $funcName")
         disposables.add(funcRef)
         memScoped {
             val attribs = cValue<godot_method_attributes> {

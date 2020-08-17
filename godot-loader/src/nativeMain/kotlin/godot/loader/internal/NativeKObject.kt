@@ -21,7 +21,7 @@ class NativeKObject(_wrapped: JObject) {
     }
 
     companion object {
-        val BINARY_NAME = "godot/internal/KObject"
+        val SGN = "godot/internal/KObject"
         fun jclass(env: JniEnv) = env.currentThread().loadClass("godot.internal.KObject")
     }
 }
