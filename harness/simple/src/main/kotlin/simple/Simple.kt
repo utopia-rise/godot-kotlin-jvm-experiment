@@ -12,7 +12,7 @@ class Simple : KObject() {
     }
 
     fun _process(delta: Double) {
-        // println("delta: $delta from godot!")
+         //println("delta: $delta from godot!")
     }
 
     fun longMethod(a: Long) {

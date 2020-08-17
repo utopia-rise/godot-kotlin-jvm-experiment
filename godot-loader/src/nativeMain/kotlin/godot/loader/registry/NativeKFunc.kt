@@ -1,6 +1,5 @@
 package godot.loader.registry
 
-import godot.gdnative.godot_variant
 import godot.loader.internal.Disposable
 import godot.loader.internal.NativeKObject
 import godot.loader.internal.NativeKVariant
@@ -8,7 +7,6 @@ import jni.JObject
 import jni.JString
 import jni.JniEnv
 import jni.extras.currentThread
-import kotlinx.cinterop.CValue
 
 class NativeKFunc(_wrapped: JObject) : Disposable {
     val wrapped = _wrapped.newGlobalRef()

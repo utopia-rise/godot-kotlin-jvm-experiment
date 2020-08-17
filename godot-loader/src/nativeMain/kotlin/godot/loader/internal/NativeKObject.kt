@@ -30,7 +30,6 @@ class NativeKObject(_wrapped: JObject) {
 
     fun dispose() {
         wrapped.deleteGlobalRef()
-
     }
 
     companion object {

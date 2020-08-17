@@ -13,7 +13,9 @@ fun JniEnv.currentThread(): Thread {
     return Thread(currentThread.handle)
 }
 
+// don't cache instances of this class
 class Thread(handle: jobject) : JObject(handle) {
+    private val classCache = mutableMapOf<String, JClass>()
     fun setContextClassLoader(classLoader: ClassLoader) {
         val threadClass = jclass(env)
         val setContextClassLoaderMethodId = threadClass.getMethodID("setContextClassLoader", "(Ljava/lang/ClassLoader;)V")
@@ -26,10 +28,14 @@ class Thread(handle: jobject) : JObject(handle) {
         return callObjectMethod(setContextClassLoaderMethodId)?.let { ClassLoader(it.handle) }
     }
 
-    // todo: cache class
     fun loadClassOrNull(className: String): JClass? {
+        if (classCache.containsKey(className)) {
+            return classCache[className]
+        }
         // class loader uses `.` as separator instead of `/`
-        return getContextClassLoader()?.loadClassOrNull(className.replace("/", "."))
+        return getContextClassLoader()?.loadClassOrNull(className.replace("/", "."))?.also {
+            classCache[className] = it
+        }
     }
 
     fun loadClass(className: String): JClass {
