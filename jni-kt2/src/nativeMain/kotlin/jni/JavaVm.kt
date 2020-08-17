@@ -24,13 +24,12 @@ object JavaVm {
 
     fun <T> attach(block: JniEnv.() -> T): T {
         val env = attach()
-        JObject.env = env
         val result = block(env)
         detach()
         return result
     }
 
-    fun attach(): JniEnv {
+    private fun attach(): JniEnv {
         return memScoped {
             val env = allocPointerTo<JNIEnvVar>()
             val args = cValue<JavaVMAttachArgs> {
@@ -44,7 +43,7 @@ object JavaVm {
         }
     }
 
-    fun detach() {
+    private fun detach() {
         memScoped {
             val result = handle[InvokeFn::DetachCurrentThread](handle.ptr)
             if (result != JNI_OK) {

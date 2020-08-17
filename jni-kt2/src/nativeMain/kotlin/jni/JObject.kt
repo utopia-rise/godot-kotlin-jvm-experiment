@@ -59,8 +59,8 @@ open class JObject(internal val handle: jobject) {
         }
     }
 
-    @ThreadLocal
     companion object {
-        lateinit var env: JniEnv
+        val env: JniEnv
+            get() = JniEnv.current()
     }
 }

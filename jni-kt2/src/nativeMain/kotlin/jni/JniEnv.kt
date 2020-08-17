@@ -8,6 +8,10 @@ import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 
 class JniEnv(internal val handle: JNIEnvVar) {
+    init {
+        threadLocalEnv = this
+    }
+
     fun findClassOrNull(className: String): JClass? {
         return memScoped {
             val jclass = handle[EnvFn::FindClass](handle.ptr, className.cstr.ptr)
@@ -39,20 +43,20 @@ class JniEnv(internal val handle: JNIEnvVar) {
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
-    internal fun exceptionOccurred(): Boolean {
+    private fun exceptionOccurred(): Boolean {
         return memScoped {
             val result = handle[EnvFn::ExceptionCheck](handle.ptr)
             result.toInt() == JNI_TRUE
         }
     }
 
-    internal fun exceptionClear() {
+    private fun exceptionClear() {
         memScoped {
             handle[EnvFn::ExceptionClear](handle.ptr)
         }
     }
 
-    internal fun exceptionDescribe() {
+    private fun exceptionDescribe() {
         memScoped {
             handle[EnvFn::ExceptionDescribe](handle.ptr)
         }
@@ -64,5 +68,12 @@ class JniEnv(internal val handle: JNIEnvVar) {
             exceptionClear()
             throw JniError("An exception has occurred!")
         }
+    }
+
+    @ThreadLocal
+    companion object {
+        private lateinit var threadLocalEnv: JniEnv
+
+        fun current() = threadLocalEnv
     }
 }
