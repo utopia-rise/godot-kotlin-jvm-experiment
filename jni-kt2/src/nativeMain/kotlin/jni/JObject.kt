@@ -7,7 +7,7 @@ import kotlinx.cinterop.invoke
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 
-open class JObject(internal val handle: jobject) {
+open class JObject(val handle: jobject) {
     fun callObjectMethod(method: JMethodId, vararg args: Any?): JObject? {
         return memScoped {
             val result = env.handle[EnvFn::CallObjectMethodA](
@@ -87,31 +87,23 @@ open class JObject(internal val handle: jobject) {
     }
 
     open fun newLocalRef(): JObject {
-        return memScoped {
-            val ref = env.handle[EnvFn::NewLocalRef](env.handle.ptr, handle)
-            requireNotNull(ref) { "Failed to create local ref!" }
-            JObject(ref)
-        }
+        val ref = env.handle[EnvFn::NewLocalRef](env.handle.ptr, handle)
+        requireNotNull(ref) { "Failed to create local ref!" }
+        return JObject(ref)
     }
 
     open fun newGlobalRef(): JObject {
-        return memScoped {
-            val ref = env.handle[EnvFn::NewGlobalRef](env.handle.ptr, handle)
-            requireNotNull(ref) { "Failed to create global ref!" }
-            JObject(ref)
-        }
+        val ref = env.handle[EnvFn::NewGlobalRef](env.handle.ptr, handle)
+        requireNotNull(ref) { "Failed to create global ref!" }
+        return JObject(ref)
     }
 
     fun deleteLocalRef() {
-        memScoped {
-            env.handle[EnvFn::DeleteLocalRef](env.handle.ptr, handle)
-        }
+        env.handle[EnvFn::DeleteLocalRef](env.handle.ptr, handle)
     }
 
     fun deleteGlobalRef() {
-        memScoped {
-            env.handle[EnvFn::DeleteGlobalRef](env.handle.ptr, handle)
-        }
+        env.handle[EnvFn::DeleteGlobalRef](env.handle.ptr, handle)
     }
 
     companion object {

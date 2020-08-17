@@ -32,7 +32,7 @@ kotlin {
 
             binaries {
                 sharedLib(listOf(DEBUG)) {
-//                    linkerOpts("-L$javaHome/lib/server", "-ljvm")
+                    linkerOpts("-L$javaHome/lib/server", "-ljvm")
                 }
             }
         }

@@ -29,7 +29,7 @@ object JavaVm {
         return result
     }
 
-    private fun attach(): JniEnv {
+    fun attach(): JniEnv {
         return memScoped {
             val env = allocPointerTo<JNIEnvVar>()
             val args = cValue<JavaVMAttachArgs> {
@@ -43,7 +43,18 @@ object JavaVm {
         }
     }
 
-    private fun detach() {
+    fun getEnv(): JniEnv {
+        return memScoped {
+            val env = allocPointerTo<JNIEnvVar>()
+            val result = handle[InvokeFn::GetEnv](handle.ptr, env.ptr.reinterpret(), version.value)
+            if (result != JNI_OK) {
+                throw JniError("Failed to get current env, is current thread attached?")
+            }
+            JniEnv(env.pointed!!)
+        }
+    }
+
+    fun detach() {
         memScoped {
             val result = handle[InvokeFn::DetachCurrentThread](handle.ptr)
             if (result != JNI_OK) {
@@ -66,7 +77,7 @@ object JavaVm {
             }
             val vm = allocPointerTo<JavaVMVar>()
             val env = allocPointerTo<JNIEnvVar>()
-            val result = JvmLoader.getCreateJavaVmFunctionFromEmbeddedJvm().invoke(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
+            val result = JNI_CreateJavaVM(vm.ptr, env.ptr.reinterpret(), jvmArgs.ptr)
             if (result != JNI_OK)  {
                 throw JniError("Failed to start the jvm!")
             }
@@ -78,7 +89,7 @@ object JavaVm {
         return memScoped {
             val buffer = allocPointerTo<JavaVMVar>().ptr
             val vmCounts = alloc<IntVar>()
-            JvmLoader.getGetCreatedJavaVMsFunctionFromEmbeddedJvm().invoke(buffer, 1, vmCounts.ptr)
+            JNI_GetCreatedJavaVMs(buffer, 1, vmCounts.ptr)
             if (vmCounts.value > 0) {
                 buffer.pointed.value!!.pointed
             } else {

@@ -31,11 +31,11 @@ class KFunc0<T: KObject, R>(
 class KFunc1<T: KObject, P0, R>(
     name: String,
     private val func: T.(P0) -> R,
-    private val resultConverter: (R) -> KVariant,
+    private val returnValueConverter: (R) -> KVariant,
     private val argConverters: List<(KVariant) -> P0>
 ) : KFunc<T, R>(name, 1) {
     override fun invoke(instance: T, args: Array<KVariant>): KVariant {
-        return resultConverter(
+        return returnValueConverter(
             func(
                 instance,
                 argConverters[0](args[0])

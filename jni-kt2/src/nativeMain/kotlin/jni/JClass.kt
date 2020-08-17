@@ -19,13 +19,13 @@ class JClass(handle: jobject, val className: String) : JObject(handle) {
         }
     }
 
-    fun getMethodID(methodName: String, signature: String): JMethodId {
+    fun getMethodId(methodName: String, signature: String): JMethodId {
         return checkNotNull(getMethodIDOrNull(methodName, signature)) {
             "Failed to find method $methodName with signature $signature in class: $className"
         }
     }
 
-    fun getStaticMethodIDOrNull(name: String, signature: String): JMethodId? {
+    fun getStaticMethodIdOrNull(name: String, signature: String): JMethodId? {
         return memScoped {
             val methodID = env.handle[EnvFn::GetStaticMethodID](
                 env.handle.ptr,
@@ -38,24 +38,24 @@ class JClass(handle: jobject, val className: String) : JObject(handle) {
         }
     }
 
-    fun getStaticMethodID(methodName: String, signature: String): JMethodId {
-        return checkNotNull(getStaticMethodIDOrNull(methodName, signature)) {
+    fun getStaticMethodId(methodName: String, signature: String): JMethodId {
+        return checkNotNull(getStaticMethodIdOrNull(methodName, signature)) {
             "Failed to get static method $methodName with signature $signature in class $className"
         }
     }
 
-    fun getConstructorMethodIDOrNull(signature: String): JMethodId? {
+    fun getConstructorMethodIdOrNull(signature: String): JMethodId? {
         return getMethodIDOrNull("<init>", signature)
     }
 
     fun getConstructorMethodID(signature: String): JMethodId {
-        return checkNotNull(getConstructorMethodIDOrNull(signature)) {
+        return checkNotNull(getConstructorMethodIdOrNull(signature)) {
             "Failed to get constructor with signature $signature in class $className"
         }
     }
 
     fun getNoArgConstructorOrNull(): JMethodId? {
-        return getConstructorMethodIDOrNull("()V")
+        return getConstructorMethodIdOrNull("()V")
     }
 
     fun getNoArgConstructor(): JMethodId {
@@ -78,7 +78,7 @@ class JClass(handle: jobject, val className: String) : JObject(handle) {
     }
 
 
-    fun getStaticFieldIDOrNull(name: String, signature: String): JFieldId? {
+    fun getStaticFieldIdOrNull(name: String, signature: String): JFieldId? {
         return memScoped {
             val fieldID = env.handle[EnvFn::GetStaticFieldID](
                 env.handle.ptr,
@@ -150,5 +150,10 @@ class JClass(handle: jobject, val className: String) : JObject(handle) {
                 throw JniError("Failed to register native methods for class $className")
             }
         }
+    }
+
+    override fun newGlobalRef(): JClass {
+        val ref = super.newGlobalRef()
+        return JClass(ref.handle, className)
     }
 }

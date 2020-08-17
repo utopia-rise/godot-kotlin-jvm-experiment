@@ -43,35 +43,25 @@ class JniEnv(internal val handle: JNIEnvVar) {
     }
 
     fun pushLocalFrame(initialCapacity: Int) {
-        memScoped {
-            handle[EnvFn::PushLocalFrame](handle.ptr, initialCapacity)
-        }
+        handle[EnvFn::PushLocalFrame](handle.ptr, initialCapacity)
     }
 
     fun popLocalFrame() {
-        memScoped {
-            handle[EnvFn::PopLocalFrame](handle.ptr, null)
-        }
+        handle[EnvFn::PopLocalFrame](handle.ptr, null)
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
     private fun exceptionOccurred(): Boolean {
-        return memScoped {
-            val result = handle[EnvFn::ExceptionCheck](handle.ptr)
-            result.toInt() == JNI_TRUE
-        }
+        val result = handle[EnvFn::ExceptionCheck](handle.ptr)
+        return result.toInt() == JNI_TRUE
     }
 
     private fun exceptionClear() {
-        memScoped {
-            handle[EnvFn::ExceptionClear](handle.ptr)
-        }
+        handle[EnvFn::ExceptionClear](handle.ptr)
     }
 
     private fun exceptionDescribe() {
-        memScoped {
-            handle[EnvFn::ExceptionDescribe](handle.ptr)
-        }
+        handle[EnvFn::ExceptionDescribe](handle.ptr)
     }
 
     internal fun verifyNoErrors() {

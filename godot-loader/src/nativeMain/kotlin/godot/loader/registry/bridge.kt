@@ -6,6 +6,7 @@ import godot.loader.internal.NativeKObject
 import godot.loader.internal.NativeKVariant
 import godot.loader.internal.nullSafe
 import kotlinx.cinterop.*
+import kotlin.native.internal.GC
 
 fun createInstance(instance: COpaquePointer?, methodData: COpaquePointer?): COpaquePointer? {
     return NativeBindingContext.bindScope {

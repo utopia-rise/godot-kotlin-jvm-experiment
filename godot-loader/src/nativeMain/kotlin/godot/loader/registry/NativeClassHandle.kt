@@ -4,15 +4,11 @@ import godot.gdnative.godot_instance_create_func
 import godot.gdnative.godot_instance_destroy_func
 import godot.gdnative.godot_instance_method
 import godot.gdnative.godot_method_attributes
-import godot.loader.internal.Disposable
-import godot.loader.internal.Godot
-import godot.loader.internal.NativeKObject
-import godot.loader.internal.nullSafe
+import godot.loader.internal.*
 import jni.JObject
 import jni.JObjectArray
 import jni.JString
 import jni.JniEnv
-import jni.extras.currentThread
 import kotlinx.cinterop.*
 
 class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
@@ -29,8 +25,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
         if (_className != null) {
             return _className!!
         }
-        val cls = jclass(env)
-        val getClassNameMethod = cls.getMethodID("getClassName", "()Ljava/lang/String;")
+        val getClassNameMethod = getMethodId("getClassName", "()Ljava/lang/String;")
         val className = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
         checkNotNull(className) { "Failed to get className!" }
         return className.also { _className = it }
@@ -40,8 +35,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
         if (_superClass != null) {
             return _superClass!!
         }
-        val cls = jclass(env)
-        val getClassNameMethod = cls.getMethodID("getSuperClass", "()Ljava/lang/String;")
+        val getClassNameMethod = getMethodId("getSuperClass", "()Ljava/lang/String;")
         val superClass = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
         checkNotNull(superClass) { "Failed to get superClass!" }
         return superClass.also { _superClass = it }
@@ -51,8 +45,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
         if (_functions != null) {
             return _functions!!
         }
-        val cls = jclass(env)
-        val getFunctionsMethod = cls.getMethodID("getFunctions", "()[Lgodot/registry/KFunc;")
+        val getFunctionsMethod = getMethodId("getFunctions", "()[Lgodot/registry/KFunc;")
         val functions = wrapped.callObjectMethod(getFunctionsMethod)?.let { JObjectArray.unsafeCast(it) }
         checkNotNull(functions) { "Failed to retrieve functions!" }
 
@@ -121,8 +114,7 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
 
 
     fun wrap(env: JniEnv, ptr: COpaquePointer): NativeKObject {
-        val cls = jclass(env)
-        val wrapMethod = cls.getMethodID("wrap", "(J)Lgodot/internal/KObject;")
+        val wrapMethod = getMethodId("wrap", "(J)Lgodot/internal/KObject;")
         val obj = wrapped.callObjectMethod(wrapMethod, ptr.rawValue.toLong())
         checkNotNull(obj) { "Failed to call ClassHandle.wrap(ptr)" }
         return NativeKObject(obj)
@@ -140,7 +132,6 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
         }
     }
 
-    companion object {
-        fun jclass(env: JniEnv) = env.currentThread().loadClass("godot.registry.ClassHandle")
-    }
+    @ThreadLocal
+    companion object : JObjectWrapper("godot.registry.ClassHandle")
 }

@@ -12,7 +12,7 @@ fun JniEnv.newFile(path: String): File {
 class File(handle: jobject) : JObject(handle) {
     fun toURL(): JObject {
         val fileClass = env.findClass("java/io/File")
-        val toURLMethod = fileClass.getMethodID("toURL", "()Ljava/net/URL;")
+        val toURLMethod = fileClass.getMethodId("toURL", "()Ljava/net/URL;")
         return checkNotNull(callObjectMethod(toURLMethod)) { "Failed to convert file into a URL" }
     }
 }

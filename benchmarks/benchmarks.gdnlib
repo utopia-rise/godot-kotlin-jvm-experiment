@@ -1,0 +1,19 @@
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=true
+
+[entry]
+
+OSX.64="res://libgodot_loader.dylib"
+Windows.64="res://godot_loader.dll"
+X11.64="res://libgodot_loader.so"
+Server.64="res://libgodot_loader.so"
+
+[dependencies]
+
+OSX.64=[  ]
+Windows.64=[  ]
+X11.64=[  ]

@@ -2,23 +2,20 @@ package godot.loader.internal
 
 import godot.gdnative.godot_variant
 import godot.gdnative.godot_variant_type.*
-import godot.loader.registry.NativeKFunc
 import jni.JObject
 import jni.JString
 import jni.JniEnv
-import jni.extras.currentThread
 import kotlinx.cinterop.*
 
 class NativeKVariant private constructor(private val wrapped: JObject) {
     // local caches
-    private var _typeOrdinal: Int? = 0
+    private var _typeOrdinal: Int? = null
 
     fun getTypeOrdinal(env: JniEnv): Int {
         if (_typeOrdinal != null) {
             return _typeOrdinal!!
         }
-        val cls = NativeKFunc.jclass(env)
-        val getClassNameMethod = cls.getMethodID("getTypeOrdinal", "()I")
+        val getClassNameMethod = getMethodId("getTypeOrdinal", "()I")
         val parameterCount = wrapped.callIntMethod(getClassNameMethod)
         return parameterCount.also { _typeOrdinal = it }
     }
@@ -29,7 +26,8 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
 
     fun toJava() = wrapped
 
-    companion object {
+    @ThreadLocal
+    companion object : JObjectWrapper("godot.internal.KVariant") {
         fun fromGodot(env: JniEnv, value: CValue<godot_variant>): NativeKVariant {
             return memScoped {
                 val ptr = value.ptr
@@ -40,9 +38,6 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
         }
 
         fun fromJava(wrapped: JObject) = NativeKVariant(wrapped)
-
-        const val SGN = "godot/internal/KVariant"
-        fun jclass(env: JniEnv) =  env.currentThread().loadClass("godot.internal.KVariant")
 
         // must match enum value order in KVariant.Type
         private val converters = arrayOf(
@@ -79,9 +74,8 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
             }
 
             override fun toJava(env: JniEnv, variant: CValue<godot_variant>): JObject {
-                val cls = jclass(env)
-                val fromMethod = cls.getStaticMethodID("nil", "()L$SGN;")
-                return checkNotNull(cls.callStaticObjectMethod(fromMethod)) {
+                val fromMethod = getStaticMethodId("nil", "()L$SGN;")
+                return checkNotNull(jclass.callStaticObjectMethod(fromMethod)) {
                     "Value from java returned null!"
                 }
             }
@@ -90,8 +84,7 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
 
         object LongConverter: Converter {
             override fun toGodot(env: JniEnv, obj: JObject): CValue<godot_variant> {
-                val cls = jclass(env)
-                val asMethod = cls.getMethodID("asLong", "()J")
+                val asMethod = getMethodId("asLong", "()J")
                 val value = obj.callLongMethod(asMethod)
                 return cValue {
                     nullSafe(Godot.gdnative.godot_variant_new_int)(ptr, value)
@@ -99,13 +92,12 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
             }
 
             override fun toJava(env: JniEnv, variant: CValue<godot_variant>): JObject {
-                val cls = jclass(env)
-                val fromMethod = cls.getStaticMethodID("from", "(J)L$SGN;")
+                val fromMethod = getStaticMethodId("from", "(J)L$SGN;")
                 // returns an int64
                 val value = memScoped {
                     nullSafe(Godot.gdnative.godot_variant_as_int)(variant.ptr)
                 }
-                return checkNotNull(cls.callStaticObjectMethod(fromMethod, value)) {
+                return checkNotNull(jclass.callStaticObjectMethod(fromMethod, value)) {
                     "Value from java returned null!"
                 }
             }
@@ -113,8 +105,7 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
 
         object DoubleConverter: Converter {
             override fun toGodot(env: JniEnv, obj: JObject): CValue<godot_variant> {
-                val cls = jclass(env)
-                val asMethod = cls.getMethodID("asDouble", "()D")
+                val asMethod = getMethodId("asDouble", "()D")
                 val value = obj.callDoubleMethod(asMethod)
                 return cValue {
                     nullSafe(Godot.gdnative.godot_variant_new_real)(ptr, value)
@@ -122,12 +113,11 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
             }
 
             override fun toJava(env: JniEnv, variant: CValue<godot_variant>): JObject {
-                val cls = jclass(env)
-                val fromMethod = cls.getStaticMethodID("from", "(D)L$SGN;")
+                val fromMethod = getStaticMethodId("from", "(D)L$SGN;")
                 val value = memScoped {
                     nullSafe(Godot.gdnative.godot_variant_as_real)(variant.ptr)
                 }
-                return checkNotNull(cls.callStaticObjectMethod(fromMethod, value)) {
+                return checkNotNull(jclass.callStaticObjectMethod(fromMethod, value)) {
                     "Value from java returned null!"
                 }
             }
@@ -135,8 +125,7 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
 
         object BoolConverter: Converter {
             override fun toGodot(env: JniEnv, obj: JObject): CValue<godot_variant> {
-                val cls = jclass(env)
-                val asMethod = cls.getMethodID("asBool", "()Z")
+                val asMethod = getMethodId("asBool", "()Z")
                 val value = obj.callBoolMethod(asMethod)
                 return cValue {
                     nullSafe(Godot.gdnative.godot_variant_new_bool)(ptr, value)
@@ -144,12 +133,11 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
             }
 
             override fun toJava(env: JniEnv, variant: CValue<godot_variant>): JObject {
-                val cls = jclass(env)
-                val fromMethod = cls.getStaticMethodID("from", "(Z)L$SGN;")
+                val fromMethod = getStaticMethodId("from", "(Z)L$SGN;")
                 val value = memScoped {
                     nullSafe(Godot.gdnative.godot_variant_as_bool)(variant.ptr)
                 }
-                return checkNotNull(cls.callStaticObjectMethod(fromMethod, value)) {
+                return checkNotNull(jclass.callStaticObjectMethod(fromMethod, value)) {
                     "Value from java returned null!"
                 }
             }
@@ -157,8 +145,7 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
 
         object StringConverter: Converter {
             override fun toGodot(env: JniEnv, obj: JObject): CValue<godot_variant> {
-                val cls = jclass(env)
-                val asMethod = cls.getMethodID("asString", "()Ljava/lang/String;")
+                val asMethod = getMethodId("asString", "()Ljava/lang/String;")
                 val value = obj.callObjectMethod(asMethod)
                 checkNotNull(value) { "KVariant.asString returned null!" }
                 return cValue {
@@ -170,14 +157,13 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
             }
 
             override fun toJava(env: JniEnv, variant: CValue<godot_variant>): JObject {
-                val cls = jclass(env)
-                val fromMethod = cls.getStaticMethodID("from", "(Ljava/lang/String;)L$SGN;")
+                val fromMethod = getStaticMethodId("from", "(Ljava/lang/String;)L$SGN;")
                 val value = memScoped {
                     nullSafe(Godot.gdnative.godot_variant_as_string)(variant.ptr)
                 }
                 // we are passing this value to java, no need to create a global ref
                 val jstr = env.newString(GdString(value).toKString())
-                return checkNotNull(cls.callStaticObjectMethod(fromMethod, jstr)) {
+                return checkNotNull(jclass.callStaticObjectMethod(fromMethod, jstr)) {
                     "Value from java returned null!"
                 }
             }
@@ -185,8 +171,7 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
 
         object ObjectConverter: Converter {
             override fun toGodot(env: JniEnv, obj: JObject): CValue<godot_variant> {
-                val cls = jclass(env)
-                val asMethod = cls.getMethodID("asObject", "()L${NativeKObject.SGN};")
+                val asMethod = getMethodId("asObject", "()L${NativeKObject.SGN};")
                 val value = obj.callObjectMethod(asMethod)
                 return cValue {
                     if (value != null) {
@@ -201,12 +186,11 @@ class NativeKVariant private constructor(private val wrapped: JObject) {
             }
 
             override fun toJava(env: JniEnv, variant: CValue<godot_variant>): JObject {
-                val cls = jclass(env)
-                val fromMethod = cls.getStaticMethodID("fromRawPtr", "(J)L$SGN;")
+                val fromMethod = getStaticMethodId("fromRawPtr", "(J)L$SGN;")
                 val value = memScoped {
                     nullSafe(Godot.gdnative.godot_variant_as_object)(variant.ptr)
                 }
-                return checkNotNull(cls.callStaticObjectMethod(fromMethod, value.toLong())) {
+                return checkNotNull(jclass.callStaticObjectMethod(fromMethod, value.toLong())) {
                     "Value from java returned null!"
                 }
             }

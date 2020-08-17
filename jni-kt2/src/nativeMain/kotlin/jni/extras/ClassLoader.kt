@@ -25,7 +25,7 @@ class ClassLoader(handle: jobject) : JObject(handle) {
     fun loadClassOrNull(className: String): JClass? {
         return memScoped {
             val urlClassLoaderClass = env.findClass("java/net/URLClassLoader")
-            val findClassMethodID = urlClassLoaderClass.getMethodID("loadClass", "(Ljava/lang/String;)Ljava/lang/Class;")
+            val findClassMethodID = urlClassLoaderClass.getMethodId("loadClass", "(Ljava/lang/String;)Ljava/lang/Class;")
             callObjectMethod(findClassMethodID, env.newString(className))?.let { JClass(it.handle, className) }
         }
     }

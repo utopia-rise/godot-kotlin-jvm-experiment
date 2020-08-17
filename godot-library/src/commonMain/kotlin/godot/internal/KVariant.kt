@@ -34,6 +34,11 @@ class KVariant (val type: Type, private val value: Any?) {
         TODO()
     }
 
+    @JniExposed
+    fun print() {
+        println(value)
+    }
+
     companion object {
         @JvmStatic
         @JniExposed

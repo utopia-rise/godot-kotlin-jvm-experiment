@@ -1,12 +1,12 @@
 package godot.loader.registry
 
 import godot.loader.internal.Disposable
+import godot.loader.internal.JObjectWrapper
 import godot.loader.internal.NativeKObject
 import godot.loader.internal.NativeKVariant
 import jni.JObject
 import jni.JString
 import jni.JniEnv
-import jni.extras.currentThread
 
 class NativeKFunc(_wrapped: JObject) : Disposable {
     val wrapped = _wrapped.newGlobalRef()
@@ -20,8 +20,7 @@ class NativeKFunc(_wrapped: JObject) : Disposable {
             return _name!!
         }
 
-        val cls = jclass(env)
-        val getClassNameMethod = cls.getMethodID("getName", "()Ljava/lang/String;")
+        val getClassNameMethod = getMethodId("getName", "()Ljava/lang/String;")
         val name = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
         checkNotNull(name) { "Failed to get name!" }
         return name.also { _name = it }
@@ -32,8 +31,7 @@ class NativeKFunc(_wrapped: JObject) : Disposable {
             return _registrationName!!
         }
 
-        val cls = jclass(env)
-        val getClassNameMethod = cls.getMethodID("getRegistrationName", "()Ljava/lang/String;")
+        val getClassNameMethod = getMethodId("getRegistrationName", "()Ljava/lang/String;")
         val registrationName = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
         checkNotNull(registrationName) { "Failed to get registration name!" }
         return registrationName.also { _registrationName = it }
@@ -45,18 +43,17 @@ class NativeKFunc(_wrapped: JObject) : Disposable {
             return _parameterCount!!
         }
 
-        val cls = jclass(env)
-        val getClassNameMethod = cls.getMethodID("getParameterCount", "()I")
+        val getClassNameMethod = getMethodId("getParameterCount", "()I")
         val parameterCount = wrapped.callIntMethod(getClassNameMethod)
         return parameterCount.also { _parameterCount = it }
     }
 
     operator fun invoke(env: JniEnv, instance: NativeKObject, args: Array<NativeKVariant>): NativeKVariant {
-        val cls = jclass(env)
-        val kvariantCls = env.currentThread().loadClass("godot.internal.KVariant")
+        val kvariantCls = NativeKVariant.jclass
         val jvmArgs = kvariantCls.newObjectArray(args.size)
+
         args.forEachIndexed { i, v -> jvmArgs[i] = v.toJava() }
-        val invokeMethod = cls.getMethodID(
+        val invokeMethod = jclass.getMethodId(
             "invoke",
             "(L${NativeKObject.SGN};[L${NativeKVariant.SGN};)L${NativeKVariant.SGN};"
         )
@@ -69,8 +66,6 @@ class NativeKFunc(_wrapped: JObject) : Disposable {
         wrapped.deleteGlobalRef()
     }
 
-    companion object {
-        const val SGN = "godot/registry/KFunc"
-        fun jclass(env: JniEnv) = env.currentThread().loadClass("godot.registry.KFunc")
-    }
+    @ThreadLocal
+    companion object : JObjectWrapper("godot.registry.KFunc")
 }
