@@ -1,5 +1,6 @@
 package jni
 
+import jni.sys.JNI_TRUE
 import jni.sys.jint
 import jni.sys.jobject
 import kotlinx.cinterop.invoke
@@ -43,6 +44,33 @@ open class JObject(internal val handle: jobject) {
             )
             env.verifyNoErrors()
             result
+        }
+    }
+
+    fun callDoubleMethod(method: JMethodId, vararg args: Any?): Double {
+        return memScoped {
+            val result = env.handle[EnvFn::CallDoubleMethodA](
+                env.handle.ptr,
+                handle,
+                method.handle,
+                convertToJValueArgs(args)
+            )
+            env.verifyNoErrors()
+            result
+        }
+    }
+
+    @OptIn(ExperimentalUnsignedTypes::class)
+    fun callBoolMethod(method: JMethodId, vararg args: Any?): Boolean {
+        return memScoped {
+            val result = env.handle[EnvFn::CallBooleanMethodA](
+                env.handle.ptr,
+                handle,
+                method.handle,
+                convertToJValueArgs(args)
+            )
+            env.verifyNoErrors()
+            result.toInt() == JNI_TRUE
         }
     }
 

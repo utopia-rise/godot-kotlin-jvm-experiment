@@ -12,6 +12,18 @@ class Simple : KObject() {
     }
 
     fun _process(delta: Double) {
-        println("delta: $delta from godot!")
+        // println("delta: $delta from godot!")
+    }
+
+    fun longMethod(a: Long) {
+        println("Got long: $a")
+    }
+
+    fun boolMethod(a: Boolean) {
+        println("Got bool: $a")
+    }
+
+    fun stringMethod(a: String) {
+        println("Got string: $a")
     }
 }

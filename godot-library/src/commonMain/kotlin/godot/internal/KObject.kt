@@ -1,7 +1,7 @@
 package godot.internal
 
 @Suppress("LeakingThis")
-abstract class KObject {
+open class KObject {
     internal var ptr: VoidPtr = nullptr
 
     init {
@@ -15,5 +15,19 @@ abstract class KObject {
 
     open fun __new(): VoidPtr {
         TODO("Please override __new method!")
+    }
+
+    @JniExposed
+    fun _getRawPtr() = ptr
+
+    override fun hashCode(): Int {
+        return ptr.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is KObject) {
+            return false
+        }
+        return other.ptr == ptr
     }
 }

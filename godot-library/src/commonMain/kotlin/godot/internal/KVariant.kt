@@ -70,5 +70,11 @@ class KVariant (val type: Type, private val value: Any?) {
                 KVariant(Type.OBJECT, value)
             }
         }
+
+        @JvmStatic
+        fun fromRawPtr(ptr: VoidPtr): KVariant {
+            require(ptr != nullptr) { "Can't create a variant from a null ptr!" }
+            return KVariant(Type.OBJECT, TypeManager.wrap(ptr))
+        }
     }
 }
