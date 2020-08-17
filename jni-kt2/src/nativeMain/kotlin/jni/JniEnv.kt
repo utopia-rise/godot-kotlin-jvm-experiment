@@ -42,6 +42,18 @@ class JniEnv(internal val handle: JNIEnvVar) {
         return cls.newObjectArray(size, initial)
     }
 
+    fun pushLocalFrame(initialCapacity: Int) {
+        memScoped {
+            handle[EnvFn::PushLocalFrame](handle.ptr, initialCapacity)
+        }
+    }
+
+    fun popLocalFrame() {
+        memScoped {
+            handle[EnvFn::PopLocalFrame](handle.ptr, null)
+        }
+    }
+
     @OptIn(ExperimentalUnsignedTypes::class)
     private fun exceptionOccurred(): Boolean {
         return memScoped {
