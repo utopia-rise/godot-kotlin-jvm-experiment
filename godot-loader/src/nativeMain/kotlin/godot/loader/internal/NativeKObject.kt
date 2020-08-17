@@ -5,7 +5,7 @@ import jni.JniEnv
 import jni.extras.currentThread
 
 class NativeKObject(_wrapped: JObject) {
-    private val wrapped = _wrapped.newGlobalRef()
+    val wrapped = _wrapped.newGlobalRef()
 
     fun _onInit(env: JniEnv) {
         val cls = jclass(env)
@@ -21,6 +21,7 @@ class NativeKObject(_wrapped: JObject) {
     }
 
     companion object {
+        val BINARY_NAME = "godot/internal/KObject"
         fun jclass(env: JniEnv) = env.currentThread().loadClass("godot.internal.KObject")
     }
 }

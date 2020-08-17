@@ -2,10 +2,14 @@ package godot.loader.registry
 
 import godot.gdnative.godot_instance_create_func
 import godot.gdnative.godot_instance_destroy_func
+import godot.gdnative.godot_instance_method
+import godot.gdnative.godot_method_attributes
+import godot.loader.internal.Disposable
 import godot.loader.internal.Godot
 import godot.loader.internal.NativeKObject
 import godot.loader.internal.nullSafe
 import jni.JObject
+import jni.JObjectArray
 import jni.JString
 import jni.JniEnv
 import jni.extras.currentThread
@@ -16,23 +20,51 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
 
     private val disposables = mutableListOf<COpaquePointer>()
 
+    // local caches
+    private var _className: String? = null
+    private var _superClass: String? = null
+    private var _functions: List<NativeKFunc>? = null
+
     fun getClassName(env: JniEnv): String {
+        if (_className != null) {
+            return _className!!
+        }
         val cls = jclass(env)
         val getClassNameMethod = cls.getMethodID("getClassName", "()Ljava/lang/String;")
         val className = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
         checkNotNull(className) { "Failed to get className!" }
-        return className
+        return className.also { _className = it }
     }
 
     fun getSuperClass(env: JniEnv): String {
+        if (_superClass != null) {
+            return _superClass!!
+        }
         val cls = jclass(env)
         val getClassNameMethod = cls.getMethodID("getSuperClass", "()Ljava/lang/String;")
-        val className = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
-        checkNotNull(className) { "Failed to get superClass!" }
-        return className
+        val superClass = wrapped.callObjectMethod(getClassNameMethod)?.let(JString.Companion::unsafeCast)?.toKString()
+        checkNotNull(superClass) { "Failed to get superClass!" }
+        return superClass.also { _superClass = it }
+    }
+
+    fun getFunctions(env: JniEnv): List<NativeKFunc> {
+        if (_functions != null) {
+            return _functions!!
+        }
+        val cls = jclass(env)
+        val getFunctionsMethod = cls.getMethodID("getFunctions", "()[Lgodot/registry/KFunc;")
+        val functions = wrapped.callObjectMethod(getFunctionsMethod)?.let { JObjectArray.unsafeCast(it) }
+        checkNotNull(functions) { "Failed to retrieve functions!" }
+
+        val tmp = mutableListOf<NativeKFunc>()
+        for (i in 0 until functions.length()) {
+            tmp.add(NativeKFunc(functions[0]!!))
+        }
+        return tmp.also { _functions = it }
     }
 
     fun init(env: JniEnv, nativescriptHandle: COpaquePointer) {
+        val className = getClassName(env)
         memScoped {
             val methodData = StableRef.create(this@NativeClassHandle).asCPointer()
             // register constructor and destructor
@@ -52,13 +84,40 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
             }
             nullSafe(registerMethod)(
                 nativescriptHandle,
-                getClassName(env).cstr.ptr,
+                className.cstr.ptr,
                 getSuperClass(env).cstr.ptr,
                 create,
                 destroy
             )
         }
+
+        for (func in getFunctions(env)) {
+            registerFunction(nativescriptHandle, className, func.getRegistrationName(env), StableRef.create(func).asCPointer())
+        }
     }
+
+    private fun registerFunction(nativescriptHandle: COpaquePointer, className: String, funcName: String, funcRef: COpaquePointer) {
+        disposables.add(funcRef)
+        memScoped {
+            val attribs = cValue<godot_method_attributes> {
+                // rpc_type = toGodotRpcMode(rpcMode)
+            }
+
+            val instanceMethod = cValue<godot_instance_method> {
+                method_data = funcRef
+                this.method = staticCFunction(::invokeMethod)
+            }
+
+            nullSafe(Godot.nativescript.godot_nativescript_register_method)(
+                nativescriptHandle,
+                className.cstr.ptr,
+                funcName.cstr.ptr, //not using `camelcaseToUnderscore` to prevent a call to godot for each function
+                attribs,
+                instanceMethod
+            )
+        }
+    }
+
 
     fun wrap(env: JniEnv, ptr: COpaquePointer): NativeKObject {
         val cls = jclass(env)
@@ -70,7 +129,14 @@ class NativeClassHandle(_wrapped: JObject, private val isTool: Boolean) {
 
     fun dispose() {
         wrapped.deleteGlobalRef()
-        disposables.forEach { it.asStableRef<Any>().dispose() }
+        disposables.forEach {
+            val ref = it.asStableRef<Disposable>()
+            val disposable = ref.get()
+            // clean up disposable
+            disposable.dispose()
+            // finally clean up the ref itself
+            ref.dispose()
+        }
     }
 
     companion object {

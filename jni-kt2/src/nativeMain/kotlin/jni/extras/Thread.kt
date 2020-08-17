@@ -26,6 +26,7 @@ class Thread(handle: jobject) : JObject(handle) {
         return callObjectMethod(setContextClassLoaderMethodId)?.let { ClassLoader(it.handle) }
     }
 
+    // todo: cache class
     fun loadClassOrNull(className: String): JClass? {
         // class loader uses `.` as separator instead of `/`
         return getContextClassLoader()?.loadClassOrNull(className.replace("/", "."))

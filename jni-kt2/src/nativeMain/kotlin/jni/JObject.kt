@@ -1,5 +1,6 @@
 package jni
 
+import jni.sys.jint
 import jni.sys.jobject
 import kotlinx.cinterop.invoke
 import kotlinx.cinterop.memScoped
@@ -16,6 +17,19 @@ open class JObject(internal val handle: jobject) {
             )
             env.verifyNoErrors()
             result?.let { JObject(it) }
+        }
+    }
+
+    fun callIntMethod(method: JMethodId, vararg args: Any?): jint {
+        return memScoped {
+            val result = env.handle[EnvFn::CallIntMethodA](
+                env.handle.ptr,
+                handle,
+                method.handle,
+                convertToJValueArgs(args)
+            )
+            env.verifyNoErrors()
+            result
         }
     }
 
