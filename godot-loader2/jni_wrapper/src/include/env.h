@@ -1,6 +1,7 @@
 #ifndef GODOT_LOADER_ENV_H
 #define GODOT_LOADER_ENV_H
-#include "jni.h"
+#include <jni.h>
+#include "types.h"
 #include "exceptions.h"
 
 namespace jni {
@@ -13,9 +14,24 @@ namespace jni {
         void pushLocalFrame(int capacity);
         void popLocalFrame();
 
+        JClass findClass(const char* name);
+
+        JObject newString(const char* str);
+
+        bool exceptionCheck();
+        void exceptionDescribe();
+        void exceptionClear();
+
+        void checkExceptions();
+
         bool isValid();
     private:
         JNIEnv* env;
+
+        friend class JObject;
+        friend class JClass;
+        friend class JArray;
+        friend class JObjectArray;
     };
 }
 

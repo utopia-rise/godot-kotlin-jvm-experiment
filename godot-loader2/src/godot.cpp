@@ -25,7 +25,7 @@ void Godot::init(godot_gdnative_init_options* options) {
     auto libraryPath = fromGDString(options->active_library_path);
     bindingContext.bind(
             options->gd_native_library,
-            std::string(libraryPath.begin(), libraryPath.end())
+            libraryPath
     );
 }
 
@@ -43,7 +43,8 @@ void Godot::nativescriptTerminate(void *handle) {
 void Godot::nativescriptInit(void *handle) {
 }
 
-std::wstring Godot::fromGDString(const godot_string *str) {
-    return std::wstring(gd->godot_string_wide_str(str));
+std::string Godot::fromGDString(const godot_string *str) {
+    auto wstr = std::wstring(gd->godot_string_wide_str(str));
+    return std::string(wstr.begin(), wstr.end());
 }
 

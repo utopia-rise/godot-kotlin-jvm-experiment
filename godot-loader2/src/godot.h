@@ -15,7 +15,7 @@ public:
     void nativescriptInit(void* handle);
     void nativescriptTerminate(void* handle);
 
-    std::wstring fromGDString(const godot_string* str);
+    std::string fromGDString(const godot_string* str);
 
 private:
     const godot_gdnative_core_api_struct* gd;

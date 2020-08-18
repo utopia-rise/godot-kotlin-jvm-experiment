@@ -19,4 +19,38 @@ namespace jni {
     bool Env::isValid() {
         return env != nullptr;
     }
+
+    JClass Env::findClass(const char *name) {
+        auto cls = env->FindClass(name);
+        if (cls == nullptr) {
+            throw ClassNotFoundError(name);
+        }
+        return {cls};
+    }
+
+    JObject Env::newString(const char *str) {
+        auto jstr = env->NewStringUTF(str);
+        checkExceptions();
+        return {jstr};
+    }
+
+    bool Env::exceptionCheck() {
+        return env->ExceptionCheck();
+    }
+
+    void Env::exceptionDescribe() {
+        env->ExceptionDescribe();
+    }
+
+    void Env::exceptionClear() {
+        env->ExceptionClear();
+    }
+
+    void Env::checkExceptions() {
+        if (exceptionCheck()) {
+            exceptionDescribe();
+            exceptionClear();
+            throw JniError("An exception has occurred!");
+        }
+    }
 }

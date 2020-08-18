@@ -21,6 +21,7 @@ private:
     godot_object* library = nullptr;
     std::string libraryPath;
     std::string projectDir;
+    jni::JObject classLoader;
 };
 
 

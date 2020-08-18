@@ -4,6 +4,7 @@
 namespace jni {
     JavaVM* Jvm::vm = nullptr;
     Env Jvm::env = Env(nullptr);
+    int Jvm::version = 0;
 
     void Jvm::init(const InitArgs& initArgs) {
         auto res = getExisting();
@@ -20,7 +21,7 @@ namespace jni {
         vm->DestroyJavaVM();
     }
 
-    JavaVM *Jvm::create(const InitArgs& initArgs) {
+    JavaVM* Jvm::create(const InitArgs& initArgs) {
         auto nOptions = initArgs.options.size();
         JavaVMOption options[nOptions];
         JavaVMInitArgs args;
@@ -29,7 +30,7 @@ namespace jni {
         args.options = options;
 
         for (auto i = 0; i < nOptions; i++) {
-            args.options[i].optionString = (char* ) initArgs.options[i].c_str();
+            args.options[i].optionString = (char*) initArgs.options[i].c_str();
         }
 
         JavaVM* vm;
@@ -54,7 +55,7 @@ namespace jni {
         return nullptr;
     }
 
-    Env &Jvm::attach() {
+    Env& Jvm::attach() {
         if (Jvm::env.isValid()) {
             return Jvm::env;
         }
@@ -78,7 +79,7 @@ namespace jni {
         Jvm::env = Env(nullptr);
     }
 
-    Env &Jvm::currentEnv() {
+    Env& Jvm::currentEnv() {
         return attach();
     }
 }

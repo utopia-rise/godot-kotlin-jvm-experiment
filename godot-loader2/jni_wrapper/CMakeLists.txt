@@ -4,6 +4,7 @@ project(jni_wrapper)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCES
+        src/types.cpp
         src/env.cpp
         src/jvm.cpp
         src/init_args.cpp)
