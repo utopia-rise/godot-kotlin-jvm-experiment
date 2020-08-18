@@ -33,3 +33,33 @@ void destroyInstance(void* instance, void* methodData, void* classData) {
     delete kotlinInstance;
     bindingContext.endScope();
 }
+
+void disposeFuncHandle(void* ref) {
+    auto& bindingContext = NativeBindingContext::instance();
+    bindingContext.startScope();
+    auto env = jni::Jvm::currentEnv();
+    auto handle = (NativeKFunction*) ref;
+    handle->dispose(env);
+    delete handle;
+    bindingContext.endScope();
+}
+
+godot_variant invokeMethod(void* instance, void* methodData, void* classData, int numArgs, godot_variant** args) {
+    auto& bindingContext = NativeBindingContext::instance();
+    bindingContext.startScope();
+    auto env = jni::Jvm::currentEnv();
+    auto kotlinInstance = (NativeKObject*) classData;
+    auto handle = (NativeKFunction*) methodData;
+
+    auto parameterCount = handle->getParameterCount(env, bindingContext.classLoader);
+    if (parameterCount != numArgs) {
+        std::stringstream ss;
+        ss << "Invalid number of args, expecting " << parameterCount << " but received " << numArgs;
+        throw std::runtime_error(ss.str());
+    }
+
+    auto ret = handle->invoke(env, bindingContext.classLoader, kotlinInstance, std::vector<NativeKVariant>());
+
+    bindingContext.endScope();
+    return godot_variant {};
+}

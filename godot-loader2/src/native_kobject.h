@@ -5,7 +5,11 @@
 
 class NativeKObject {
 public:
+    jni::JObject wrapped;
+
     NativeKObject() = default;
+    NativeKObject(const NativeKObject&) = delete;
+    void operator=(const NativeKObject&) = delete;
 
     void init(jni::Env& env, jni::JObject object);
     void dispose(jni::Env& env);
@@ -14,9 +18,6 @@ public:
     void _onDestroy(jni::Env& env, jni::JObject classLoader);
 
     static JClassHelper JH;
-
-private:
-    jni::JObject wrapped;
 };
 
 

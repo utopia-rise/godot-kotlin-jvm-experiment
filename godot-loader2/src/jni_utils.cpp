@@ -14,9 +14,6 @@ jni::JClass loadClass(jni::Env& env, jni::JObject classLoader, const char* name)
 
 JClassHelper::JClassHelper(const char* binaryName) {
     this->binaryName = std::string(binaryName);
-    sgn = std::string(binaryName);
-    sgn.replace(sgn.begin(), sgn.end(), '.', '/');
-
 }
 
 jni::JClass JClassHelper::getClass(jni::Env& env, jni::JObject classLoader) {

@@ -30,6 +30,26 @@ namespace jni {
         return {ret};
     }
 
+    jint JObject::callIntMethod(Env& env, MethodId method, std::initializer_list<JValue> values) {
+        unpack_args(args)
+        auto ret = env.env->CallIntMethodA((jclass) obj, method, args.data());
+        env.checkExceptions();
+        return ret;
+    }
+
+    jlong JObject::callLongMethod(Env& env, MethodId method, std::initializer_list<JValue> values) {
+        unpack_args(args)
+        auto ret = env.env->CallLongMethodA((jclass) obj, method, args.data());
+        env.checkExceptions();
+        return ret;
+    }
+
+    void JObject::callVoidMethod(Env& env, MethodId method, std::initializer_list<JValue> values) {
+        unpack_args(args)
+        env.env->CallVoidMethodA((jclass) obj, method, args.data());
+        env.checkExceptions();
+    }
+
     MethodId JClass::getMethodId(Env &env, const char *name, const char *signature) {
         auto id = env.env->GetMethodID((jclass) obj, name, signature);
         if (id == nullptr) {

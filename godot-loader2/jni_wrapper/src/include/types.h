@@ -26,6 +26,9 @@ namespace jni {
         void deleteGlobalRef(Env& env);
 
         JObject callObjectMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
+        jint callIntMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
+        jlong callLongMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
+        void callVoidMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
 
         bool isNull ();
     };

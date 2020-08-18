@@ -12,9 +12,11 @@ void NativeKObject::dispose(jni::Env& env) {
 }
 
 void NativeKObject::_onInit(jni::Env& env, jni::JObject classLoader) {
-
+    auto initMethod = JH.getMethodId(env, classLoader, "_onInit", "()V");
+    wrapped.callVoidMethod(env, initMethod);
 }
 
 void NativeKObject::_onDestroy(jni::Env& env, jni::JObject classLoader) {
-
+    auto initMethod = JH.getMethodId(env, classLoader, "_onDestroy", "()V");
+    wrapped.callVoidMethod(env, initMethod);
 }

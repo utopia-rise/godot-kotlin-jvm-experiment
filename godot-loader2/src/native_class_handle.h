@@ -3,6 +3,7 @@
 #include <jvm.h>
 #include "jni_utils.h"
 #include "native_kobject.h"
+#include "native_kfunction.h"
 
 class NativeClassHandle {
 public:
@@ -26,6 +27,7 @@ private:
 
     const std::string& getClassName(jni::Env& env, jni::JObject classLoader);
     const std::string& getSuperClass(jni::Env& env, jni::JObject classLoader);
+    std::vector<NativeKFunction*> getFunctions(jni::Env& env, jni::JObject classLoader);
 };
 
 

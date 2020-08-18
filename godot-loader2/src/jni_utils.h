@@ -8,7 +8,6 @@ jni::JClass loadClass(jni::Env& env, jni::JObject classLoader, const char* name)
 class JClassHelper {
 public:
     std::string binaryName;
-    std::string sgn;
 
     JClassHelper(const char* binaryName);
 
