@@ -18,8 +18,11 @@ namespace jni {
         JObject(jobject);
         JObject() : JObject(nullptr) {}
 
+        JObject newGlobalRef(Env& env);
         template <class T>
-        T newGlobalRef(Env& env);
+        __always_inline T newGlobalRef(Env& env) {
+            return {newGlobalRef(env).obj};
+        }
         void deleteGlobalRef(Env& env);
 
         JObject callObjectMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});

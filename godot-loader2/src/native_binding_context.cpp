@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include "native_binding_context.h"
+#include "jni_utils.h"
 
 jni::JObject getCurrentThread(jni::Env& env);
 jni::JObject createClassLoader(jni::Env& env, const std::string& bootstrapJar);
@@ -22,12 +23,12 @@ void NativeBindingContext::bind(godot_object *library, const std::string& librar
     jni::Jvm::init(args);
 
     auto bootstrapJar = std::string(projectDir);
-    bootstrapJar.append("bootstrap.jar");
+    bootstrapJar.append("build/libs/bootstrap.jar");
     startScope();
     auto env = jni::Jvm::currentEnv();
     // set class loader here
     std::cout << "Creating class loader to load " << bootstrapJar << std::endl;
-    classLoader = createClassLoader(env, bootstrapJar);
+    classLoader = createClassLoader(env, bootstrapJar).newGlobalRef<jni::JObject>(env);
     std::cout << "Setting context class loader for current thread" << std::endl;
     auto thread = getCurrentThread(env);
     setContextClassLoader(env, thread, classLoader);
@@ -47,6 +48,22 @@ void NativeBindingContext::startScope() {
 void NativeBindingContext::endScope() {
     auto env = jni::Jvm::currentEnv();
     env.popLocalFrame();
+}
+
+void NativeBindingContext::registerClasses(void* nativescriptHandle) {
+    startScope();
+    auto env = jni::Jvm::currentEnv();
+    std::cout << "Calling entry point ..." << std::endl;
+    auto cls = loadClass(env, classLoader, "godot.Entry");
+    if (cls.isNull()) {
+        throw std::runtime_error("Failed to load godot.Entry class, does it exist?");
+    }
+    auto ctor = cls.getConstructorMethodId(env, "()V");
+    auto instance = cls.newInstance(env, ctor);
+    auto initMethod = cls.getMethodId(env, "init", "()[Lgodot/registry/ClassHandle;");
+    auto handles = instance.callObjectMethod(env, initMethod);
+    std::cout << "Got handles: " << handles.obj << std::endl;
+    endScope();
 }
 
 jni::JObject getCurrentThread(jni::Env& env) {

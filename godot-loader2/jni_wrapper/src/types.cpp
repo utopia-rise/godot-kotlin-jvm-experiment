@@ -8,8 +8,7 @@ namespace jni {
         this->obj = obj;
     }
 
-    template <class T>
-    T JObject::newGlobalRef(Env& env) {
+    JObject JObject::newGlobalRef(Env& env) {
         auto ref = env.env->NewGlobalRef(obj);
         env.checkExceptions();
         return {ref};

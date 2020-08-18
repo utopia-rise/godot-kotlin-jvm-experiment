@@ -15,6 +15,8 @@ public:
 
     void startScope();
     void endScope();
+
+    void registerClasses(void* nativescriptHandle);
 private:
     NativeBindingContext() = default;
 

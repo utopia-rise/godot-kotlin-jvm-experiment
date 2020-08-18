@@ -36,11 +36,13 @@ void Godot::terminate(godot_gdnative_terminate_options* options) {
     }
 }
 
-void Godot::nativescriptTerminate(void *handle) {
-
+void Godot::nativescriptInit(void *handle) {
+    auto& bindingContext = NativeBindingContext::instance();
+    bindingContext.registerClasses(handle);
 }
 
-void Godot::nativescriptInit(void *handle) {
+void Godot::nativescriptTerminate(void *handle) {
+
 }
 
 std::string Godot::fromGDString(const godot_string *str) {
