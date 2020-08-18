@@ -3,6 +3,7 @@
 
 namespace jni {
     JavaVM* Jvm::vm = nullptr;
+    Env Jvm::env = Env(nullptr);
 
     void Jvm::init(const InitArgs& initArgs) {
         auto res = getExisting();
@@ -11,6 +12,7 @@ namespace jni {
         }
         assert(res != nullptr);
         vm = res;
+        version = initArgs.version;
     }
 
     void Jvm::destroy() {
@@ -30,21 +32,53 @@ namespace jni {
             args.options[i].optionString = (char* ) initArgs.options[i].c_str();
         }
 
-        JavaVM* res;
+        JavaVM* vm;
         JNIEnv* env;
-        auto result = JNI_CreateJavaVM(&res, (void**) &env, (void*) &args);
-        assert(result == JNI_OK);
-        return res;
+        auto result = JNI_CreateJavaVM(&vm, (void**) &env, (void*) &args);
+        if (result != JNI_OK) {
+            throw JniError("Failed to create a new vm!");
+        }
+        return vm;
     }
 
     JavaVM* Jvm::getExisting() {
         JavaVM* buffer[1];
         int count;
         auto result = JNI_GetCreatedJavaVMs(buffer, 1, &count);
-        assert(result == JNI_OK);
+        if (result != JNI_OK) {
+            throw JniError("Failed to retrieve existing vm!");
+        }
         if (count > 0) {
             return buffer[0];
         }
         return nullptr;
+    }
+
+    Env &Jvm::attach() {
+        if (Jvm::env.isValid()) {
+            return Jvm::env;
+        }
+        JNIEnv* env;
+        auto result = vm->GetEnv((void**) &env, version);
+        if (result == JNI_EDETACHED) {
+            result = vm->AttachCurrentThread((void**) &env, nullptr);
+            if (result != JNI_OK) {
+                throw JniError("Failed to attach vm to current thread!");
+            }
+        }
+        Jvm::env = Env(env);
+        return Jvm::env;
+    }
+
+    void Jvm::detach() {
+        auto result = vm->DetachCurrentThread();
+        if (result != JNI_OK) {
+            throw JniError("Failed to detach vm to current thread!");
+        }
+        Jvm::env = Env(nullptr);
+    }
+
+    Env &Jvm::currentEnv() {
+        return attach();
     }
 }

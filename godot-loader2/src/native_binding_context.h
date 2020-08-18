@@ -1,6 +1,7 @@
 #ifndef GODOT_LOADER_NATIVEBINDINGCONTEXT_H
 #define GODOT_LOADER_NATIVEBINDINGCONTEXT_H
 #include "jvm.h"
+#include "gdnative_api_struct.gen.h"
 
 class NativeBindingContext {
 public:
@@ -9,10 +10,17 @@ public:
 
     static NativeBindingContext& instance();
 
-    void bind();
+    void bind(godot_object* library, const std::string& libraryPath);
     void unbind();
+
+    void startScope();
+    void endScope();
 private:
     NativeBindingContext() = default;
+
+    godot_object* library = nullptr;
+    std::string libraryPath;
+    std::string projectDir;
 };
 
 
