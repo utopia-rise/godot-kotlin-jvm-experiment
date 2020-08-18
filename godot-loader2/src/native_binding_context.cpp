@@ -28,7 +28,7 @@ void NativeBindingContext::bind(godot_object *library, const std::string& librar
     auto env = jni::Jvm::currentEnv();
     // set class loader here
     std::cout << "Creating class loader to load " << bootstrapJar << std::endl;
-    classLoader = createClassLoader(env, bootstrapJar).newGlobalRef<jni::JObject>(env);
+    classLoader = createClassLoader(env, bootstrapJar).newGlobalRef(env);
     std::cout << "Setting context class loader for current thread" << std::endl;
     auto thread = getCurrentThread(env);
     setContextClassLoader(env, thread, classLoader);
