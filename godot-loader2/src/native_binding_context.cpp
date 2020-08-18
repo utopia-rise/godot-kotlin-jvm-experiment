@@ -51,7 +51,6 @@ void NativeBindingContext::endScope() {
 }
 
 std::vector<NativeClassHandle*> getClasses(jni::Env& env, jni::JObject classLoader) {
-    std::cout << "Calling entry point ..." << std::endl;
     auto cls = loadClass(env, classLoader, "godot.Entry");
     if (cls.isNull()) {
         throw std::runtime_error("Failed to load godot.Entry class, does it exist?");
@@ -73,7 +72,6 @@ void NativeBindingContext::registerClasses(void* nativescriptHandle) {
     startScope();
     auto env = jni::Jvm::currentEnv();
     auto classHandles = getClasses(env, classLoader);
-    std::cout << "Got handles: " << classHandles.data() << std::endl;
     for (auto handle : classHandles) {
         handle->registerClass(env, classLoader, nativescriptHandle);
     }

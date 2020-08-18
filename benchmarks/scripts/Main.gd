@@ -42,7 +42,7 @@ func __do_run(iteration, benchmark, stats, runs, is_warmup):
         var duration = OS.get_ticks_usec() - start
         if not is_warmup:
             stats.add(duration)
-            print("[iteration=%d,run=%d] %dus" % [iteration, run, duration])
+            #print("[iteration=%d,run=%d] %dus" % [iteration, run, duration])
 
 func __save_report(report):
     var f = File.new()

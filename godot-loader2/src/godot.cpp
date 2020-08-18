@@ -7,7 +7,6 @@ Godot& Godot::instance() {
 }
 
 void Godot::init(godot_gdnative_init_options* options) {
-    std::cout << "Hello World!" << std::endl;
     gd = options->api_struct;
     gd11 = (const godot_gdnative_core_1_1_api_struct*) gd->next;
     gd12 = (const godot_gdnative_core_1_2_api_struct*) gd11->next;
