@@ -2,6 +2,8 @@
 #define GODOT_LOADER_NATIVEBINDINGCONTEXT_H
 #include "jvm.h"
 #include "gdnative_api_struct.gen.h"
+#include "native_class_handle.h"
+
 
 class NativeBindingContext {
 public:
@@ -17,13 +19,15 @@ public:
     void endScope();
 
     void registerClasses(void* nativescriptHandle);
+    void unRegisterClasses(void* nativescriptHandle);
+
+    jni::JObject classLoader;
 private:
     NativeBindingContext() = default;
 
     godot_object* library = nullptr;
     std::string libraryPath;
     std::string projectDir;
-    jni::JObject classLoader;
 };
 
 

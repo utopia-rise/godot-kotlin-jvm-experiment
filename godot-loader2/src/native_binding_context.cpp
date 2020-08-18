@@ -19,7 +19,7 @@ void NativeBindingContext::bind(godot_object *library, const std::string& librar
     std::cout << "project_dir: " << projectDir << std::endl;
     auto args = jni::InitArgs();
     args.option("-Xcheck:jni");
-    args.option("-verbose:jni");
+    args.option("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005");
     jni::Jvm::init(args);
 
     auto bootstrapJar = std::string(projectDir);
@@ -50,9 +50,7 @@ void NativeBindingContext::endScope() {
     env.popLocalFrame();
 }
 
-void NativeBindingContext::registerClasses(void* nativescriptHandle) {
-    startScope();
-    auto env = jni::Jvm::currentEnv();
+std::vector<NativeClassHandle*> getClasses(jni::Env& env, jni::JObject classLoader) {
     std::cout << "Calling entry point ..." << std::endl;
     auto cls = loadClass(env, classLoader, "godot.Entry");
     if (cls.isNull()) {
@@ -61,8 +59,29 @@ void NativeBindingContext::registerClasses(void* nativescriptHandle) {
     auto ctor = cls.getConstructorMethodId(env, "()V");
     auto instance = cls.newInstance(env, ctor);
     auto initMethod = cls.getMethodId(env, "init", "()[Lgodot/registry/ClassHandle;");
-    auto handles = instance.callObjectMethod(env, initMethod);
-    std::cout << "Got handles: " << handles.obj << std::endl;
+    auto handles = jni::JObjectArray((jobjectArray) instance.callObjectMethod(env, initMethod).obj);
+    auto nativeHandles = std::vector<NativeClassHandle*>();
+    for (auto i = 0; i < handles.length(env); i++) {
+        auto nativeHandle = new NativeClassHandle();
+        nativeHandle->init(env, handles.get(env, i));
+        nativeHandles.emplace_back(nativeHandle);
+    }
+    return nativeHandles;
+}
+
+void NativeBindingContext::registerClasses(void* nativescriptHandle) {
+    startScope();
+    auto env = jni::Jvm::currentEnv();
+    auto classHandles = getClasses(env, classLoader);
+    std::cout << "Got handles: " << classHandles.data() << std::endl;
+    for (auto handle : classHandles) {
+        handle->registerClass(env, classLoader, nativescriptHandle);
+    }
+    endScope();
+}
+
+void NativeBindingContext::unRegisterClasses(void* nativescriptHandle) {
+    startScope();
     endScope();
 }
 

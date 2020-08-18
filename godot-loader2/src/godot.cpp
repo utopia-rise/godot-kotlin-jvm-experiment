@@ -1,7 +1,7 @@
 #include "godot.h"
 #include <iostream>
 
-Godot &Godot::instance() {
+Godot& Godot::instance() {
     static Godot instance;
     return instance;
 }
@@ -15,7 +15,7 @@ void Godot::init(godot_gdnative_init_options* options) {
     for (auto i = 0; i < gd->num_extensions; i++) {
         switch (gd->extensions[i]->type) {
             case GDNATIVE_EXT_NATIVESCRIPT:
-                ns = (const godot_gdnative_ext_nativescript_api_struct* )gd->extensions[i];
+                ns = (const godot_gdnative_ext_nativescript_api_struct*) gd->extensions[i];
                 break;
         }
     }
@@ -36,16 +36,17 @@ void Godot::terminate(godot_gdnative_terminate_options* options) {
     }
 }
 
-void Godot::nativescriptInit(void *handle) {
+void Godot::nativescriptInit(void* handle) {
     auto& bindingContext = NativeBindingContext::instance();
     bindingContext.registerClasses(handle);
 }
 
-void Godot::nativescriptTerminate(void *handle) {
-
+void Godot::nativescriptTerminate(void* handle) {
+    auto& bindingContext = NativeBindingContext::instance();
+    bindingContext.unRegisterClasses(handle);
 }
 
-std::string Godot::fromGDString(const godot_string *str) {
+std::string Godot::fromGDString(const godot_string* str) {
     auto wstr = std::wstring(gd->godot_string_wide_str(str));
     return std::string(wstr.begin(), wstr.end());
 }

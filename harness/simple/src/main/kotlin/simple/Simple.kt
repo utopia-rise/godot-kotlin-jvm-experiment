@@ -3,6 +3,11 @@ package simple
 import godot.internal.KObject
 
 class Simple : KObject() {
+
+    init {
+        println("asss")
+    }
+
     override fun _onInit() {
         println("Hello Godot from Simple!")
     }

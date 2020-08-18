@@ -17,6 +17,7 @@ namespace jni {
         JClass findClass(const char* name);
 
         JObject newString(const char* str);
+        std::string fromJString(jni::JString str);
 
         bool exceptionCheck();
         void exceptionDescribe();

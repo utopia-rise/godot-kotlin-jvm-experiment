@@ -53,4 +53,13 @@ namespace jni {
             throw JniError("An exception has occurred!");
         }
     }
+
+    std::string Env::fromJString(jni::JString str) {
+        auto jstr = (jstring) str.obj;
+        auto utfString = env->GetStringUTFChars(jstr, NULL);
+        auto ret = std::string(utfString);
+        checkExceptions();
+        env->ReleaseStringUTFChars(jstr, utfString);
+        return ret;
+    }
 }

@@ -9,7 +9,10 @@ set(CMAKE_SKIP_RPATH FALSE)
 add_subdirectory(jni_wrapper)
 
 set(SOURCES
+        src/bridge.cpp
+        src/native_kobject.cpp
         src/jni_utils.cpp
+        src/native_class_handle.cpp
         src/godot.cpp
         src/entry.cpp
         src/native_binding_context.cpp)

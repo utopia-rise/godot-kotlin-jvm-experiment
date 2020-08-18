@@ -11,3 +11,45 @@ jni::JClass loadClass(jni::Env& env, jni::JObject classLoader, const char* name)
     auto ret = classLoader.callObjectMethod(env, loadClassMethodId, {str});
     return {(jclass) ret.obj};
 }
+
+JClassHelper::JClassHelper(const char* binaryName) {
+    this->binaryName = std::string(binaryName);
+    sgn = std::string(binaryName);
+    sgn.replace(sgn.begin(), sgn.end(), '.', '/');
+
+}
+
+jni::JClass JClassHelper::getClass(jni::Env& env, jni::JObject classLoader) {
+    if (jClass.isNull()) {
+        jClass.obj = loadClass(env, classLoader, binaryName.c_str()).newGlobalRef(env).obj;
+    }
+    return jClass;
+}
+
+jni::MethodId JClassHelper::getMethodId(jni::Env& env, jni::JObject classLoader, const char* name, const char* signature) {
+    auto key = std::string();
+    key.append(name);
+    key.append(signature);
+    if (methodIdCache.find(key) != methodIdCache.end()) {
+        return methodIdCache[key];
+    }
+
+    auto cls = getClass(env, classLoader);
+    auto method = cls.getMethodId(env, name, signature);
+    methodIdCache[key] = method;
+    return method;
+}
+
+jni::MethodId JClassHelper::getStaticMethodId(jni::Env& env, jni::JObject classLoader, const char* name, const char* signature) {
+    auto key = std::string(name, signature);
+    key.append(name);
+    key.append(signature);
+    if (staticMethodIdCache.find(key) != staticMethodIdCache.end()) {
+        return staticMethodIdCache[key];
+    }
+
+    auto cls = getClass(env, classLoader);
+    auto method = cls.getStaticMethodId(env, name, signature);
+    staticMethodIdCache[key] = method;
+    return method;
+}

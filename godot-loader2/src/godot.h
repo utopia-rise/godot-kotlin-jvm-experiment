@@ -17,13 +17,13 @@ public:
 
     std::string fromGDString(const godot_string* str);
 
-private:
     const godot_gdnative_core_api_struct* gd;
     const godot_gdnative_core_1_1_api_struct* gd11;
     const godot_gdnative_core_1_2_api_struct* gd12;
     const godot_gdnative_ext_nativescript_api_struct* ns;
     const godot_gdnative_ext_nativescript_1_1_api_struct* ns11;
 
+private:
     Godot() = default;
 };
 
