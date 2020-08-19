@@ -1,4 +1,5 @@
 #include <cassert>
+#include <jvm_loader.h>
 #include "jvm.h"
 
 namespace jni {
@@ -35,7 +36,7 @@ namespace jni {
 
         JavaVM* vm;
         JNIEnv* env;
-        auto result = JNI_CreateJavaVM(&vm, (void**) &env, (void*) &args);
+        auto result = JvmLoader::getCreateJvmFunction()(&vm, (void**) &env, (void*) &args);
         if (result != JNI_OK) {
             throw JniError("Failed to create a new vm!");
         }
@@ -45,7 +46,7 @@ namespace jni {
     JavaVM* Jvm::getExisting() {
         JavaVM* buffer[1];
         int count;
-        auto result = JNI_GetCreatedJavaVMs(buffer, 1, &count);
+        auto result = JvmLoader::getGetCreatedJavaVMsFunction()(buffer, 1, &count);
         if (result != JNI_OK) {
             throw JniError("Failed to retrieve existing vm!");
         }

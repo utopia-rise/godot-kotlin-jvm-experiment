@@ -7,7 +7,8 @@ set(SOURCES
         src/types.cpp
         src/env.cpp
         src/jvm.cpp
-        src/init_args.cpp)
+        src/init_args.cpp
+        src/jvm_loader.cpp)
 
 add_library(jni_wrapper STATIC ${SOURCES})
 
@@ -19,7 +20,6 @@ target_include_directories(jni_wrapper
 
 target_include_directories(jni_wrapper PUBLIC ${JNI_INCLUDE_DIRS})
 target_link_directories(jni_wrapper PUBLIC $ENV{JAVA_HOME}/lib/server)
-target_link_libraries(jni_wrapper INTERFACE jvm)
 
 INSTALL(TARGETS jni_wrapper
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
