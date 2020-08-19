@@ -1,7 +1,7 @@
 package godot.registry
 
 import godot.internal.BindingContext
-import godot.internal.JniExposed
+import godot.internal.meta.JniExposed
 import godot.internal.KObject
 import godot.internal.VoidPtr
 

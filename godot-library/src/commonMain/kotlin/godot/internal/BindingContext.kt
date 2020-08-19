@@ -1,6 +1,10 @@
 package godot.internal
 
+import godot.wire.TransferContext
+
 object BindingContext {
+    val transferContext = TransferContext()
+
     private var shouldInit = true
     /**
      * Check if the we should initialized the ptr to an object. It also reverts the value of shouldInit

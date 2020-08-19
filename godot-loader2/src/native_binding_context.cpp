@@ -7,6 +7,8 @@ jni::JObject getCurrentThread(jni::Env& env);
 jni::JObject createClassLoader(jni::Env& env, const std::string& bootstrapJar);
 void setContextClassLoader(jni::Env& env, jni::JObject thread, jni::JObject classLoader);
 
+JClassHelper NativeBindingContext::JH = JClassHelper("godot.internal.BindingContext");
+
 NativeBindingContext& NativeBindingContext::instance() {
     static NativeBindingContext bindingContext;
     return bindingContext;
@@ -32,10 +34,26 @@ void NativeBindingContext::bind(godot_object *library, const std::string& librar
     std::cout << "Setting context class loader for current thread" << std::endl;
     auto thread = getCurrentThread(env);
     setContextClassLoader(env, thread, classLoader);
+
+    auto cls = JH.getClass(env, classLoader);
+    auto instanceField = cls.getStaticFieldId(env, "INSTANCE", "Lgodot/internal/BindingContext;");
+    wrapped = cls.getStaticObjectField(env, instanceField).newGlobalRef(env);
+    assert(!wrapped.isNull());
+
+    // get java TransferContext
+    auto getTransferContextMethod = JH.getMethodId(env, classLoader, "getTransferContext", "()Lgodot/wire/TransferContext;");
+    auto javaTransferContext = wrapped.callObjectMethod(env, getTransferContextMethod);
+    assert(!javaTransferContext.isNull());
+    transferContext.init(env, javaTransferContext);
     endScope();
 }
 
 void NativeBindingContext::unbind() {
+    startScope();
+    auto& env = jni::Jvm::currentEnv();
+    transferContext.dispose(env);
+    wrapped.deleteGlobalRef(env);
+    endScope();
     this->library = nullptr;
     jni::Jvm::destroy();
 }

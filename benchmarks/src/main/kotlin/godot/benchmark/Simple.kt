@@ -8,4 +8,14 @@ class Simple : KObject() {
         val b = 2
         return a + b
     }
+
+    fun benchmarkAvg(): Int {
+        val size = 10000
+        var total = 0
+        for (i in 0 until size) {
+            total += i
+        }
+        return total / size
+    }
+
 }

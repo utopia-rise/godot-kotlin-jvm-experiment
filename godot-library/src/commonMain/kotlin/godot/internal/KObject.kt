@@ -1,5 +1,7 @@
 package godot.internal
 
+import godot.internal.meta.JniExposed
+
 @Suppress("LeakingThis")
 open class KObject {
     internal var ptr: VoidPtr = nullptr

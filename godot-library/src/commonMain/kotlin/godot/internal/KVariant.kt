@@ -1,5 +1,6 @@
 package godot.internal
 
+import godot.internal.meta.JniExposed
 import kotlin.jvm.JvmStatic
 
 class KVariant (val type: Type, private val value: Any?) {

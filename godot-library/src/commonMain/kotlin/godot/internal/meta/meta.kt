@@ -1,4 +1,4 @@
-package godot.internal
+package godot.internal.meta
 
 
 /**

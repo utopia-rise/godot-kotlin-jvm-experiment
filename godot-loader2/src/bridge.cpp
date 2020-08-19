@@ -58,7 +58,7 @@ godot_variant invokeMethod(void* instance, void* methodData, void* classData, in
         throw std::runtime_error(ss.str());
     }
 
-    auto ret = handle->invoke(env, bindingContext.classLoader, kotlinInstance, std::vector<NativeKVariant>());
+    handle->invoke(env, bindingContext.classLoader, kotlinInstance);
 
     bindingContext.endScope();
     return godot_variant {};

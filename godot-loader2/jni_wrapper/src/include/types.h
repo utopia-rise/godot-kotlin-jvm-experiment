@@ -28,6 +28,7 @@ namespace jni {
         JObject callObjectMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
         jint callIntMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
         jlong callLongMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
+        jboolean callBooleanMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
         void callVoidMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
 
         bool isNull ();
@@ -63,8 +64,10 @@ namespace jni {
         MethodId getConstructorMethodId(Env& env, const char* signature);
         MethodId getMethodId(Env& env, const char* name, const char* signature);
         MethodId getStaticMethodId(Env& env, const char* name, const char* signature);
+        FieldId getStaticFieldId(Env& env, const char* name, const char* signature);
 
         JObject callStaticObjectMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
+        JObject getStaticObjectField(Env& env, FieldId field);
     };
 
     class JValue {
@@ -80,7 +83,7 @@ namespace jni {
         }
 
         JValue(jlong i) {
-            value.i = i;
+            value.j = i;
         }
 
         JValue(jboolean b) {

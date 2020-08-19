@@ -1,5 +1,9 @@
 #include <cassert>
 #include "native_kfunction.h"
+#include "native_binding_context.h"
+#include "wire.pb.h"
+#include <google/protobuf/util/delimited_message_util.h>
+#include <google/protobuf/io/zero_copy_stream.h>
 
 JClassHelper NativeKFunction::JH = JClassHelper("godot.registry.KFunc");
 
@@ -42,16 +46,26 @@ int NativeKFunction::getParameterCount(jni::Env& env, jni::JObject classLoader) 
     return parameterCount;
 }
 
-NativeKVariant NativeKFunction::invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance, std::vector<NativeKVariant> args) {
-    auto cls = NativeKVariant::JH.getClass(env, classLoader);
-    auto jvmArgs = cls.newObjectArray(env, 0);
+void NativeKFunction::invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance) {
+    auto& bindingContext = NativeBindingContext::instance();
+    auto& transferContext = bindingContext.transferContext;
     auto invokeMethod = JH.getMethodId(
             env,
             classLoader,
             "invoke",
-            "(Lgodot/internal/KObject;[Lgodot/internal/KVariant;)Lgodot/internal/KVariant;"
+            "(Lgodot/internal/KObject;)Z"
     );
-    wrapped.callObjectMethod(env, invokeMethod, {instance->wrapped, jvmArgs});
-
-    return NativeKVariant(jni::JObject());
+    auto buffer = transferContext.getBuffer(env, classLoader);
+    auto bufferCapacity = transferContext.getBufferCapacity(env, classLoader);
+    auto bufferChanged = wrapped.callBooleanMethod(env, invokeMethod, {instance->wrapped});
+    if (bufferChanged == JNI_TRUE) {
+        buffer = transferContext.getBuffer(env, classLoader);
+        bufferCapacity = transferContext.getBufferCapacity(env, classLoader);
+    }
+    auto retValue = KReturnValue();
+    google::protobuf::io::ArrayInputStream is(buffer, bufferCapacity);
+    google::protobuf::io::CodedInputStream cis(&is);
+    bool cleanEof;
+    google::protobuf::util::ParseDelimitedFromCodedStream(&retValue, &cis, &cleanEof);
+    std::cout << retValue.data().type_case() << std::endl;
 }

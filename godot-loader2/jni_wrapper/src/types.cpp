@@ -4,9 +4,7 @@
 
 namespace jni {
 
-    JObject::JObject(jobject obj) {
-        this->obj = obj;
-    }
+    JObject::JObject(jobject obj) : obj(obj) {}
 
     JObject JObject::newGlobalRef(Env& env) {
         auto ref = env.env->NewGlobalRef(obj);
@@ -44,6 +42,13 @@ namespace jni {
         return ret;
     }
 
+    jboolean JObject::callBooleanMethod(Env& env, MethodId method, std::initializer_list<JValue> values) {
+        unpack_args(args)
+        auto ret = env.env->CallBooleanMethodA((jclass) obj, method, args.data());
+        env.checkExceptions();
+        return ret;
+    }
+
     void JObject::callVoidMethod(Env& env, MethodId method, std::initializer_list<JValue> values) {
         unpack_args(args)
         env.env->CallVoidMethodA((jclass) obj, method, args.data());
@@ -68,6 +73,15 @@ namespace jni {
         return id;
     }
 
+    FieldId JClass::getStaticFieldId(Env& env, const char* name, const char* signature) {
+        auto id = env.env->GetStaticFieldID((jclass) obj, name, signature);
+        if (id == nullptr) {
+            throw FieldNotFoundError(name, signature);
+        }
+        env.checkExceptions();
+        return id;
+    }
+
     MethodId JClass::getConstructorMethodId(Env &env, const char *signature) {
         return getMethodId(env, "<init>", signature);
     }
@@ -87,6 +101,12 @@ namespace jni {
         auto ret = env.env->CallStaticObjectMethodA((jclass) obj, method, args.data());
         env.checkExceptions();
         return {ret};
+    }
+
+    JObject JClass::getStaticObjectField(Env& env, FieldId field) {
+        auto value = env.env->GetStaticObjectField((jclass) obj, field);
+        env.checkExceptions();
+        return {value};
     }
 
     JObjectArray JClass::newObjectArray(Env& env, int size, JObject initial) {

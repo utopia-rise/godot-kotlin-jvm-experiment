@@ -38,7 +38,7 @@ jni::MethodId JClassHelper::getMethodId(jni::Env& env, jni::JObject classLoader,
 }
 
 jni::MethodId JClassHelper::getStaticMethodId(jni::Env& env, jni::JObject classLoader, const char* name, const char* signature) {
-    auto key = std::string(name, signature);
+    auto key = std::string();
     key.append(name);
     key.append(signature);
     if (staticMethodIdCache.find(key) != staticMethodIdCache.end()) {

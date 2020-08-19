@@ -16,8 +16,9 @@ class Simple : KObject() {
         println("Simple::_onDestroy")
     }
 
-    fun _ready() {
+    fun _ready(): Int {
         println("Simple is ready!")
+        return 100;
     }
 
 //    fun _process(delta: Double) {

@@ -21,5 +21,5 @@ target_include_directories(jni_wrapper PUBLIC ${JNI_INCLUDE_DIRS})
 target_link_directories(jni_wrapper PUBLIC $ENV{JAVA_HOME}/lib/server)
 target_link_libraries(jni_wrapper INTERFACE jvm)
 
-INSTALL(TARGETS jni_wrapper
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#INSTALL(TARGETS jni_wrapper
+#        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

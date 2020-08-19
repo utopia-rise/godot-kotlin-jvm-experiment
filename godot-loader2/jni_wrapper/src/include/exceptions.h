@@ -48,6 +48,21 @@ namespace jni {
     private:
         std::string msg;
     };
+
+    class FieldNotFoundError : std::exception {
+    public:
+        FieldNotFoundError(const char *name, const char* signature) {
+            std::stringstream ss;
+            ss << "Field not found: " << name << " with signature: " << signature << std::endl;
+            msg = ss.str();
+        }
+
+        const char * what() const noexcept override {
+            return msg.c_str();
+        }
+    private:
+        std::string msg;
+    };
 }
 
 #endif //GODOT_LOADER_EXCEPTIONS_H

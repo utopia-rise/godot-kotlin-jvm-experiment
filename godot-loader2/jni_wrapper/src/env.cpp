@@ -54,6 +54,18 @@ namespace jni {
         }
     }
 
+    void* Env::getDirectBufferAddress(const jni::JObject& buffer) {
+        auto res = env->GetDirectBufferAddress(buffer.obj);
+        checkExceptions();
+        return res;
+    }
+
+    int Env::getDirectBufferCapacity(const JObject& buffer) {
+        auto capacity = env->GetDirectBufferCapacity(buffer.obj);
+        checkExceptions();
+        return capacity;
+    }
+
     std::string Env::fromJString(jni::JString str) {
         auto jstr = (jstring) str.obj;
         auto utfString = env->GetStringUTFChars(jstr, NULL);

@@ -25,6 +25,9 @@ namespace jni {
 
         void checkExceptions();
 
+        void* getDirectBufferAddress(const jni::JObject& buffer);
+        int getDirectBufferCapacity(const jni::JObject& buffer);
+
         bool isValid();
     private:
         JNIEnv* env;
