@@ -12,8 +12,22 @@ jni::JClass loadClass(jni::Env& env, jni::JObject classLoader, const char* name)
     return {(jclass) ret.obj};
 }
 
+static std::vector<JClassHelper*> INSTANCES = {};
+
+void JClassHelper::reset() {
+    // clear the cache, specially with jClass as it was loaded by the previousClassloader
+    // which can cause class cast exception. Remember a Foo.class != Foo.class if they are loaded
+    // by different class loaders.
+    for (auto instance : INSTANCES) {
+        instance->jClass = jni::JClass(nullptr);
+        instance->methodIdCache.clear();
+        instance->staticMethodIdCache.clear();
+    }
+}
+
 JClassHelper::JClassHelper(const char* binaryName) {
     this->binaryName = std::string(binaryName);
+    INSTANCES.emplace_back(this);
 }
 
 jni::JClass JClassHelper::getClass(jni::Env& env, jni::JObject classLoader) {

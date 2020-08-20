@@ -1,9 +1,9 @@
 package godot.registry
 
 import godot.internal.BindingContext
-import godot.internal.meta.JniExposed
 import godot.internal.KObject
 import godot.internal.VoidPtr
+import godot.internal.meta.JniExposed
 
 class ClassHandle<T: KObject>(@JniExposed val className: String,
                               @JniExposed val superClass: String,

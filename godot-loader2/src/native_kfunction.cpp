@@ -1,8 +1,6 @@
 #include <cassert>
 #include "native_kfunction.h"
 #include "native_binding_context.h"
-#include "wire.pb.h"
-#include <google/protobuf/util/delimited_message_util.h>
 #include <google/protobuf/io/zero_copy_stream.h>
 
 JClassHelper NativeKFunction::JH = JClassHelper("godot.registry.KFunc");
@@ -46,7 +44,7 @@ int NativeKFunction::getParameterCount(jni::Env& env, jni::JObject classLoader) 
     return parameterCount;
 }
 
-void NativeKFunction::invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance) {
+NativeTValue NativeKFunction::invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance, const std::vector<NativeTValue>& args) {
     auto& bindingContext = NativeBindingContext::instance();
     auto& transferContext = bindingContext.transferContext;
     auto invokeMethod = JH.getMethodId(
@@ -57,15 +55,11 @@ void NativeKFunction::invoke(jni::Env& env, jni::JObject classLoader, NativeKObj
     );
     auto buffer = transferContext.getBuffer(env, classLoader);
     auto bufferCapacity = transferContext.getBufferCapacity(env, classLoader);
+    NativeTransferContext::writeArgs(buffer, bufferCapacity, args);
     auto bufferChanged = wrapped.callBooleanMethod(env, invokeMethod, {instance->wrapped});
     if (bufferChanged == JNI_TRUE) {
         buffer = transferContext.getBuffer(env, classLoader);
         bufferCapacity = transferContext.getBufferCapacity(env, classLoader);
     }
-    auto retValue = KReturnValue();
-    google::protobuf::io::ArrayInputStream is(buffer, bufferCapacity);
-    google::protobuf::io::CodedInputStream cis(&is);
-    bool cleanEof;
-    google::protobuf::util::ParseDelimitedFromCodedStream(&retValue, &cis, &cleanEof);
-    std::cout << retValue.data().type_case() << std::endl;
+    return NativeTransferContext::readReturnValue(buffer, bufferCapacity);
 }

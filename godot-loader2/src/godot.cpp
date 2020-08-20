@@ -30,9 +30,7 @@ void Godot::init(godot_gdnative_init_options* options) {
 
 void Godot::terminate(godot_gdnative_terminate_options* options) {
     auto& bindingContext = NativeBindingContext::instance();
-    if (!options->in_editor) {
-        bindingContext.unbind();
-    }
+    bindingContext.unbind(!options->in_editor);
 }
 
 void Godot::nativescriptInit(void* handle) {

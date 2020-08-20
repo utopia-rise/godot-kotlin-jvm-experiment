@@ -16,6 +16,8 @@ namespace jni {
     public:
         jobject obj;
         JObject(jobject);
+        JObject(const JObject&) = default;
+        JObject& operator=(const JObject&) = default;
         JObject() : JObject(nullptr) {}
 
         JObject newGlobalRef(Env& env);

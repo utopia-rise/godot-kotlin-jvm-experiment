@@ -19,6 +19,7 @@ set(SOURCES
         src/native_transfer_context.cpp
         src/jni_utils.cpp
         src/native_class_handle.cpp
+        src/native_tvalue.cpp
         src/godot.cpp
         src/entry.cpp
         src/native_binding_context.cpp)

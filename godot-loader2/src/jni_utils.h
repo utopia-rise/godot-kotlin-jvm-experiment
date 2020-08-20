@@ -15,6 +15,8 @@ public:
     jni::MethodId getStaticMethodId(jni::Env& env, jni::JObject classLoader, const char* name, const char* signature);
 
     jni::JClass getClass(jni::Env& env, jni::JObject classLoader);
+
+    static void reset();
 private:
     jni::JClass jClass = jni::JClass(nullptr);
     std::map<std::string, jni::MethodId> methodIdCache;

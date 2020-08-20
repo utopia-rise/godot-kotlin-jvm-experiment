@@ -3,6 +3,7 @@
 #include <jvm.h>
 #include "jni_utils.h"
 #include "native_kobject.h"
+#include "native_tvalue.h"
 
 class NativeKFunction {
 public:
@@ -19,7 +20,7 @@ public:
     const std::string& getRegistrationName(jni::Env& env, jni::JObject classLoader);
 
     // todo return type and args
-    void invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance);
+    NativeTValue invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance, const std::vector<NativeTValue>& args);
 
 private:
     jni::JObject wrapped;

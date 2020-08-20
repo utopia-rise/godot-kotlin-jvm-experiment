@@ -39,7 +39,7 @@ actual class TransferContext {
 
     actual fun readArguments(): List<TValue> {
         val args = Wire.KFuncArgs.parseDelimitedFrom(inputStream)
-        buffer.rewind()
+        buffer.clear()
         val values = mutableListOf<TValue>()
 
         for (tArg in args.argsList) {

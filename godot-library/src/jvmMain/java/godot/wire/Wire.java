@@ -19,16 +19,21 @@ public final class Wire {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>double x = 1;</code>
-     * @return The x.
+     * <code>repeated float data = 2;</code>
+     * @return A list containing the data.
      */
-    double getX();
-
+    java.util.List<java.lang.Float> getDataList();
     /**
-     * <code>double y = 2;</code>
-     * @return The y.
+     * <code>repeated float data = 2;</code>
+     * @return The count of data.
      */
-    double getY();
+    int getDataCount();
+    /**
+     * <code>repeated float data = 2;</code>
+     * @param index The index of the element to return.
+     * @return The data at the given index.
+     */
+    float getData(int index);
   }
   /**
    * Protobuf type {@code Vector2}
@@ -43,6 +48,7 @@ public final class Wire {
       super(builder);
     }
     private Vector2() {
+      data_ = emptyFloatList();
     }
 
     @java.lang.Override
@@ -65,6 +71,7 @@ public final class Wire {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -75,14 +82,25 @@ public final class Wire {
             case 0:
               done = true;
               break;
-            case 9: {
-
-              x_ = input.readDouble();
+            case 21: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                data_ = newFloatList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              data_.addFloat(input.readFloat());
               break;
             }
-            case 17: {
-
-              y_ = input.readDouble();
+            case 18: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) != 0) && input.getBytesUntilLimit() > 0) {
+                data_ = newFloatList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                data_.addFloat(input.readFloat());
+              }
+              input.popLimit(limit);
               break;
             }
             default: {
@@ -100,6 +118,9 @@ public final class Wire {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          data_.makeImmutable(); // C
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -117,27 +138,33 @@ public final class Wire {
               godot.wire.Wire.Vector2.class, godot.wire.Wire.Vector2.Builder.class);
     }
 
-    public static final int X_FIELD_NUMBER = 1;
-    private double x_;
+    public static final int DATA_FIELD_NUMBER = 2;
+    private com.google.protobuf.Internal.FloatList data_;
     /**
-     * <code>double x = 1;</code>
-     * @return The x.
+     * <code>repeated float data = 2;</code>
+     * @return A list containing the data.
      */
     @java.lang.Override
-    public double getX() {
-      return x_;
+    public java.util.List<java.lang.Float>
+        getDataList() {
+      return data_;
     }
-
-    public static final int Y_FIELD_NUMBER = 2;
-    private double y_;
     /**
-     * <code>double y = 2;</code>
-     * @return The y.
+     * <code>repeated float data = 2;</code>
+     * @return The count of data.
      */
-    @java.lang.Override
-    public double getY() {
-      return y_;
+    public int getDataCount() {
+      return data_.size();
     }
+    /**
+     * <code>repeated float data = 2;</code>
+     * @param index The index of the element to return.
+     * @return The data at the given index.
+     */
+    public float getData(int index) {
+      return data_.getFloat(index);
+    }
+    private int dataMemoizedSerializedSize = -1;
 
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
@@ -153,11 +180,13 @@ public final class Wire {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (x_ != 0D) {
-        output.writeDouble(1, x_);
+      getSerializedSize();
+      if (getDataList().size() > 0) {
+        output.writeUInt32NoTag(18);
+        output.writeUInt32NoTag(dataMemoizedSerializedSize);
       }
-      if (y_ != 0D) {
-        output.writeDouble(2, y_);
+      for (int i = 0; i < data_.size(); i++) {
+        output.writeFloatNoTag(data_.getFloat(i));
       }
       unknownFields.writeTo(output);
     }
@@ -168,13 +197,16 @@ public final class Wire {
       if (size != -1) return size;
 
       size = 0;
-      if (x_ != 0D) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(1, x_);
-      }
-      if (y_ != 0D) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(2, y_);
+      {
+        int dataSize = 0;
+        dataSize = 4 * getDataList().size();
+        size += dataSize;
+        if (!getDataList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        dataMemoizedSerializedSize = dataSize;
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -191,12 +223,8 @@ public final class Wire {
       }
       godot.wire.Wire.Vector2 other = (godot.wire.Wire.Vector2) obj;
 
-      if (java.lang.Double.doubleToLongBits(getX())
-          != java.lang.Double.doubleToLongBits(
-              other.getX())) return false;
-      if (java.lang.Double.doubleToLongBits(getY())
-          != java.lang.Double.doubleToLongBits(
-              other.getY())) return false;
+      if (!getDataList()
+          .equals(other.getDataList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -208,12 +236,10 @@ public final class Wire {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + X_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getX()));
-      hash = (37 * hash) + Y_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getY()));
+      if (getDataCount() > 0) {
+        hash = (37 * hash) + DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getDataList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -347,10 +373,8 @@ public final class Wire {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        x_ = 0D;
-
-        y_ = 0D;
-
+        data_ = emptyFloatList();
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -377,8 +401,12 @@ public final class Wire {
       @java.lang.Override
       public godot.wire.Wire.Vector2 buildPartial() {
         godot.wire.Wire.Vector2 result = new godot.wire.Wire.Vector2(this);
-        result.x_ = x_;
-        result.y_ = y_;
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          data_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.data_ = data_;
         onBuilt();
         return result;
       }
@@ -427,11 +455,15 @@ public final class Wire {
 
       public Builder mergeFrom(godot.wire.Wire.Vector2 other) {
         if (other == godot.wire.Wire.Vector2.getDefaultInstance()) return this;
-        if (other.getX() != 0D) {
-          setX(other.getX());
-        }
-        if (other.getY() != 0D) {
-          setY(other.getY());
+        if (!other.data_.isEmpty()) {
+          if (data_.isEmpty()) {
+            data_ = other.data_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureDataIsMutable();
+            data_.addAll(other.data_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -461,65 +493,83 @@ public final class Wire {
         }
         return this;
       }
+      private int bitField0_;
 
-      private double x_ ;
-      /**
-       * <code>double x = 1;</code>
-       * @return The x.
-       */
-      @java.lang.Override
-      public double getX() {
-        return x_;
+      private com.google.protobuf.Internal.FloatList data_ = emptyFloatList();
+      private void ensureDataIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          data_ = mutableCopy(data_);
+          bitField0_ |= 0x00000001;
+         }
       }
       /**
-       * <code>double x = 1;</code>
-       * @param value The x to set.
+       * <code>repeated float data = 2;</code>
+       * @return A list containing the data.
+       */
+      public java.util.List<java.lang.Float>
+          getDataList() {
+        return ((bitField0_ & 0x00000001) != 0) ?
+                 java.util.Collections.unmodifiableList(data_) : data_;
+      }
+      /**
+       * <code>repeated float data = 2;</code>
+       * @return The count of data.
+       */
+      public int getDataCount() {
+        return data_.size();
+      }
+      /**
+       * <code>repeated float data = 2;</code>
+       * @param index The index of the element to return.
+       * @return The data at the given index.
+       */
+      public float getData(int index) {
+        return data_.getFloat(index);
+      }
+      /**
+       * <code>repeated float data = 2;</code>
+       * @param index The index to set the value at.
+       * @param value The data to set.
        * @return This builder for chaining.
        */
-      public Builder setX(double value) {
-        
-        x_ = value;
+      public Builder setData(
+          int index, float value) {
+        ensureDataIsMutable();
+        data_.setFloat(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>double x = 1;</code>
+       * <code>repeated float data = 2;</code>
+       * @param value The data to add.
        * @return This builder for chaining.
        */
-      public Builder clearX() {
-        
-        x_ = 0D;
-        onChanged();
-        return this;
-      }
-
-      private double y_ ;
-      /**
-       * <code>double y = 2;</code>
-       * @return The y.
-       */
-      @java.lang.Override
-      public double getY() {
-        return y_;
-      }
-      /**
-       * <code>double y = 2;</code>
-       * @param value The y to set.
-       * @return This builder for chaining.
-       */
-      public Builder setY(double value) {
-        
-        y_ = value;
+      public Builder addData(float value) {
+        ensureDataIsMutable();
+        data_.addFloat(value);
         onChanged();
         return this;
       }
       /**
-       * <code>double y = 2;</code>
+       * <code>repeated float data = 2;</code>
+       * @param values The data to add.
        * @return This builder for chaining.
        */
-      public Builder clearY() {
-        
-        y_ = 0D;
+      public Builder addAllData(
+          java.lang.Iterable<? extends java.lang.Float> values) {
+        ensureDataIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, data_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated float data = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearData() {
+        data_ = emptyFloatList();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -581,10 +631,10 @@ public final class Wire {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 unit_value = 1;</code>
-     * @return The unitValue.
+     * <code>int32 nil_value = 1;</code>
+     * @return The nilValue.
      */
-    int getUnitValue();
+    int getNilValue();
 
     /**
      * <code>int64 long_value = 2;</code>
@@ -755,7 +805,7 @@ public final class Wire {
     public enum TypeCase
         implements com.google.protobuf.Internal.EnumLite,
             com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-      UNIT_VALUE(1),
+      NIL_VALUE(1),
       LONG_VALUE(2),
       REAL_VALUE(3),
       STRING_VALUE(4),
@@ -778,7 +828,7 @@ public final class Wire {
 
       public static TypeCase forNumber(int value) {
         switch (value) {
-          case 1: return UNIT_VALUE;
+          case 1: return NIL_VALUE;
           case 2: return LONG_VALUE;
           case 3: return REAL_VALUE;
           case 4: return STRING_VALUE;
@@ -799,13 +849,13 @@ public final class Wire {
           typeCase_);
     }
 
-    public static final int UNIT_VALUE_FIELD_NUMBER = 1;
+    public static final int NIL_VALUE_FIELD_NUMBER = 1;
     /**
-     * <code>int32 unit_value = 1;</code>
-     * @return The unitValue.
+     * <code>int32 nil_value = 1;</code>
+     * @return The nilValue.
      */
     @java.lang.Override
-    public int getUnitValue() {
+    public int getNilValue() {
       if (typeCase_ == 1) {
         return (java.lang.Integer) type_;
       }
@@ -1017,8 +1067,8 @@ public final class Wire {
       if (!getTypeCase().equals(other.getTypeCase())) return false;
       switch (typeCase_) {
         case 1:
-          if (getUnitValue()
-              != other.getUnitValue()) return false;
+          if (getNilValue()
+              != other.getNilValue()) return false;
           break;
         case 2:
           if (getLongValue()
@@ -1057,8 +1107,8 @@ public final class Wire {
       hash = (19 * hash) + getDescriptor().hashCode();
       switch (typeCase_) {
         case 1:
-          hash = (37 * hash) + UNIT_VALUE_FIELD_NUMBER;
-          hash = (53 * hash) + getUnitValue();
+          hash = (37 * hash) + NIL_VALUE_FIELD_NUMBER;
+          hash = (53 * hash) + getNilValue();
           break;
         case 2:
           hash = (37 * hash) + LONG_VALUE_FIELD_NUMBER;
@@ -1319,8 +1369,8 @@ public final class Wire {
       public Builder mergeFrom(godot.wire.Wire.KVariant other) {
         if (other == godot.wire.Wire.KVariant.getDefaultInstance()) return this;
         switch (other.getTypeCase()) {
-          case UNIT_VALUE: {
-            setUnitValue(other.getUnitValue());
+          case NIL_VALUE: {
+            setNilValue(other.getNilValue());
             break;
           }
           case LONG_VALUE: {
@@ -1394,31 +1444,31 @@ public final class Wire {
 
 
       /**
-       * <code>int32 unit_value = 1;</code>
-       * @return The unitValue.
+       * <code>int32 nil_value = 1;</code>
+       * @return The nilValue.
        */
-      public int getUnitValue() {
+      public int getNilValue() {
         if (typeCase_ == 1) {
           return (java.lang.Integer) type_;
         }
         return 0;
       }
       /**
-       * <code>int32 unit_value = 1;</code>
-       * @param value The unitValue to set.
+       * <code>int32 nil_value = 1;</code>
+       * @param value The nilValue to set.
        * @return This builder for chaining.
        */
-      public Builder setUnitValue(int value) {
+      public Builder setNilValue(int value) {
         typeCase_ = 1;
         type_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int32 unit_value = 1;</code>
+       * <code>int32 nil_value = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUnitValue() {
+      public Builder clearNilValue() {
         if (typeCase_ == 1) {
           typeCase_ = 0;
           type_ = null;
@@ -3254,15 +3304,14 @@ public final class Wire {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021protos/wire.proto\"\037\n\007Vector2\022\t\n\001x\030\001 \001(" +
-      "\001\022\t\n\001y\030\002 \001(\001\"\245\001\n\010KVariant\022\024\n\nunit_value\030" +
-      "\001 \001(\005H\000\022\024\n\nlong_value\030\002 \001(\003H\000\022\024\n\nreal_va" +
-      "lue\030\003 \001(\001H\000\022\026\n\014string_value\030\004 \001(\tH\000\022\024\n\nb" +
-      "ool_value\030\005 \001(\010H\000\022!\n\rvector2_value\030\006 \001(\013" +
-      "2\010.Vector2H\000B\006\n\004type\"\'\n\014KReturnValue\022\027\n\004" +
-      "data\030\001 \001(\0132\t.KVariant\"$\n\tKFuncArgs\022\027\n\004ar" +
-      "gs\030\001 \003(\0132\t.KVariantB\014\n\ngodot.wireb\006proto" +
-      "3"
+      "\n\021protos/wire.proto\"\027\n\007Vector2\022\014\n\004data\030\002" +
+      " \003(\002\"\244\001\n\010KVariant\022\023\n\tnil_value\030\001 \001(\005H\000\022\024" +
+      "\n\nlong_value\030\002 \001(\003H\000\022\024\n\nreal_value\030\003 \001(\001" +
+      "H\000\022\026\n\014string_value\030\004 \001(\tH\000\022\024\n\nbool_value" +
+      "\030\005 \001(\010H\000\022!\n\rvector2_value\030\006 \001(\0132\010.Vector" +
+      "2H\000B\006\n\004type\"\'\n\014KReturnValue\022\027\n\004data\030\001 \001(" +
+      "\0132\t.KVariant\"$\n\tKFuncArgs\022\027\n\004args\030\001 \003(\0132" +
+      "\t.KVariantB\014\n\ngodot.wireb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3273,13 +3322,13 @@ public final class Wire {
     internal_static_Vector2_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Vector2_descriptor,
-        new java.lang.String[] { "X", "Y", });
+        new java.lang.String[] { "Data", });
     internal_static_KVariant_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_KVariant_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_KVariant_descriptor,
-        new java.lang.String[] { "UnitValue", "LongValue", "RealValue", "StringValue", "BoolValue", "Vector2Value", "Type", });
+        new java.lang.String[] { "NilValue", "LongValue", "RealValue", "StringValue", "BoolValue", "Vector2Value", "Type", });
     internal_static_KReturnValue_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_KReturnValue_fieldAccessorTable = new

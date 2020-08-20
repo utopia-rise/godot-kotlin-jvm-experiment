@@ -48,14 +48,19 @@ void NativeBindingContext::bind(godot_object *library, const std::string& librar
     endScope();
 }
 
-void NativeBindingContext::unbind() {
+void NativeBindingContext::unbind(bool destroyJvm) {
     startScope();
     auto& env = jni::Jvm::currentEnv();
     transferContext.dispose(env);
     wrapped.deleteGlobalRef(env);
+    classLoader.deleteGlobalRef(env);
+    // reset all java caches
+    JClassHelper::reset();
     endScope();
     this->library = nullptr;
-    jni::Jvm::destroy();
+    if (destroyJvm) {
+        jni::Jvm::destroy();
+    }
 }
 
 void NativeBindingContext::startScope() {

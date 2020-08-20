@@ -28,7 +28,7 @@ actual class TValue {
     }
 
     actual constructor(value: Unit) {
-        data = build { setUnitValue(0) }
+        data = build { setNilValue(0) }
     }
 
     actual fun asInt() = asLong().toInt()
@@ -52,7 +52,7 @@ actual class TValue {
     }
 
     actual fun asUnit(): Unit {
-        check(data.typeCase == Wire.KVariant.TypeCase.UNIT_VALUE) {
+        check(data.typeCase == Wire.KVariant.TypeCase.NIL_VALUE) {
             "Expecting a UNIT but got ${data.typeCase}"
         }
         return Unit
