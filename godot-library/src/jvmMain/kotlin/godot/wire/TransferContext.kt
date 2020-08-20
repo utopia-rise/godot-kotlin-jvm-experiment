@@ -1,6 +1,9 @@
 package godot.wire
 
+import com.google.protobuf.CodedInputStream
+import com.google.protobuf.CodedOutputStream
 import com.google.protobuf.Value
+import godot.internal.VoidPtr
 import godot.internal.meta.JniExposed
 import java.io.InputStream
 import java.io.OutputStream
@@ -39,7 +42,7 @@ actual class TransferContext {
 
     actual fun readArguments(): List<TValue> {
         val args = Wire.KFuncArgs.parseDelimitedFrom(inputStream)
-        buffer.clear()
+        buffer.rewind()
         val values = mutableListOf<TValue>()
 
         for (tArg in args.argsList) {
@@ -79,12 +82,14 @@ actual class TransferContext {
         return false
     }
 
+    actual fun callMethod(ptr: VoidPtr, className: String, method: String, expectedReturnType: TValue.Type) {
+        icall(ptr, className, method, expectedReturnType.ordinal)
+    }
+
+    private external fun icall(ptr: VoidPtr, className: String, method: String, expectedReturnType: Int)
+
     private fun getRequiredCapacity(capacity: Int): Int {
         // extra bytes used for the delimiter
-        val prepend = Value.newBuilder()
-            .setNumberValue(capacity.toDouble())
-            .build()
-            .serializedSize
-        return prepend + capacity;
+        return CodedOutputStream.computeUInt32SizeNoTag(capacity) + capacity
     }
 }

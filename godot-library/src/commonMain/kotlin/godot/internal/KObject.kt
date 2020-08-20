@@ -6,6 +6,10 @@ import godot.internal.meta.JniExposed
 open class KObject {
     internal var ptr: VoidPtr = nullptr
 
+    @Deprecated("testing only")
+    val hackPtr: VoidPtr
+        get() = ptr
+
     init {
         if (BindingContext.shouldInitPtr()) {
             ptr = __new()

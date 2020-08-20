@@ -2,6 +2,7 @@
 #define GODOT_LOADER_JOBJECT_H
 #include <jni.h>
 #include <initializer_list>
+#include <vector>
 
 
 namespace jni {
@@ -16,6 +17,7 @@ namespace jni {
     public:
         jobject obj;
         JObject(jobject);
+        // todo: delete copy ctor and assignment?
         JObject(const JObject&) = default;
         JObject& operator=(const JObject&) = default;
         JObject() : JObject(nullptr) {}
@@ -57,6 +59,8 @@ namespace jni {
     };
 
 
+    typedef JNINativeMethod JNativeMethod;
+
     class JClass : public JObject {
     public:
         JClass(jclass cls) : JObject(cls) {}
@@ -67,6 +71,7 @@ namespace jni {
         MethodId getMethodId(Env& env, const char* name, const char* signature);
         MethodId getStaticMethodId(Env& env, const char* name, const char* signature);
         FieldId getStaticFieldId(Env& env, const char* name, const char* signature);
+        void registerNatives(Env& env, std::vector<JNativeMethod> methods);
 
         JObject callStaticObjectMethod(Env& env, MethodId method, std::initializer_list<JValue> values = {});
         JObject getStaticObjectField(Env& env, FieldId field);

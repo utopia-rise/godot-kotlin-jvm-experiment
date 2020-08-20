@@ -35,6 +35,8 @@ void NativeBindingContext::bind(godot_object *library, const std::string& librar
     auto thread = getCurrentThread(env);
     setContextClassLoader(env, thread, classLoader);
 
+    NativeTransferContext::registerNatives(env, classLoader);
+
     auto cls = JH.getClass(env, classLoader);
     auto instanceField = cls.getStaticFieldId(env, "INSTANCE", "Lgodot/internal/BindingContext;");
     wrapped = cls.getStaticObjectField(env, instanceField).newGlobalRef(env);

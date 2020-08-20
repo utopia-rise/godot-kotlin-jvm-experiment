@@ -1,9 +1,10 @@
 package simple
 
+import godot.internal.BindingContext
 import godot.internal.KObject
+import godot.wire.TValue
 
 class Simple : KObject() {
-
     init {
         println("Simple object created")
     }
@@ -16,13 +17,16 @@ class Simple : KObject() {
         println("Simple::_onDestroy")
     }
 
-    fun _ready(): Int {
+    fun _ready() {
         println("Simple is ready!")
-        return 100
     }
 
-    fun _process(delta: Double) {
-         //println("delta: $delta from godot!")
+    fun _process(delta: Float) {
+        val transferContext = BindingContext.transferContext
+        assert(!delta.isNaN())
+        transferContext.writeArguments(TValue(Math.toRadians(30.0) * delta))
+        transferContext.callMethod(hackPtr, "Spatial", "rotate_y", TValue.Type.NIL)
+        transferContext.readReturnValue()
     }
 
     fun longMethod(a: Long) {

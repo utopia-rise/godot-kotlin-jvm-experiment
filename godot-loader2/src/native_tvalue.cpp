@@ -5,13 +5,13 @@
 
 static void(*TO_KVARIANT[27 /* godot_variant_type count */])(KVariant&, const godot_variant&) ;
 static bool TO_KVARIANT_INIT = false;
-static void initToKVariant();
+void initToKVariant();
 
 static void(*TO_GVARIANT[27 /* KVariant::TypeCase count */])(godot_variant&, const KVariant&);
 static bool TO_GVARIANT_INIT = false;
-static void initToGVariant();
+void initToGVariant();
 
-NativeTValue::NativeTValue(KVariant data) : data(std::move(data)) {}
+NativeTValue::NativeTValue(KVariant  data) : data(std::move(data)) {}
 
 NativeTValue::NativeTValue(godot_variant variant) {
     initToKVariant();
@@ -34,23 +34,23 @@ godot_variant NativeTValue::toGVariant() {
     return variant;
 }
 
-static void nil64ToKVariant(KVariant& des, const godot_variant& variant) {
+void nil64ToKVariant(KVariant& des, const godot_variant& variant) {
     des.set_nil_value(0);
 }
 
-static void int64ToKVariant(KVariant& des, const godot_variant& variant) {
+void int64ToKVariant(KVariant& des, const godot_variant& variant) {
     auto& godot = Godot::instance();
     auto value = godot.gd->godot_variant_as_int(&variant);
     des.set_long_value(value);
 }
 
-static void realToKVariant(KVariant& des, const godot_variant& variant) {
+void realToKVariant(KVariant& des, const godot_variant& variant) {
     auto& godot = Godot::instance();
     auto value = godot.gd->godot_variant_as_real(&variant);
     des.set_real_value(value);
 }
 
-static void stringToKVariant(KVariant& des, const godot_variant& variant) {
+void stringToKVariant(KVariant& des, const godot_variant& variant) {
     auto& godot = Godot::instance();
     auto value = godot.gd->godot_variant_as_string(&variant);
     auto str = godot.fromGDString(&value);
@@ -58,14 +58,14 @@ static void stringToKVariant(KVariant& des, const godot_variant& variant) {
 }
 
 
-static void boolToKVariant(KVariant& des, const godot_variant& variant) {
+void boolToKVariant(KVariant& des, const godot_variant& variant) {
     auto& godot = Godot::instance();
     auto value = godot.gd->godot_variant_as_bool(&variant);
     des.set_bool_value(value);
 }
 
 
-static void initToKVariant() {
+void initToKVariant() {
     if (TO_KVARIANT_INIT) {
         return;
     }
@@ -79,27 +79,27 @@ static void initToKVariant() {
     TO_KVARIANT_INIT = true;
 }
 
-static void nilToGVariant(godot_variant& variant, const KVariant& data) {
+void nilToGVariant(godot_variant& variant, const KVariant& data) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_nil(&variant);
 }
 
-static void intToGVariant(godot_variant& variant, const KVariant& data) {
+void intToGVariant(godot_variant& variant, const KVariant& data) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_int(&variant, data.long_value());
 }
 
-static void realToGVariant(godot_variant& variant, const KVariant& data) {
+void realToGVariant(godot_variant& variant, const KVariant& data) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_real(&variant, data.real_value());
 }
 
-static void boolToGVariant(godot_variant& variant, const KVariant& data) {
+void boolToGVariant(godot_variant& variant, const KVariant& data) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_bool(&variant, data.bool_value());
 }
 
-static void stringToGVariant(godot_variant& variant, const KVariant& data) {
+void stringToGVariant(godot_variant& variant, const KVariant& data) {
     auto& godot = Godot::instance();
     godot_string str;
     godot.gd->godot_string_new(&str);
@@ -107,8 +107,6 @@ static void stringToGVariant(godot_variant& variant, const KVariant& data) {
     godot.gd->godot_variant_new_string(&variant, &str);
     godot.gd->godot_string_destroy(&str);
 }
-
-
 
 void initToGVariant() {
     if (TO_GVARIANT_INIT) {

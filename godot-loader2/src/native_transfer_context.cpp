@@ -1,8 +1,47 @@
 #include <cassert>
 #include <google/protobuf/util/delimited_message_util.h>
 #include "native_transfer_context.h"
+#include "native_binding_context.h"
+#include "icall_args.h"
+#include "godot.h"
 
 JClassHelper NativeTransferContext::JH = JClassHelper("godot.wire.TransferContext");
+
+void NativeTransferContext::icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, jstring jClassName, jstring jMethod,
+                                  jint expectedReturnType) {
+    auto& bindingContext = NativeBindingContext::instance();
+    auto& transferContext = bindingContext.transferContext;
+    jni::Env env(rawEnv);
+    auto buffer = transferContext.getBuffer(env, bindingContext.classLoader);
+    auto bufferCapacity = transferContext.getBufferCapacity(env, bindingContext.classLoader);
+    auto tArgs = NativeTransferContext::readArgs(buffer, bufferCapacity);
+    auto icallArgs = ICallArgs(tArgs);
+    auto& godot = Godot::instance();
+    auto ptr = reinterpret_cast<godot_object*>(jPtr);
+    auto className = env.fromJString(jClassName);
+    auto method = env.fromJString(jMethod);
+    auto mb = godot.gd->godot_method_bind_get_method(className.c_str(), method.c_str());
+    assert(mb != nullptr);
+    godot.gd->godot_method_bind_ptrcall(mb, ptr, (const void**) icallArgs.asRawData().data(), nullptr);
+    auto retValue = KVariant();
+    retValue.set_nil_value(0);
+    if (transferContext.ensureCapacity(env, bindingContext.classLoader, retValue.ByteSizeLong())) {
+        buffer = transferContext.getBuffer(env, bindingContext.classLoader);
+        bufferCapacity = transferContext.getBufferCapacity(env, bindingContext.classLoader);
+    }
+    NativeTransferContext::writeReturnValue(buffer, bufferCapacity, NativeTValue(retValue));
+}
+
+void NativeTransferContext::registerNatives(jni::Env& env, jni::JObject classLoader) {
+    auto cls = JH.getClass(env, classLoader);
+    jni::JNativeMethod icallMethod {
+        "icall",
+        "(JLjava/lang/String;Ljava/lang/String;I)V",
+        (void*) &icall
+    };
+    auto methods = std::vector<jni::JNativeMethod>({icallMethod});
+    cls.registerNatives(env, methods);
+}
 
 void NativeTransferContext::init(jni::Env& env, jni::JObject object) {
     wrapped = object.newGlobalRef(env);
@@ -33,7 +72,11 @@ bool NativeTransferContext::ensureCapacity(jni::Env& env, jni::JObject classLoad
 }
 
 void NativeTransferContext::writeReturnValue(void* buffer, int capacity, NativeTValue value) {
-    throw std::runtime_error("not implemented");
+    auto retValue = KReturnValue();
+    retValue.mutable_data()->CopyFrom(value.data);
+    google::protobuf::io::ArrayOutputStream os(buffer, capacity);
+    google::protobuf::io::CodedOutputStream cos(&os);
+    google::protobuf::util::SerializeDelimitedToCodedStream(retValue, &cos);
 }
 
 NativeTValue NativeTransferContext::readReturnValue(void* buffer, int capacity) {
@@ -56,5 +99,14 @@ void NativeTransferContext::writeArgs(void* buffer, int capacity, const std::vec
 }
 
 std::vector<NativeTValue> NativeTransferContext::readArgs(void* buffer, int capacity) {
-    throw std::runtime_error("not implemented");
+    auto kArgs = KFuncArgs();
+    google::protobuf::io::ArrayInputStream is(buffer, capacity);
+    google::protobuf::io::CodedInputStream cis(&is);
+    bool cleanEof;
+    google::protobuf::util::ParseDelimitedFromCodedStream(&kArgs, &cis, &cleanEof);
+    auto args = std::vector<NativeTValue>();
+    for (const auto& kArg : kArgs.args()) {
+        args.emplace_back(NativeTValue(kArg));
+    }
+    return args;
 }

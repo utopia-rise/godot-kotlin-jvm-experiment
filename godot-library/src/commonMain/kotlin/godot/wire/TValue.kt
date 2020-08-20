@@ -16,4 +16,12 @@ expect class TValue {
     fun asString(): String
     fun asBool(): Boolean
     fun asUnit(): Unit
+
+    enum class Type {
+        NIL,
+        LONG,
+        DOUBLE,
+        STRING,
+        BOOL
+    }
 }

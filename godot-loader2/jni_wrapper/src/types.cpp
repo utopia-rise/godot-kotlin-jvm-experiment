@@ -82,6 +82,11 @@ namespace jni {
         return id;
     }
 
+    void JClass::registerNatives(Env& env, std::vector<JNativeMethod> methods) {
+        env.env->RegisterNatives((jclass) obj, methods.data(), methods.size());
+        env.checkExceptions();
+    }
+
     MethodId JClass::getConstructorMethodId(Env &env, const char *signature) {
         return getMethodId(env, "<init>", signature);
     }

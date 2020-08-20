@@ -8,6 +8,8 @@
 class NativeTransferContext {
 public:
     NativeTransferContext() = default;
+    NativeTransferContext(const NativeTransferContext&) = delete;
+    void operator=(const NativeTransferContext&) = delete;
 
     void init(jni::Env& env, jni::JObject object);
     void dispose(jni::Env& env);
@@ -15,6 +17,8 @@ public:
     void* getBuffer(jni::Env& env, jni::JObject classLoader);
     int getBufferCapacity(jni::Env& env, jni::JObject classLoader);
     bool ensureCapacity(jni::Env& env, jni::JObject classLoader, int capacity);
+
+    static void registerNatives(jni::Env& env, jni::JObject classLoader);
 
     static void writeReturnValue(void* buffer, int capacity, NativeTValue value);
     static NativeTValue readReturnValue(void* buffer, int capacity);
@@ -25,6 +29,8 @@ public:
     static JClassHelper JH;
 private:
     jni::JObject wrapped;
+
+    static void icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, jstring jClassName, jstring jMethod, jint expectedReturnType);
 };
 
 

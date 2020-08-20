@@ -64,4 +64,12 @@ actual class TValue {
         return builder.build()
     }
 
+    actual enum class Type(val typeCase: Wire.KVariant.TypeCase) {
+        NIL(Wire.KVariant.TypeCase.NIL_VALUE),
+        LONG(Wire.KVariant.TypeCase.LONG_VALUE),
+        DOUBLE(Wire.KVariant.TypeCase.LONG_VALUE),
+        STRING(Wire.KVariant.TypeCase.LONG_VALUE),
+        BOOL(Wire.KVariant.TypeCase.LONG_VALUE)
+    }
+
 }
