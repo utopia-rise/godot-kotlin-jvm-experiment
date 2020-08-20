@@ -6,6 +6,9 @@
 #include "env.h"
 
 namespace jni {
+    typedef jint(JNICALL *CreateJavaVM)(JavaVM **, void **, void *);
+    typedef jint(JNICALL *GetCreatedJavaVMs)(JavaVM **, jsize, jsize *);
+
     class Jvm {
     public:
         Jvm(const Jvm&) = delete;
