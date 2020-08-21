@@ -1,5 +1,6 @@
 package godot.benchmark
 
+import godot.core.Vector2
 import godot.internal.KObject
 
 class Simple : KObject() {
@@ -16,6 +17,16 @@ class Simple : KObject() {
             total += i
         }
         return total / size
+    }
+
+    fun benchmarkVectors2Only(): Vector2 {
+        var s = Vector2()
+        for(i in 0 until 1000) {
+            val v = Vector2(i, i)
+            s += v
+        }
+
+        return s
     }
 
 }

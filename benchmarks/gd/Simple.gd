@@ -22,3 +22,11 @@ func benchmark_vectors():
         s = s + v
 
     return s
+
+func benchmark_vectors2_only():
+    var s = Vector2()
+    for i in range(1000):
+        var v = Vector2(i, i)
+        s = s + v
+
+    return s
