@@ -14,8 +14,8 @@ struct ICallValue {
         void* ptrValue;
     } data;
 
-    ICallValue(KVariant::TypeCase type);
-    ICallValue(const KVariant& value);
+    explicit ICallValue(KVariant::TypeCase type);
+    explicit ICallValue(const KVariant& value);
 
     KVariant toKVariant();
     ~ICallValue();
