@@ -20,7 +20,7 @@ public:
 
     static void registerNatives(jni::Env& env, jni::JObject classLoader);
 
-    static void writeReturnValue(void* buffer, int capacity, NativeTValue value);
+    static void writeReturnValue(void* buffer, int capacity, const NativeTValue& value);
     static NativeTValue readReturnValue(void* buffer, int capacity);
 
     static void writeArgs(void* buffer, int capacity, const std::vector<NativeTValue>& args);

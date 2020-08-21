@@ -83,7 +83,7 @@ actual class TransferContext {
     }
 
     actual fun callMethod(ptr: VoidPtr, className: String, method: String, expectedReturnType: TValue.Type) {
-        icall(ptr, className, method, expectedReturnType.ordinal)
+        icall(ptr, className, method, expectedReturnType.typeCase.number)
     }
 
     private external fun icall(ptr: VoidPtr, className: String, method: String, expectedReturnType: Int)

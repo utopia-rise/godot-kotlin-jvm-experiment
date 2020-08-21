@@ -1,7 +1,7 @@
 #ifndef GODOT_LOADER_ICALL_ARGS_H
 #define GODOT_LOADER_ICALL_ARGS_H
 #include "godot.h"
-#include "native_tvalue.h"
+#include "wire.pb.h"
 #include <vector>
 
 struct ICallValue {
@@ -9,20 +9,24 @@ struct ICallValue {
     union {
         bool boolValue;
         godot_string stringValue;
-        long intValue;
+        long longValue;
         double realValue;
         void* ptrValue;
     } data;
 
     ICallValue(KVariant::TypeCase type);
-    ICallValue(NativeTValue& value);
+    ICallValue(const KVariant& value);
+
+    KVariant toKVariant();
     ~ICallValue();
 };
 
 class ICallArgs {
 public:
-    ICallArgs(std::vector<NativeTValue>& args);
-    ~ICallArgs();
+    ICallArgs() = default;
+    ~ICallArgs() = default;
+
+    void addArg(const KVariant& arg);
 
     std::vector<void*> asRawData();
 private:

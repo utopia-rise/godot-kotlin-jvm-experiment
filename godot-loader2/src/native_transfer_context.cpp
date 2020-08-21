@@ -15,16 +15,19 @@ void NativeTransferContext::icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, 
     auto buffer = transferContext.getBuffer(env, bindingContext.classLoader);
     auto bufferCapacity = transferContext.getBufferCapacity(env, bindingContext.classLoader);
     auto tArgs = NativeTransferContext::readArgs(buffer, bufferCapacity);
-    auto icallArgs = ICallArgs(tArgs);
+    auto icallArgs = ICallArgs();
+    for (const auto& tArg : tArgs) {
+        icallArgs.addArg(tArg.data);
+    }
     auto& godot = Godot::instance();
     auto ptr = reinterpret_cast<godot_object*>(jPtr);
     auto className = env.fromJString(jClassName);
     auto method = env.fromJString(jMethod);
     auto mb = godot.gd->godot_method_bind_get_method(className.c_str(), method.c_str());
     assert(mb != nullptr);
-    godot.gd->godot_method_bind_ptrcall(mb, ptr, (const void**) icallArgs.asRawData().data(), nullptr);
-    auto retValue = KVariant();
-    retValue.set_nil_value(0);
+    auto retICallValue = ICallValue((KVariant::TypeCase) expectedReturnType);
+    godot.gd->godot_method_bind_ptrcall(mb, ptr, (const void**) icallArgs.asRawData().data(), &retICallValue.data);
+    auto retValue = retICallValue.toKVariant();
     if (transferContext.ensureCapacity(env, bindingContext.classLoader, retValue.ByteSizeLong())) {
         buffer = transferContext.getBuffer(env, bindingContext.classLoader);
         bufferCapacity = transferContext.getBufferCapacity(env, bindingContext.classLoader);
@@ -71,7 +74,7 @@ bool NativeTransferContext::ensureCapacity(jni::Env& env, jni::JObject classLoad
     return bufferChanged == JNI_TRUE;
 }
 
-void NativeTransferContext::writeReturnValue(void* buffer, int capacity, NativeTValue value) {
+void NativeTransferContext::writeReturnValue(void* buffer, int capacity, const NativeTValue& value) {
     auto retValue = KReturnValue();
     retValue.mutable_data()->CopyFrom(value.data);
     google::protobuf::io::ArrayOutputStream os(buffer, capacity);
@@ -85,7 +88,7 @@ NativeTValue NativeTransferContext::readReturnValue(void* buffer, int capacity) 
     google::protobuf::io::CodedInputStream cis(&is);
     bool cleanEof;
     google::protobuf::util::ParseDelimitedFromCodedStream(&retValue, &cis, &cleanEof);
-    return {retValue.data()};
+    return NativeTValue(retValue.data());
 }
 
 void NativeTransferContext::writeArgs(void* buffer, int capacity, const std::vector<NativeTValue>& args) {
