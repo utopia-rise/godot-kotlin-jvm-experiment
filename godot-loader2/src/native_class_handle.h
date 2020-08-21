@@ -11,11 +11,11 @@ public:
     NativeClassHandle(const NativeClassHandle&) = delete;
     void operator=(const NativeClassHandle&) = delete;
 
-    void init(jni::Env& env, jni::JObject jClassHandle);
-    void registerClass(jni::Env& env, jni::JObject classLoader, void* nativescriptHandle);
+    void init(jni::Env& env, jni::JObject& jClassHandle);
+    void registerClass(jni::Env& env, jni::JObject& classLoader, void* nativescriptHandle);
     void dispose(jni::Env& env);
 
-    NativeKObject* wrap(jni::Env& env, jni::JObject classLoader, void* ptr);
+    NativeKObject* wrap(jni::Env& env, jni::JObject& classLoader, void* ptr);
 
     static JClassHelper JH;
 private:

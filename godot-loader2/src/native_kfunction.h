@@ -11,13 +11,13 @@ public:
     NativeKFunction(const NativeKFunction&) = delete;
     void operator=(const NativeKFunction&) = delete;
 
-    void init(jni::Env& env, jni::JObject object);
+    void init(jni::Env& env, jni::JObject& object);
     void dispose(jni::Env& env);
 
     static JClassHelper JH;
-    int getParameterCount(jni::Env& env, jni::JObject classLoader);
-    const std::string& getName(jni::Env& env, jni::JObject classLoader);
-    const std::string& getRegistrationName(jni::Env& env, jni::JObject classLoader);
+    int getParameterCount(jni::Env& env, jni::JObject& classLoader);
+    const std::string& getName(jni::Env& env, jni::JObject& classLoader);
+    const std::string& getRegistrationName(jni::Env& env, jni::JObject& classLoader);
 
     // todo return type and args
     NativeTValue invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance, const std::vector<NativeTValue>& args);

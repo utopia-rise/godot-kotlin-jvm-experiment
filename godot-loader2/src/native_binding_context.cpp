@@ -87,7 +87,8 @@ std::vector<NativeClassHandle*> getClasses(jni::Env& env, jni::JObject classLoad
     auto nativeHandles = std::vector<NativeClassHandle*>();
     for (auto i = 0; i < handles.length(env); i++) {
         auto nativeHandle = new NativeClassHandle();
-        nativeHandle->init(env, handles.get(env, i));
+        auto handle = handles.get(env, i);
+        nativeHandle->init(env, handle);
         nativeHandles.emplace_back(nativeHandle);
     }
     return nativeHandles;

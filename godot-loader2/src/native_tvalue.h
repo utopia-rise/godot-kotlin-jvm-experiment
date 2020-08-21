@@ -7,8 +7,8 @@ class NativeTValue {
 public:
     KVariant data;
     explicit NativeTValue(KVariant data);
-    ~NativeTValue();
     explicit NativeTValue(godot_variant variant);
+    ~NativeTValue();
     NativeTValue(const NativeTValue&) = default;
     NativeTValue& operator=(const NativeTValue&) = default;
 

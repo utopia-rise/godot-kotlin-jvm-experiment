@@ -5,7 +5,7 @@
 
 void registerFunction(void* nativescriptHandle, const char* className,  const char* funcName, NativeKFunction* handler);
 
-void NativeClassHandle::init(jni::Env& env, jni::JObject jClassHandle) {
+void NativeClassHandle::init(jni::Env& env, jni::JObject& jClassHandle) {
     // so it won't be gc'd by jvm
     wrapped = jClassHandle.newGlobalRef(env);
 }
@@ -15,7 +15,7 @@ void NativeClassHandle::dispose(jni::Env& env) {
     wrapped.deleteGlobalRef(env);
 }
 
-void NativeClassHandle::registerClass(jni::Env& env, jni::JObject classLoader, void* nativescriptHandle) {
+void NativeClassHandle::registerClass(jni::Env& env, jni::JObject& classLoader, void* nativescriptHandle) {
     auto& godot = Godot::instance();
     // TODO: get from java
     auto isTool = false;
@@ -74,7 +74,7 @@ std::vector<NativeKFunction*> NativeClassHandle::getFunctions(jni::Env& env, jni
     return nativeKFunctions;
 }
 
-NativeKObject* NativeClassHandle::wrap(jni::Env& env, jni::JObject classLoader, void* ptr) {
+NativeKObject* NativeClassHandle::wrap(jni::Env& env, jni::JObject& classLoader, void* ptr) {
     auto wrapMethod = JH.getMethodId(env, classLoader, "wrap", "(J)Lgodot/internal/KObject;");
     auto obj = wrapped.callObjectMethod(env, wrapMethod, {reinterpret_cast<std::intptr_t>(ptr)});
     auto nativeKObject = new NativeKObject();

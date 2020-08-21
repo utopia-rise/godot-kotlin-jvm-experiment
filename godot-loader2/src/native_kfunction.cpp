@@ -5,7 +5,7 @@
 
 JClassHelper NativeKFunction::JH = JClassHelper("godot.registry.KFunc");
 
-void NativeKFunction::init(jni::Env& env, jni::JObject object) {
+void NativeKFunction::init(jni::Env& env, jni::JObject& object) {
     wrapped = object.newGlobalRef(env);
 }
 
@@ -13,7 +13,7 @@ void NativeKFunction::dispose(jni::Env& env) {
     wrapped.deleteGlobalRef(env);
 }
 
-const std::string& NativeKFunction::getName(jni::Env& env, jni::JObject classLoader) {
+const std::string& NativeKFunction::getName(jni::Env& env, jni::JObject& classLoader) {
     if (!name.empty()) {
         return name;
     }
@@ -24,7 +24,7 @@ const std::string& NativeKFunction::getName(jni::Env& env, jni::JObject classLoa
     return name;
 }
 
-const std::string& NativeKFunction::getRegistrationName(jni::Env& env, jni::JObject classLoader) {
+const std::string& NativeKFunction::getRegistrationName(jni::Env& env, jni::JObject& classLoader) {
     if (!registrationName.empty()) {
         return registrationName;
     }
@@ -35,7 +35,7 @@ const std::string& NativeKFunction::getRegistrationName(jni::Env& env, jni::JObj
     return registrationName;
 }
 
-int NativeKFunction::getParameterCount(jni::Env& env, jni::JObject classLoader) {
+int NativeKFunction::getParameterCount(jni::Env& env, jni::JObject& classLoader) {
     if (parameterCount != -1) {
         return parameterCount;
     }

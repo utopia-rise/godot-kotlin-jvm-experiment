@@ -17,6 +17,7 @@ set(SOURCES
         src/native_kfunction.cpp
         src/icall_args.cpp
         src/native_transfer_context.cpp
+        src/method_bind_cache.cpp
         src/jni_utils.cpp
         src/native_class_handle.cpp
         src/native_tvalue.cpp

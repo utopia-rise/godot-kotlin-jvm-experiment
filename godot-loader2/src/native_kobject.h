@@ -11,11 +11,11 @@ public:
     NativeKObject(const NativeKObject&) = delete;
     void operator=(const NativeKObject&) = delete;
 
-    void init(jni::Env& env, jni::JObject object);
+    void init(jni::Env& env, jni::JObject& object);
     void dispose(jni::Env& env);
 
-    void _onInit(jni::Env& env, jni::JObject classLoader);
-    void _onDestroy(jni::Env& env, jni::JObject classLoader);
+    void _onInit(jni::Env& env, jni::JObject& classLoader);
+    void _onDestroy(jni::Env& env, jni::JObject& classLoader);
 
     static JClassHelper JH;
 };

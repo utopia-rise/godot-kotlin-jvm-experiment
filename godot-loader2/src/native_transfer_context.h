@@ -11,14 +11,14 @@ public:
     NativeTransferContext(const NativeTransferContext&) = delete;
     void operator=(const NativeTransferContext&) = delete;
 
-    void init(jni::Env& env, jni::JObject object);
+    void init(jni::Env& env, jni::JObject& object);
     void dispose(jni::Env& env);
 
-    void* getBuffer(jni::Env& env, jni::JObject classLoader);
-    int getBufferCapacity(jni::Env& env, jni::JObject classLoader);
-    bool ensureCapacity(jni::Env& env, jni::JObject classLoader, int capacity);
+    void* getBuffer(jni::Env& env, jni::JObject& classLoader);
+    int getBufferCapacity(jni::Env& env, jni::JObject& classLoader);
+    bool ensureCapacity(jni::Env& env, jni::JObject& classLoader, int capacity);
 
-    static void registerNatives(jni::Env& env, jni::JObject classLoader);
+    static void registerNatives(jni::Env& env, jni::JObject& classLoader);
 
     static void writeReturnValue(void* buffer, int capacity, const NativeTValue& value);
     static NativeTValue readReturnValue(void* buffer, int capacity);

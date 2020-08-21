@@ -3,6 +3,7 @@
 #include "native_transfer_context.h"
 #include "native_binding_context.h"
 #include "icall_args.h"
+#include "method_bind_cache.h"
 #include "godot.h"
 
 JClassHelper NativeTransferContext::JH = JClassHelper("godot.wire.TransferContext");
@@ -23,8 +24,7 @@ void NativeTransferContext::icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, 
     auto ptr = reinterpret_cast<godot_object*>(jPtr);
     auto className = env.fromJString(jni::JString(jClassName));
     auto method = env.fromJString(jni::JString(jMethod));
-    auto mb = godot.gd->godot_method_bind_get_method(className.c_str(), method.c_str());
-    assert(mb != nullptr);
+    auto mb = MethodBindCache::get(className.c_str(), method.c_str());
     auto retICallValue = ICallValue((KVariant::TypeCase) expectedReturnType);
     godot.gd->godot_method_bind_ptrcall(mb, ptr, (const void**) icallArgs.asRawData().data(), &retICallValue.data);
     auto retValue = retICallValue.toKVariant();
@@ -35,7 +35,7 @@ void NativeTransferContext::icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, 
     NativeTransferContext::writeReturnValue(buffer, bufferCapacity, NativeTValue(retValue));
 }
 
-void NativeTransferContext::registerNatives(jni::Env& env, jni::JObject classLoader) {
+void NativeTransferContext::registerNatives(jni::Env& env, jni::JObject& classLoader) {
     auto cls = JH.getClass(env, classLoader);
     jni::JNativeMethod icallMethod {
         "icall",
@@ -46,7 +46,7 @@ void NativeTransferContext::registerNatives(jni::Env& env, jni::JObject classLoa
     cls.registerNatives(env, methods);
 }
 
-void NativeTransferContext::init(jni::Env& env, jni::JObject object) {
+void NativeTransferContext::init(jni::Env& env, jni::JObject& object) {
     wrapped = object.newGlobalRef(env);
 }
 
@@ -54,21 +54,21 @@ void NativeTransferContext::dispose(jni::Env& env) {
     wrapped.deleteGlobalRef(env);
 }
 
-void* NativeTransferContext::getBuffer(jni::Env& env, jni::JObject classLoader) {
+void* NativeTransferContext::getBuffer(jni::Env& env, jni::JObject& classLoader) {
     auto method = JH.getMethodId(env, classLoader, "getBuffer", "()Ljava/nio/ByteBuffer;");
     auto buffer = wrapped.callObjectMethod(env, method);
     assert(!buffer.isNull());
     return env.getDirectBufferAddress(buffer);
 }
 
-int NativeTransferContext::getBufferCapacity(jni::Env& env, jni::JObject classLoader) {
+int NativeTransferContext::getBufferCapacity(jni::Env& env, jni::JObject& classLoader) {
     auto method = JH.getMethodId(env, classLoader, "getBuffer", "()Ljava/nio/ByteBuffer;");
     auto buffer = wrapped.callObjectMethod(env, method);
     assert(!buffer.isNull());
     return env.getDirectBufferCapacity(buffer);
 }
 
-bool NativeTransferContext::ensureCapacity(jni::Env& env, jni::JObject classLoader, int capacity) {
+bool NativeTransferContext::ensureCapacity(jni::Env& env, jni::JObject& classLoader, int capacity) {
     auto method = JH.getMethodId(env, classLoader, "ensureCapacity", "(I)Z");
     auto bufferChanged = wrapped.callBooleanMethod(env, method, {capacity});
     return bufferChanged == JNI_TRUE;
