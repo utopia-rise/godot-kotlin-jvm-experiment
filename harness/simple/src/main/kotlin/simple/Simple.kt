@@ -1,5 +1,6 @@
 package simple
 
+import godot.core.Vector2
 import godot.internal.BindingContext
 import godot.internal.KObject
 import godot.wire.TValue
@@ -29,15 +30,8 @@ class Simple : KObject() {
         transferContext.readReturnValue()
     }
 
-    fun longMethod(a: Long) {
-        println("Got long: $a")
-    }
-
-    fun boolMethod(a: Boolean) {
-        println("Got bool: $a")
-    }
-
-    fun stringMethod(a: String) {
-        println("Got string: $a")
-    }
+    fun longMethod(a: Long) = a
+    fun boolMethod(a: Boolean) = a
+    fun stringMethod(a: String) = a
+    fun vector2Method(a: Vector2) = a
 }

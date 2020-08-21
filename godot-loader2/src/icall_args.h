@@ -3,15 +3,17 @@
 #include "godot.h"
 #include "wire.pb.h"
 #include <vector>
+#include "layouts.h"
 
 struct ICallValue {
     KVariant::TypeCase type;
     union {
-        bool boolValue;
-        godot_string stringValue;
+        void* ptrValue;
         long longValue;
         double realValue;
-        void* ptrValue;
+        godot_string stringValue;
+        bool boolValue;
+        layouts::godot_vector2_layout vector2Value;
     } data;
 
     explicit ICallValue(KVariant::TypeCase type);

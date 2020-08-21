@@ -1,5 +1,6 @@
 #include "native_tvalue.h"
 #include "godot.h"
+#include "layouts.h"
 
 #define to_kvariant_from(type) \
     const int to_kvariant_from##type##_index = godot_variant_type::type; \
@@ -36,6 +37,14 @@ to_kvariant_from(GODOT_VARIANT_TYPE_BOOL) {
     des.set_bool_value(value);
 }
 
+to_kvariant_from(GODOT_VARIANT_TYPE_VECTOR2) {
+    auto layout = (layouts::godot_variant_layout*) &src;
+    auto vec2 = Vector2::default_instance().New();
+    vec2->set_x(layout->data._vect2.x);
+    vec2->set_y(layout->data._vect2.y);
+    des.set_allocated_vector2_value(vec2);
+}
+
 // must match the value order of godot_variant_type
 static void(*TO_KVARIANT_FROM[27 /* godot_variant_type count */])(KVariant&, const godot_variant&) = {
         to_kvariant_from_index(GODOT_VARIANT_TYPE_NIL),
@@ -43,30 +52,31 @@ static void(*TO_KVARIANT_FROM[27 /* godot_variant_type count */])(KVariant&, con
         to_kvariant_from_index(GODOT_VARIANT_TYPE_INT),
         to_kvariant_from_index(GODOT_VARIANT_TYPE_REAL),
         to_kvariant_from_index(GODOT_VARIANT_TYPE_STRING),
+        to_kvariant_from_index(GODOT_VARIANT_TYPE_VECTOR2),
 };
 
-#define from_kvariant_to(type) \
+#define to_gvariant_from(type) \
     const int from_kvariant_to##type##_index = KVariant::type - 1; \
     void from_kvariant_to##type(godot_variant& des, const KVariant& src)
-#define from_kvariant_to_index(type) \
+#define to_gvariant_from_index(type) \
     [from_kvariant_to##type##_index] = from_kvariant_to##type
 
-from_kvariant_to(kNilValue) {
+to_gvariant_from(kNilValue) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_nil(&des);
 }
 
-from_kvariant_to(kLongValue) {
+to_gvariant_from(kLongValue) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_int(&des, src.long_value());
 }
 
-from_kvariant_to(kRealValue) {
+to_gvariant_from(kRealValue) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_real(&des, src.real_value());
 }
 
-from_kvariant_to(kStringValue) {
+to_gvariant_from(kStringValue) {
     auto& godot = Godot::instance();
     godot_string str;
     godot.gd->godot_string_new(&str);
@@ -75,38 +85,46 @@ from_kvariant_to(kStringValue) {
     godot.gd->godot_string_destroy(&str);
 }
 
-from_kvariant_to(kBoolValue) {
+to_gvariant_from(kBoolValue) {
     auto& godot = Godot::instance();
     godot.gd->godot_variant_new_bool(&des, src.bool_value());
 }
 
+to_gvariant_from(kVector2Value) {
+    auto layout = (layouts::godot_variant_layout*) &des;
+    layout->type = GODOT_VARIANT_TYPE_VECTOR2;
+    layout->data._vect2.x = src.vector2_value().x();
+    layout->data._vect2.y = src.vector2_value().y();
+}
 
 // must match the value order of KVariant::TypeCase
-static void(*TO_GVARIANT[27 /* KVariant::TypeCase count */])(godot_variant&, const KVariant&) = {
-        from_kvariant_to_index(kNilValue),
-        from_kvariant_to_index(kLongValue),
-        from_kvariant_to_index(kRealValue),
-        from_kvariant_to_index(kStringValue),
-        from_kvariant_to_index(kBoolValue),
+static void(*TO_GVARIANT_FROM[27 /* KVariant::TypeCase count */])(godot_variant&, const KVariant&) = {
+        to_gvariant_from_index(kNilValue),
+        to_gvariant_from_index(kLongValue),
+        to_gvariant_from_index(kRealValue),
+        to_gvariant_from_index(kStringValue),
+        to_gvariant_from_index(kBoolValue),
+        to_gvariant_from_index(kVector2Value),
 };
 
 NativeTValue::NativeTValue(KVariant  data) : data(std::move(data)) {}
 
 NativeTValue::NativeTValue(godot_variant variant) {
     auto& godot = Godot::instance();
-    // TODO: use tristan's godot_variant_layout
-    auto type = godot.gd->godot_variant_get_type(&variant);
+    auto layout = (layouts::godot_variant_layout*) &variant;
+    auto type = layout->type;
     auto converter = TO_KVARIANT_FROM[type];
     converter(data, variant);
 }
 
 NativeTValue::~NativeTValue() {
+    data.clear_type();
 }
 
 godot_variant NativeTValue::toGVariant() {
     godot_variant variant;
     auto type = data.type_case();
-    auto converter = TO_GVARIANT[type - 1];
+    auto converter = TO_GVARIANT_FROM[type - 1];
     converter(variant, data);
     return variant;
 }

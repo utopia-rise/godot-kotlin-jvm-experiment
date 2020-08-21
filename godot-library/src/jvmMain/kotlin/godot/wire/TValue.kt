@@ -1,5 +1,8 @@
 package godot.wire
 
+import godot.core.Vector2
+import godot.internal.toGodotReal
+
 actual class TValue {
     var data: Wire.KVariant
 
@@ -31,6 +34,24 @@ actual class TValue {
         data = build { setNilValue(0) }
     }
 
+    actual constructor(value: Vector2) {
+        data = build {
+            val vec2 = Wire.Vector2.newBuilder()
+                .setX(value.x.toGodotReal())
+                .setY(value.y.toGodotReal())
+                .build()
+
+            setVector2Value(vec2)
+        }
+    }
+
+    actual fun asNil(): Unit {
+        check(data.typeCase == Wire.KVariant.TypeCase.NIL_VALUE) {
+            "Expecting a NIL but got ${data.typeCase}"
+        }
+        return Unit
+    }
+
     actual fun asInt() = asLong().toInt()
 
     actual fun asLong(): Long {
@@ -51,11 +72,9 @@ actual class TValue {
         return data.boolValue
     }
 
-    actual fun asUnit(): Unit {
-        check(data.typeCase == Wire.KVariant.TypeCase.NIL_VALUE) {
-            "Expecting a UNIT but got ${data.typeCase}"
-        }
-        return Unit
+    actual fun asVector2(): Vector2 {
+        val vec2 = data.vector2Value
+        return Vector2(vec2.x, vec2.y)
     }
 
     private inline fun build(cb: Wire.KVariant.Builder.() -> Unit): Wire.KVariant {
@@ -69,7 +88,8 @@ actual class TValue {
         LONG(Wire.KVariant.TypeCase.LONG_VALUE),
         DOUBLE(Wire.KVariant.TypeCase.LONG_VALUE),
         STRING(Wire.KVariant.TypeCase.LONG_VALUE),
-        BOOL(Wire.KVariant.TypeCase.LONG_VALUE)
+        BOOL(Wire.KVariant.TypeCase.LONG_VALUE),
+        VECTOR2(Wire.KVariant.TypeCase.VECTOR2_VALUE)
     }
 
 }

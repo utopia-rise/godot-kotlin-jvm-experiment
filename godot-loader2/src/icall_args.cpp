@@ -34,6 +34,11 @@ to_icall_from(kBoolValue) {
     dest.data.boolValue = src.bool_value();
 }
 
+to_icall_from(kVector2Value) {
+    dest.data.vector2Value.x = src.vector2_value().x();
+    dest.data.vector2Value.y = src.vector2_value().y();
+}
+
 // must match the value order of KVariant::TypeCase
 static void(*TO_ICALL_FROM[27 /* KVariant::TypeCase count */])(ICallValue&, const KVariant&) = {
         to_icall_from_index(kNilValue),
@@ -41,6 +46,7 @@ static void(*TO_ICALL_FROM[27 /* KVariant::TypeCase count */])(ICallValue&, cons
         to_icall_from_index(kRealValue),
         to_icall_from_index(kStringValue),
         to_icall_from_index(kBoolValue),
+        to_icall_from_index(kVector2Value),
 };
 
 from_icall_to(kNilValue) {
@@ -66,6 +72,13 @@ from_icall_to(kBoolValue) {
     dest.set_bool_value(src.data.boolValue);
 }
 
+from_icall_to(kVector2Value) {
+    auto vec2 = Vector2::default_instance().New();
+    vec2->set_x(src.data.vector2Value.x);
+    vec2->set_y(src.data.vector2Value.y);
+    dest.set_allocated_vector2_value(vec2);
+}
+
 // must match the value order of KVariant::TypeCase
 static void(*FROM_ICALL_TO[27 /* KVariant::TypeCase count */])(KVariant&, const ICallValue&) = {
         from_icall_to_index(kNilValue),
@@ -73,6 +86,7 @@ static void(*FROM_ICALL_TO[27 /* KVariant::TypeCase count */])(KVariant&, const 
         from_icall_to_index(kRealValue),
         from_icall_to_index(kStringValue),
         from_icall_to_index(kBoolValue),
+        from_icall_to_index(kVector2Value),
 };
 
 ICallValue::ICallValue(const KVariant& value) {

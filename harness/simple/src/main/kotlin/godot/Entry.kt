@@ -15,6 +15,7 @@ class Entry: GodotEntry() {
             function(KFunc1("longMethod", Simple::longMethod, ::TValue, listOf(TValue::asLong)))
             function(KFunc1("boolMethod", Simple::boolMethod, ::TValue, listOf(TValue::asBool)))
             function(KFunc1("stringMethod", Simple::stringMethod, ::TValue, listOf(TValue::asString)))
+            function(KFunc1("vector2Method", Simple::vector2Method, ::TValue, listOf(TValue::asVector2)))
         }
     }
 }

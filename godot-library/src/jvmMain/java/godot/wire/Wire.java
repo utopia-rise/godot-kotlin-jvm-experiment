@@ -19,21 +19,16 @@ public final class Wire {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated float data = 2;</code>
-     * @return A list containing the data.
+     * <code>float x = 1;</code>
+     * @return The x.
      */
-    java.util.List<java.lang.Float> getDataList();
+    float getX();
+
     /**
-     * <code>repeated float data = 2;</code>
-     * @return The count of data.
+     * <code>float y = 2;</code>
+     * @return The y.
      */
-    int getDataCount();
-    /**
-     * <code>repeated float data = 2;</code>
-     * @param index The index of the element to return.
-     * @return The data at the given index.
-     */
-    float getData(int index);
+    float getY();
   }
   /**
    * Protobuf type {@code Vector2}
@@ -48,7 +43,6 @@ public final class Wire {
       super(builder);
     }
     private Vector2() {
-      data_ = emptyFloatList();
     }
 
     @java.lang.Override
@@ -71,7 +65,6 @@ public final class Wire {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -82,25 +75,14 @@ public final class Wire {
             case 0:
               done = true;
               break;
-            case 21: {
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                data_ = newFloatList();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              data_.addFloat(input.readFloat());
+            case 13: {
+
+              x_ = input.readFloat();
               break;
             }
-            case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000001) != 0) && input.getBytesUntilLimit() > 0) {
-                data_ = newFloatList();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                data_.addFloat(input.readFloat());
-              }
-              input.popLimit(limit);
+            case 21: {
+
+              y_ = input.readFloat();
               break;
             }
             default: {
@@ -118,9 +100,6 @@ public final class Wire {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          data_.makeImmutable(); // C
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -138,33 +117,27 @@ public final class Wire {
               godot.wire.Wire.Vector2.class, godot.wire.Wire.Vector2.Builder.class);
     }
 
-    public static final int DATA_FIELD_NUMBER = 2;
-    private com.google.protobuf.Internal.FloatList data_;
+    public static final int X_FIELD_NUMBER = 1;
+    private float x_;
     /**
-     * <code>repeated float data = 2;</code>
-     * @return A list containing the data.
+     * <code>float x = 1;</code>
+     * @return The x.
      */
     @java.lang.Override
-    public java.util.List<java.lang.Float>
-        getDataList() {
-      return data_;
+    public float getX() {
+      return x_;
     }
+
+    public static final int Y_FIELD_NUMBER = 2;
+    private float y_;
     /**
-     * <code>repeated float data = 2;</code>
-     * @return The count of data.
+     * <code>float y = 2;</code>
+     * @return The y.
      */
-    public int getDataCount() {
-      return data_.size();
+    @java.lang.Override
+    public float getY() {
+      return y_;
     }
-    /**
-     * <code>repeated float data = 2;</code>
-     * @param index The index of the element to return.
-     * @return The data at the given index.
-     */
-    public float getData(int index) {
-      return data_.getFloat(index);
-    }
-    private int dataMemoizedSerializedSize = -1;
 
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
@@ -180,13 +153,11 @@ public final class Wire {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
-      if (getDataList().size() > 0) {
-        output.writeUInt32NoTag(18);
-        output.writeUInt32NoTag(dataMemoizedSerializedSize);
+      if (x_ != 0F) {
+        output.writeFloat(1, x_);
       }
-      for (int i = 0; i < data_.size(); i++) {
-        output.writeFloatNoTag(data_.getFloat(i));
+      if (y_ != 0F) {
+        output.writeFloat(2, y_);
       }
       unknownFields.writeTo(output);
     }
@@ -197,16 +168,13 @@ public final class Wire {
       if (size != -1) return size;
 
       size = 0;
-      {
-        int dataSize = 0;
-        dataSize = 4 * getDataList().size();
-        size += dataSize;
-        if (!getDataList().isEmpty()) {
-          size += 1;
-          size += com.google.protobuf.CodedOutputStream
-              .computeInt32SizeNoTag(dataSize);
-        }
-        dataMemoizedSerializedSize = dataSize;
+      if (x_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(1, x_);
+      }
+      if (y_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, y_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -223,8 +191,12 @@ public final class Wire {
       }
       godot.wire.Wire.Vector2 other = (godot.wire.Wire.Vector2) obj;
 
-      if (!getDataList()
-          .equals(other.getDataList())) return false;
+      if (java.lang.Float.floatToIntBits(getX())
+          != java.lang.Float.floatToIntBits(
+              other.getX())) return false;
+      if (java.lang.Float.floatToIntBits(getY())
+          != java.lang.Float.floatToIntBits(
+              other.getY())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -236,10 +208,12 @@ public final class Wire {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (getDataCount() > 0) {
-        hash = (37 * hash) + DATA_FIELD_NUMBER;
-        hash = (53 * hash) + getDataList().hashCode();
-      }
+      hash = (37 * hash) + X_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getX());
+      hash = (37 * hash) + Y_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getY());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -373,8 +347,10 @@ public final class Wire {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        data_ = emptyFloatList();
-        bitField0_ = (bitField0_ & ~0x00000001);
+        x_ = 0F;
+
+        y_ = 0F;
+
         return this;
       }
 
@@ -401,12 +377,8 @@ public final class Wire {
       @java.lang.Override
       public godot.wire.Wire.Vector2 buildPartial() {
         godot.wire.Wire.Vector2 result = new godot.wire.Wire.Vector2(this);
-        int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          data_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.data_ = data_;
+        result.x_ = x_;
+        result.y_ = y_;
         onBuilt();
         return result;
       }
@@ -455,15 +427,11 @@ public final class Wire {
 
       public Builder mergeFrom(godot.wire.Wire.Vector2 other) {
         if (other == godot.wire.Wire.Vector2.getDefaultInstance()) return this;
-        if (!other.data_.isEmpty()) {
-          if (data_.isEmpty()) {
-            data_ = other.data_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureDataIsMutable();
-            data_.addAll(other.data_);
-          }
-          onChanged();
+        if (other.getX() != 0F) {
+          setX(other.getX());
+        }
+        if (other.getY() != 0F) {
+          setY(other.getY());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -493,83 +461,65 @@ public final class Wire {
         }
         return this;
       }
-      private int bitField0_;
 
-      private com.google.protobuf.Internal.FloatList data_ = emptyFloatList();
-      private void ensureDataIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
-          data_ = mutableCopy(data_);
-          bitField0_ |= 0x00000001;
-         }
-      }
+      private float x_ ;
       /**
-       * <code>repeated float data = 2;</code>
-       * @return A list containing the data.
+       * <code>float x = 1;</code>
+       * @return The x.
        */
-      public java.util.List<java.lang.Float>
-          getDataList() {
-        return ((bitField0_ & 0x00000001) != 0) ?
-                 java.util.Collections.unmodifiableList(data_) : data_;
+      @java.lang.Override
+      public float getX() {
+        return x_;
       }
       /**
-       * <code>repeated float data = 2;</code>
-       * @return The count of data.
-       */
-      public int getDataCount() {
-        return data_.size();
-      }
-      /**
-       * <code>repeated float data = 2;</code>
-       * @param index The index of the element to return.
-       * @return The data at the given index.
-       */
-      public float getData(int index) {
-        return data_.getFloat(index);
-      }
-      /**
-       * <code>repeated float data = 2;</code>
-       * @param index The index to set the value at.
-       * @param value The data to set.
+       * <code>float x = 1;</code>
+       * @param value The x to set.
        * @return This builder for chaining.
        */
-      public Builder setData(
-          int index, float value) {
-        ensureDataIsMutable();
-        data_.setFloat(index, value);
+      public Builder setX(float value) {
+        
+        x_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated float data = 2;</code>
-       * @param value The data to add.
+       * <code>float x = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder addData(float value) {
-        ensureDataIsMutable();
-        data_.addFloat(value);
+      public Builder clearX() {
+        
+        x_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float y_ ;
+      /**
+       * <code>float y = 2;</code>
+       * @return The y.
+       */
+      @java.lang.Override
+      public float getY() {
+        return y_;
+      }
+      /**
+       * <code>float y = 2;</code>
+       * @param value The y to set.
+       * @return This builder for chaining.
+       */
+      public Builder setY(float value) {
+        
+        y_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated float data = 2;</code>
-       * @param values The data to add.
+       * <code>float y = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder addAllData(
-          java.lang.Iterable<? extends java.lang.Float> values) {
-        ensureDataIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, data_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated float data = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearData() {
-        data_ = emptyFloatList();
-        bitField0_ = (bitField0_ & ~0x00000001);
+      public Builder clearY() {
+        
+        y_ = 0F;
         onChanged();
         return this;
       }
@@ -621,6 +571,1464 @@ public final class Wire {
 
     @java.lang.Override
     public godot.wire.Wire.Vector2 getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface Rec2OrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Rec2)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.Vector2 position = 1;</code>
+     * @return Whether the position field is set.
+     */
+    boolean hasPosition();
+    /**
+     * <code>.Vector2 position = 1;</code>
+     * @return The position.
+     */
+    godot.wire.Wire.Vector2 getPosition();
+    /**
+     * <code>.Vector2 position = 1;</code>
+     */
+    godot.wire.Wire.Vector2OrBuilder getPositionOrBuilder();
+
+    /**
+     * <code>.Vector2 size = 2;</code>
+     * @return Whether the size field is set.
+     */
+    boolean hasSize();
+    /**
+     * <code>.Vector2 size = 2;</code>
+     * @return The size.
+     */
+    godot.wire.Wire.Vector2 getSize();
+    /**
+     * <code>.Vector2 size = 2;</code>
+     */
+    godot.wire.Wire.Vector2OrBuilder getSizeOrBuilder();
+  }
+  /**
+   * Protobuf type {@code Rec2}
+   */
+  public static final class Rec2 extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:Rec2)
+      Rec2OrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Rec2.newBuilder() to construct.
+    private Rec2(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Rec2() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Rec2();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Rec2(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              godot.wire.Wire.Vector2.Builder subBuilder = null;
+              if (position_ != null) {
+                subBuilder = position_.toBuilder();
+              }
+              position_ = input.readMessage(godot.wire.Wire.Vector2.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(position_);
+                position_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              godot.wire.Wire.Vector2.Builder subBuilder = null;
+              if (size_ != null) {
+                subBuilder = size_.toBuilder();
+              }
+              size_ = input.readMessage(godot.wire.Wire.Vector2.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(size_);
+                size_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return godot.wire.Wire.internal_static_Rec2_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return godot.wire.Wire.internal_static_Rec2_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              godot.wire.Wire.Rec2.class, godot.wire.Wire.Rec2.Builder.class);
+    }
+
+    public static final int POSITION_FIELD_NUMBER = 1;
+    private godot.wire.Wire.Vector2 position_;
+    /**
+     * <code>.Vector2 position = 1;</code>
+     * @return Whether the position field is set.
+     */
+    @java.lang.Override
+    public boolean hasPosition() {
+      return position_ != null;
+    }
+    /**
+     * <code>.Vector2 position = 1;</code>
+     * @return The position.
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Vector2 getPosition() {
+      return position_ == null ? godot.wire.Wire.Vector2.getDefaultInstance() : position_;
+    }
+    /**
+     * <code>.Vector2 position = 1;</code>
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Vector2OrBuilder getPositionOrBuilder() {
+      return getPosition();
+    }
+
+    public static final int SIZE_FIELD_NUMBER = 2;
+    private godot.wire.Wire.Vector2 size_;
+    /**
+     * <code>.Vector2 size = 2;</code>
+     * @return Whether the size field is set.
+     */
+    @java.lang.Override
+    public boolean hasSize() {
+      return size_ != null;
+    }
+    /**
+     * <code>.Vector2 size = 2;</code>
+     * @return The size.
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Vector2 getSize() {
+      return size_ == null ? godot.wire.Wire.Vector2.getDefaultInstance() : size_;
+    }
+    /**
+     * <code>.Vector2 size = 2;</code>
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Vector2OrBuilder getSizeOrBuilder() {
+      return getSize();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (position_ != null) {
+        output.writeMessage(1, getPosition());
+      }
+      if (size_ != null) {
+        output.writeMessage(2, getSize());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (position_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getPosition());
+      }
+      if (size_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getSize());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof godot.wire.Wire.Rec2)) {
+        return super.equals(obj);
+      }
+      godot.wire.Wire.Rec2 other = (godot.wire.Wire.Rec2) obj;
+
+      if (hasPosition() != other.hasPosition()) return false;
+      if (hasPosition()) {
+        if (!getPosition()
+            .equals(other.getPosition())) return false;
+      }
+      if (hasSize() != other.hasSize()) return false;
+      if (hasSize()) {
+        if (!getSize()
+            .equals(other.getSize())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasPosition()) {
+        hash = (37 * hash) + POSITION_FIELD_NUMBER;
+        hash = (53 * hash) + getPosition().hashCode();
+      }
+      if (hasSize()) {
+        hash = (37 * hash) + SIZE_FIELD_NUMBER;
+        hash = (53 * hash) + getSize().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static godot.wire.Wire.Rec2 parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static godot.wire.Wire.Rec2 parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static godot.wire.Wire.Rec2 parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static godot.wire.Wire.Rec2 parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(godot.wire.Wire.Rec2 prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Rec2}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Rec2)
+        godot.wire.Wire.Rec2OrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return godot.wire.Wire.internal_static_Rec2_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return godot.wire.Wire.internal_static_Rec2_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                godot.wire.Wire.Rec2.class, godot.wire.Wire.Rec2.Builder.class);
+      }
+
+      // Construct using godot.wire.Wire.Rec2.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (positionBuilder_ == null) {
+          position_ = null;
+        } else {
+          position_ = null;
+          positionBuilder_ = null;
+        }
+        if (sizeBuilder_ == null) {
+          size_ = null;
+        } else {
+          size_ = null;
+          sizeBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return godot.wire.Wire.internal_static_Rec2_descriptor;
+      }
+
+      @java.lang.Override
+      public godot.wire.Wire.Rec2 getDefaultInstanceForType() {
+        return godot.wire.Wire.Rec2.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public godot.wire.Wire.Rec2 build() {
+        godot.wire.Wire.Rec2 result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public godot.wire.Wire.Rec2 buildPartial() {
+        godot.wire.Wire.Rec2 result = new godot.wire.Wire.Rec2(this);
+        if (positionBuilder_ == null) {
+          result.position_ = position_;
+        } else {
+          result.position_ = positionBuilder_.build();
+        }
+        if (sizeBuilder_ == null) {
+          result.size_ = size_;
+        } else {
+          result.size_ = sizeBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof godot.wire.Wire.Rec2) {
+          return mergeFrom((godot.wire.Wire.Rec2)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(godot.wire.Wire.Rec2 other) {
+        if (other == godot.wire.Wire.Rec2.getDefaultInstance()) return this;
+        if (other.hasPosition()) {
+          mergePosition(other.getPosition());
+        }
+        if (other.hasSize()) {
+          mergeSize(other.getSize());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        godot.wire.Wire.Rec2 parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (godot.wire.Wire.Rec2) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private godot.wire.Wire.Vector2 position_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Vector2, godot.wire.Wire.Vector2.Builder, godot.wire.Wire.Vector2OrBuilder> positionBuilder_;
+      /**
+       * <code>.Vector2 position = 1;</code>
+       * @return Whether the position field is set.
+       */
+      public boolean hasPosition() {
+        return positionBuilder_ != null || position_ != null;
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       * @return The position.
+       */
+      public godot.wire.Wire.Vector2 getPosition() {
+        if (positionBuilder_ == null) {
+          return position_ == null ? godot.wire.Wire.Vector2.getDefaultInstance() : position_;
+        } else {
+          return positionBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       */
+      public Builder setPosition(godot.wire.Wire.Vector2 value) {
+        if (positionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          position_ = value;
+          onChanged();
+        } else {
+          positionBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       */
+      public Builder setPosition(
+          godot.wire.Wire.Vector2.Builder builderForValue) {
+        if (positionBuilder_ == null) {
+          position_ = builderForValue.build();
+          onChanged();
+        } else {
+          positionBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       */
+      public Builder mergePosition(godot.wire.Wire.Vector2 value) {
+        if (positionBuilder_ == null) {
+          if (position_ != null) {
+            position_ =
+              godot.wire.Wire.Vector2.newBuilder(position_).mergeFrom(value).buildPartial();
+          } else {
+            position_ = value;
+          }
+          onChanged();
+        } else {
+          positionBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       */
+      public Builder clearPosition() {
+        if (positionBuilder_ == null) {
+          position_ = null;
+          onChanged();
+        } else {
+          position_ = null;
+          positionBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       */
+      public godot.wire.Wire.Vector2.Builder getPositionBuilder() {
+        
+        onChanged();
+        return getPositionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       */
+      public godot.wire.Wire.Vector2OrBuilder getPositionOrBuilder() {
+        if (positionBuilder_ != null) {
+          return positionBuilder_.getMessageOrBuilder();
+        } else {
+          return position_ == null ?
+              godot.wire.Wire.Vector2.getDefaultInstance() : position_;
+        }
+      }
+      /**
+       * <code>.Vector2 position = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Vector2, godot.wire.Wire.Vector2.Builder, godot.wire.Wire.Vector2OrBuilder> 
+          getPositionFieldBuilder() {
+        if (positionBuilder_ == null) {
+          positionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              godot.wire.Wire.Vector2, godot.wire.Wire.Vector2.Builder, godot.wire.Wire.Vector2OrBuilder>(
+                  getPosition(),
+                  getParentForChildren(),
+                  isClean());
+          position_ = null;
+        }
+        return positionBuilder_;
+      }
+
+      private godot.wire.Wire.Vector2 size_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Vector2, godot.wire.Wire.Vector2.Builder, godot.wire.Wire.Vector2OrBuilder> sizeBuilder_;
+      /**
+       * <code>.Vector2 size = 2;</code>
+       * @return Whether the size field is set.
+       */
+      public boolean hasSize() {
+        return sizeBuilder_ != null || size_ != null;
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       * @return The size.
+       */
+      public godot.wire.Wire.Vector2 getSize() {
+        if (sizeBuilder_ == null) {
+          return size_ == null ? godot.wire.Wire.Vector2.getDefaultInstance() : size_;
+        } else {
+          return sizeBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       */
+      public Builder setSize(godot.wire.Wire.Vector2 value) {
+        if (sizeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          size_ = value;
+          onChanged();
+        } else {
+          sizeBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       */
+      public Builder setSize(
+          godot.wire.Wire.Vector2.Builder builderForValue) {
+        if (sizeBuilder_ == null) {
+          size_ = builderForValue.build();
+          onChanged();
+        } else {
+          sizeBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       */
+      public Builder mergeSize(godot.wire.Wire.Vector2 value) {
+        if (sizeBuilder_ == null) {
+          if (size_ != null) {
+            size_ =
+              godot.wire.Wire.Vector2.newBuilder(size_).mergeFrom(value).buildPartial();
+          } else {
+            size_ = value;
+          }
+          onChanged();
+        } else {
+          sizeBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       */
+      public Builder clearSize() {
+        if (sizeBuilder_ == null) {
+          size_ = null;
+          onChanged();
+        } else {
+          size_ = null;
+          sizeBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       */
+      public godot.wire.Wire.Vector2.Builder getSizeBuilder() {
+        
+        onChanged();
+        return getSizeFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       */
+      public godot.wire.Wire.Vector2OrBuilder getSizeOrBuilder() {
+        if (sizeBuilder_ != null) {
+          return sizeBuilder_.getMessageOrBuilder();
+        } else {
+          return size_ == null ?
+              godot.wire.Wire.Vector2.getDefaultInstance() : size_;
+        }
+      }
+      /**
+       * <code>.Vector2 size = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Vector2, godot.wire.Wire.Vector2.Builder, godot.wire.Wire.Vector2OrBuilder> 
+          getSizeFieldBuilder() {
+        if (sizeBuilder_ == null) {
+          sizeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              godot.wire.Wire.Vector2, godot.wire.Wire.Vector2.Builder, godot.wire.Wire.Vector2OrBuilder>(
+                  getSize(),
+                  getParentForChildren(),
+                  isClean());
+          size_ = null;
+        }
+        return sizeBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:Rec2)
+    }
+
+    // @@protoc_insertion_point(class_scope:Rec2)
+    private static final godot.wire.Wire.Rec2 DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new godot.wire.Wire.Rec2();
+    }
+
+    public static godot.wire.Wire.Rec2 getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Rec2>
+        PARSER = new com.google.protobuf.AbstractParser<Rec2>() {
+      @java.lang.Override
+      public Rec2 parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Rec2(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Rec2> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Rec2> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public godot.wire.Wire.Rec2 getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface Vector3OrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Vector3)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>float x = 1;</code>
+     * @return The x.
+     */
+    float getX();
+
+    /**
+     * <code>float y = 2;</code>
+     * @return The y.
+     */
+    float getY();
+
+    /**
+     * <code>float z = 3;</code>
+     * @return The z.
+     */
+    float getZ();
+  }
+  /**
+   * Protobuf type {@code Vector3}
+   */
+  public static final class Vector3 extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:Vector3)
+      Vector3OrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Vector3.newBuilder() to construct.
+    private Vector3(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Vector3() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Vector3();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Vector3(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 13: {
+
+              x_ = input.readFloat();
+              break;
+            }
+            case 21: {
+
+              y_ = input.readFloat();
+              break;
+            }
+            case 29: {
+
+              z_ = input.readFloat();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return godot.wire.Wire.internal_static_Vector3_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return godot.wire.Wire.internal_static_Vector3_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              godot.wire.Wire.Vector3.class, godot.wire.Wire.Vector3.Builder.class);
+    }
+
+    public static final int X_FIELD_NUMBER = 1;
+    private float x_;
+    /**
+     * <code>float x = 1;</code>
+     * @return The x.
+     */
+    @java.lang.Override
+    public float getX() {
+      return x_;
+    }
+
+    public static final int Y_FIELD_NUMBER = 2;
+    private float y_;
+    /**
+     * <code>float y = 2;</code>
+     * @return The y.
+     */
+    @java.lang.Override
+    public float getY() {
+      return y_;
+    }
+
+    public static final int Z_FIELD_NUMBER = 3;
+    private float z_;
+    /**
+     * <code>float z = 3;</code>
+     * @return The z.
+     */
+    @java.lang.Override
+    public float getZ() {
+      return z_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (x_ != 0F) {
+        output.writeFloat(1, x_);
+      }
+      if (y_ != 0F) {
+        output.writeFloat(2, y_);
+      }
+      if (z_ != 0F) {
+        output.writeFloat(3, z_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (x_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(1, x_);
+      }
+      if (y_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, y_);
+      }
+      if (z_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(3, z_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof godot.wire.Wire.Vector3)) {
+        return super.equals(obj);
+      }
+      godot.wire.Wire.Vector3 other = (godot.wire.Wire.Vector3) obj;
+
+      if (java.lang.Float.floatToIntBits(getX())
+          != java.lang.Float.floatToIntBits(
+              other.getX())) return false;
+      if (java.lang.Float.floatToIntBits(getY())
+          != java.lang.Float.floatToIntBits(
+              other.getY())) return false;
+      if (java.lang.Float.floatToIntBits(getZ())
+          != java.lang.Float.floatToIntBits(
+              other.getZ())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + X_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getX());
+      hash = (37 * hash) + Y_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getY());
+      hash = (37 * hash) + Z_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getZ());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static godot.wire.Wire.Vector3 parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static godot.wire.Wire.Vector3 parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static godot.wire.Wire.Vector3 parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static godot.wire.Wire.Vector3 parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(godot.wire.Wire.Vector3 prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Vector3}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Vector3)
+        godot.wire.Wire.Vector3OrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return godot.wire.Wire.internal_static_Vector3_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return godot.wire.Wire.internal_static_Vector3_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                godot.wire.Wire.Vector3.class, godot.wire.Wire.Vector3.Builder.class);
+      }
+
+      // Construct using godot.wire.Wire.Vector3.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        x_ = 0F;
+
+        y_ = 0F;
+
+        z_ = 0F;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return godot.wire.Wire.internal_static_Vector3_descriptor;
+      }
+
+      @java.lang.Override
+      public godot.wire.Wire.Vector3 getDefaultInstanceForType() {
+        return godot.wire.Wire.Vector3.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public godot.wire.Wire.Vector3 build() {
+        godot.wire.Wire.Vector3 result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public godot.wire.Wire.Vector3 buildPartial() {
+        godot.wire.Wire.Vector3 result = new godot.wire.Wire.Vector3(this);
+        result.x_ = x_;
+        result.y_ = y_;
+        result.z_ = z_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof godot.wire.Wire.Vector3) {
+          return mergeFrom((godot.wire.Wire.Vector3)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(godot.wire.Wire.Vector3 other) {
+        if (other == godot.wire.Wire.Vector3.getDefaultInstance()) return this;
+        if (other.getX() != 0F) {
+          setX(other.getX());
+        }
+        if (other.getY() != 0F) {
+          setY(other.getY());
+        }
+        if (other.getZ() != 0F) {
+          setZ(other.getZ());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        godot.wire.Wire.Vector3 parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (godot.wire.Wire.Vector3) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private float x_ ;
+      /**
+       * <code>float x = 1;</code>
+       * @return The x.
+       */
+      @java.lang.Override
+      public float getX() {
+        return x_;
+      }
+      /**
+       * <code>float x = 1;</code>
+       * @param value The x to set.
+       * @return This builder for chaining.
+       */
+      public Builder setX(float value) {
+        
+        x_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float x = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearX() {
+        
+        x_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float y_ ;
+      /**
+       * <code>float y = 2;</code>
+       * @return The y.
+       */
+      @java.lang.Override
+      public float getY() {
+        return y_;
+      }
+      /**
+       * <code>float y = 2;</code>
+       * @param value The y to set.
+       * @return This builder for chaining.
+       */
+      public Builder setY(float value) {
+        
+        y_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float y = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearY() {
+        
+        y_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float z_ ;
+      /**
+       * <code>float z = 3;</code>
+       * @return The z.
+       */
+      @java.lang.Override
+      public float getZ() {
+        return z_;
+      }
+      /**
+       * <code>float z = 3;</code>
+       * @param value The z to set.
+       * @return This builder for chaining.
+       */
+      public Builder setZ(float value) {
+        
+        z_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float z = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearZ() {
+        
+        z_ = 0F;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:Vector3)
+    }
+
+    // @@protoc_insertion_point(class_scope:Vector3)
+    private static final godot.wire.Wire.Vector3 DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new godot.wire.Wire.Vector3();
+    }
+
+    public static godot.wire.Wire.Vector3 getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Vector3>
+        PARSER = new com.google.protobuf.AbstractParser<Vector3>() {
+      @java.lang.Override
+      public Vector3 parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Vector3(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Vector3> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Vector3> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public godot.wire.Wire.Vector3 getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -680,6 +2088,36 @@ public final class Wire {
      * <code>.Vector2 vector2_value = 6;</code>
      */
     godot.wire.Wire.Vector2OrBuilder getVector2ValueOrBuilder();
+
+    /**
+     * <code>.Rec2 rec2_value = 7;</code>
+     * @return Whether the rec2Value field is set.
+     */
+    boolean hasRec2Value();
+    /**
+     * <code>.Rec2 rec2_value = 7;</code>
+     * @return The rec2Value.
+     */
+    godot.wire.Wire.Rec2 getRec2Value();
+    /**
+     * <code>.Rec2 rec2_value = 7;</code>
+     */
+    godot.wire.Wire.Rec2OrBuilder getRec2ValueOrBuilder();
+
+    /**
+     * <code>.Vector3 vector3_value = 8;</code>
+     * @return Whether the vector3Value field is set.
+     */
+    boolean hasVector3Value();
+    /**
+     * <code>.Vector3 vector3_value = 8;</code>
+     * @return The vector3Value.
+     */
+    godot.wire.Wire.Vector3 getVector3Value();
+    /**
+     * <code>.Vector3 vector3_value = 8;</code>
+     */
+    godot.wire.Wire.Vector3OrBuilder getVector3ValueOrBuilder();
 
     public godot.wire.Wire.KVariant.TypeCase getTypeCase();
   }
@@ -768,6 +2206,34 @@ public final class Wire {
               typeCase_ = 6;
               break;
             }
+            case 58: {
+              godot.wire.Wire.Rec2.Builder subBuilder = null;
+              if (typeCase_ == 7) {
+                subBuilder = ((godot.wire.Wire.Rec2) type_).toBuilder();
+              }
+              type_ =
+                  input.readMessage(godot.wire.Wire.Rec2.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((godot.wire.Wire.Rec2) type_);
+                type_ = subBuilder.buildPartial();
+              }
+              typeCase_ = 7;
+              break;
+            }
+            case 66: {
+              godot.wire.Wire.Vector3.Builder subBuilder = null;
+              if (typeCase_ == 8) {
+                subBuilder = ((godot.wire.Wire.Vector3) type_).toBuilder();
+              }
+              type_ =
+                  input.readMessage(godot.wire.Wire.Vector3.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((godot.wire.Wire.Vector3) type_);
+                type_ = subBuilder.buildPartial();
+              }
+              typeCase_ = 8;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -811,6 +2277,8 @@ public final class Wire {
       STRING_VALUE(4),
       BOOL_VALUE(5),
       VECTOR2_VALUE(6),
+      REC2_VALUE(7),
+      VECTOR3_VALUE(8),
       TYPE_NOT_SET(0);
       private final int value;
       private TypeCase(int value) {
@@ -834,6 +2302,8 @@ public final class Wire {
           case 4: return STRING_VALUE;
           case 5: return BOOL_VALUE;
           case 6: return VECTOR2_VALUE;
+          case 7: return REC2_VALUE;
+          case 8: return VECTOR3_VALUE;
           case 0: return TYPE_NOT_SET;
           default: return null;
         }
@@ -977,6 +2447,68 @@ public final class Wire {
       return godot.wire.Wire.Vector2.getDefaultInstance();
     }
 
+    public static final int REC2_VALUE_FIELD_NUMBER = 7;
+    /**
+     * <code>.Rec2 rec2_value = 7;</code>
+     * @return Whether the rec2Value field is set.
+     */
+    @java.lang.Override
+    public boolean hasRec2Value() {
+      return typeCase_ == 7;
+    }
+    /**
+     * <code>.Rec2 rec2_value = 7;</code>
+     * @return The rec2Value.
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Rec2 getRec2Value() {
+      if (typeCase_ == 7) {
+         return (godot.wire.Wire.Rec2) type_;
+      }
+      return godot.wire.Wire.Rec2.getDefaultInstance();
+    }
+    /**
+     * <code>.Rec2 rec2_value = 7;</code>
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Rec2OrBuilder getRec2ValueOrBuilder() {
+      if (typeCase_ == 7) {
+         return (godot.wire.Wire.Rec2) type_;
+      }
+      return godot.wire.Wire.Rec2.getDefaultInstance();
+    }
+
+    public static final int VECTOR3_VALUE_FIELD_NUMBER = 8;
+    /**
+     * <code>.Vector3 vector3_value = 8;</code>
+     * @return Whether the vector3Value field is set.
+     */
+    @java.lang.Override
+    public boolean hasVector3Value() {
+      return typeCase_ == 8;
+    }
+    /**
+     * <code>.Vector3 vector3_value = 8;</code>
+     * @return The vector3Value.
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Vector3 getVector3Value() {
+      if (typeCase_ == 8) {
+         return (godot.wire.Wire.Vector3) type_;
+      }
+      return godot.wire.Wire.Vector3.getDefaultInstance();
+    }
+    /**
+     * <code>.Vector3 vector3_value = 8;</code>
+     */
+    @java.lang.Override
+    public godot.wire.Wire.Vector3OrBuilder getVector3ValueOrBuilder() {
+      if (typeCase_ == 8) {
+         return (godot.wire.Wire.Vector3) type_;
+      }
+      return godot.wire.Wire.Vector3.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1013,6 +2545,12 @@ public final class Wire {
       if (typeCase_ == 6) {
         output.writeMessage(6, (godot.wire.Wire.Vector2) type_);
       }
+      if (typeCase_ == 7) {
+        output.writeMessage(7, (godot.wire.Wire.Rec2) type_);
+      }
+      if (typeCase_ == 8) {
+        output.writeMessage(8, (godot.wire.Wire.Vector3) type_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1048,6 +2586,14 @@ public final class Wire {
       if (typeCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, (godot.wire.Wire.Vector2) type_);
+      }
+      if (typeCase_ == 7) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, (godot.wire.Wire.Rec2) type_);
+      }
+      if (typeCase_ == 8) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, (godot.wire.Wire.Vector3) type_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1091,6 +2637,14 @@ public final class Wire {
           if (!getVector2Value()
               .equals(other.getVector2Value())) return false;
           break;
+        case 7:
+          if (!getRec2Value()
+              .equals(other.getRec2Value())) return false;
+          break;
+        case 8:
+          if (!getVector3Value()
+              .equals(other.getVector3Value())) return false;
+          break;
         case 0:
         default:
       }
@@ -1132,6 +2686,14 @@ public final class Wire {
         case 6:
           hash = (37 * hash) + VECTOR2_VALUE_FIELD_NUMBER;
           hash = (53 * hash) + getVector2Value().hashCode();
+          break;
+        case 7:
+          hash = (37 * hash) + REC2_VALUE_FIELD_NUMBER;
+          hash = (53 * hash) + getRec2Value().hashCode();
+          break;
+        case 8:
+          hash = (37 * hash) + VECTOR3_VALUE_FIELD_NUMBER;
+          hash = (53 * hash) + getVector3Value().hashCode();
           break;
         case 0:
         default:
@@ -1319,6 +2881,20 @@ public final class Wire {
             result.type_ = vector2ValueBuilder_.build();
           }
         }
+        if (typeCase_ == 7) {
+          if (rec2ValueBuilder_ == null) {
+            result.type_ = type_;
+          } else {
+            result.type_ = rec2ValueBuilder_.build();
+          }
+        }
+        if (typeCase_ == 8) {
+          if (vector3ValueBuilder_ == null) {
+            result.type_ = type_;
+          } else {
+            result.type_ = vector3ValueBuilder_.build();
+          }
+        }
         result.typeCase_ = typeCase_;
         onBuilt();
         return result;
@@ -1393,6 +2969,14 @@ public final class Wire {
           }
           case VECTOR2_VALUE: {
             mergeVector2Value(other.getVector2Value());
+            break;
+          }
+          case REC2_VALUE: {
+            mergeRec2Value(other.getRec2Value());
+            break;
+          }
+          case VECTOR3_VALUE: {
+            mergeVector3Value(other.getVector3Value());
             break;
           }
           case TYPE_NOT_SET: {
@@ -1807,6 +3391,288 @@ public final class Wire {
         typeCase_ = 6;
         onChanged();;
         return vector2ValueBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Rec2, godot.wire.Wire.Rec2.Builder, godot.wire.Wire.Rec2OrBuilder> rec2ValueBuilder_;
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       * @return Whether the rec2Value field is set.
+       */
+      @java.lang.Override
+      public boolean hasRec2Value() {
+        return typeCase_ == 7;
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       * @return The rec2Value.
+       */
+      @java.lang.Override
+      public godot.wire.Wire.Rec2 getRec2Value() {
+        if (rec2ValueBuilder_ == null) {
+          if (typeCase_ == 7) {
+            return (godot.wire.Wire.Rec2) type_;
+          }
+          return godot.wire.Wire.Rec2.getDefaultInstance();
+        } else {
+          if (typeCase_ == 7) {
+            return rec2ValueBuilder_.getMessage();
+          }
+          return godot.wire.Wire.Rec2.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       */
+      public Builder setRec2Value(godot.wire.Wire.Rec2 value) {
+        if (rec2ValueBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          type_ = value;
+          onChanged();
+        } else {
+          rec2ValueBuilder_.setMessage(value);
+        }
+        typeCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       */
+      public Builder setRec2Value(
+          godot.wire.Wire.Rec2.Builder builderForValue) {
+        if (rec2ValueBuilder_ == null) {
+          type_ = builderForValue.build();
+          onChanged();
+        } else {
+          rec2ValueBuilder_.setMessage(builderForValue.build());
+        }
+        typeCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       */
+      public Builder mergeRec2Value(godot.wire.Wire.Rec2 value) {
+        if (rec2ValueBuilder_ == null) {
+          if (typeCase_ == 7 &&
+              type_ != godot.wire.Wire.Rec2.getDefaultInstance()) {
+            type_ = godot.wire.Wire.Rec2.newBuilder((godot.wire.Wire.Rec2) type_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            type_ = value;
+          }
+          onChanged();
+        } else {
+          if (typeCase_ == 7) {
+            rec2ValueBuilder_.mergeFrom(value);
+          }
+          rec2ValueBuilder_.setMessage(value);
+        }
+        typeCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       */
+      public Builder clearRec2Value() {
+        if (rec2ValueBuilder_ == null) {
+          if (typeCase_ == 7) {
+            typeCase_ = 0;
+            type_ = null;
+            onChanged();
+          }
+        } else {
+          if (typeCase_ == 7) {
+            typeCase_ = 0;
+            type_ = null;
+          }
+          rec2ValueBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       */
+      public godot.wire.Wire.Rec2.Builder getRec2ValueBuilder() {
+        return getRec2ValueFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       */
+      @java.lang.Override
+      public godot.wire.Wire.Rec2OrBuilder getRec2ValueOrBuilder() {
+        if ((typeCase_ == 7) && (rec2ValueBuilder_ != null)) {
+          return rec2ValueBuilder_.getMessageOrBuilder();
+        } else {
+          if (typeCase_ == 7) {
+            return (godot.wire.Wire.Rec2) type_;
+          }
+          return godot.wire.Wire.Rec2.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Rec2 rec2_value = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Rec2, godot.wire.Wire.Rec2.Builder, godot.wire.Wire.Rec2OrBuilder> 
+          getRec2ValueFieldBuilder() {
+        if (rec2ValueBuilder_ == null) {
+          if (!(typeCase_ == 7)) {
+            type_ = godot.wire.Wire.Rec2.getDefaultInstance();
+          }
+          rec2ValueBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              godot.wire.Wire.Rec2, godot.wire.Wire.Rec2.Builder, godot.wire.Wire.Rec2OrBuilder>(
+                  (godot.wire.Wire.Rec2) type_,
+                  getParentForChildren(),
+                  isClean());
+          type_ = null;
+        }
+        typeCase_ = 7;
+        onChanged();;
+        return rec2ValueBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Vector3, godot.wire.Wire.Vector3.Builder, godot.wire.Wire.Vector3OrBuilder> vector3ValueBuilder_;
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       * @return Whether the vector3Value field is set.
+       */
+      @java.lang.Override
+      public boolean hasVector3Value() {
+        return typeCase_ == 8;
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       * @return The vector3Value.
+       */
+      @java.lang.Override
+      public godot.wire.Wire.Vector3 getVector3Value() {
+        if (vector3ValueBuilder_ == null) {
+          if (typeCase_ == 8) {
+            return (godot.wire.Wire.Vector3) type_;
+          }
+          return godot.wire.Wire.Vector3.getDefaultInstance();
+        } else {
+          if (typeCase_ == 8) {
+            return vector3ValueBuilder_.getMessage();
+          }
+          return godot.wire.Wire.Vector3.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       */
+      public Builder setVector3Value(godot.wire.Wire.Vector3 value) {
+        if (vector3ValueBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          type_ = value;
+          onChanged();
+        } else {
+          vector3ValueBuilder_.setMessage(value);
+        }
+        typeCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       */
+      public Builder setVector3Value(
+          godot.wire.Wire.Vector3.Builder builderForValue) {
+        if (vector3ValueBuilder_ == null) {
+          type_ = builderForValue.build();
+          onChanged();
+        } else {
+          vector3ValueBuilder_.setMessage(builderForValue.build());
+        }
+        typeCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       */
+      public Builder mergeVector3Value(godot.wire.Wire.Vector3 value) {
+        if (vector3ValueBuilder_ == null) {
+          if (typeCase_ == 8 &&
+              type_ != godot.wire.Wire.Vector3.getDefaultInstance()) {
+            type_ = godot.wire.Wire.Vector3.newBuilder((godot.wire.Wire.Vector3) type_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            type_ = value;
+          }
+          onChanged();
+        } else {
+          if (typeCase_ == 8) {
+            vector3ValueBuilder_.mergeFrom(value);
+          }
+          vector3ValueBuilder_.setMessage(value);
+        }
+        typeCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       */
+      public Builder clearVector3Value() {
+        if (vector3ValueBuilder_ == null) {
+          if (typeCase_ == 8) {
+            typeCase_ = 0;
+            type_ = null;
+            onChanged();
+          }
+        } else {
+          if (typeCase_ == 8) {
+            typeCase_ = 0;
+            type_ = null;
+          }
+          vector3ValueBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       */
+      public godot.wire.Wire.Vector3.Builder getVector3ValueBuilder() {
+        return getVector3ValueFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       */
+      @java.lang.Override
+      public godot.wire.Wire.Vector3OrBuilder getVector3ValueOrBuilder() {
+        if ((typeCase_ == 8) && (vector3ValueBuilder_ != null)) {
+          return vector3ValueBuilder_.getMessageOrBuilder();
+        } else {
+          if (typeCase_ == 8) {
+            return (godot.wire.Wire.Vector3) type_;
+          }
+          return godot.wire.Wire.Vector3.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Vector3 vector3_value = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          godot.wire.Wire.Vector3, godot.wire.Wire.Vector3.Builder, godot.wire.Wire.Vector3OrBuilder> 
+          getVector3ValueFieldBuilder() {
+        if (vector3ValueBuilder_ == null) {
+          if (!(typeCase_ == 8)) {
+            type_ = godot.wire.Wire.Vector3.getDefaultInstance();
+          }
+          vector3ValueBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              godot.wire.Wire.Vector3, godot.wire.Wire.Vector3.Builder, godot.wire.Wire.Vector3OrBuilder>(
+                  (godot.wire.Wire.Vector3) type_,
+                  getParentForChildren(),
+                  isClean());
+          type_ = null;
+        }
+        typeCase_ = 8;
+        onChanged();;
+        return vector3ValueBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -3281,6 +5147,16 @@ public final class Wire {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Vector2_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Rec2_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Rec2_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Vector3_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Vector3_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_KVariant_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -3304,14 +5180,19 @@ public final class Wire {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021protos/wire.proto\"\027\n\007Vector2\022\014\n\004data\030\002" +
-      " \003(\002\"\244\001\n\010KVariant\022\023\n\tnil_value\030\001 \001(\005H\000\022\024" +
-      "\n\nlong_value\030\002 \001(\003H\000\022\024\n\nreal_value\030\003 \001(\001" +
-      "H\000\022\026\n\014string_value\030\004 \001(\tH\000\022\024\n\nbool_value" +
-      "\030\005 \001(\010H\000\022!\n\rvector2_value\030\006 \001(\0132\010.Vector" +
-      "2H\000B\006\n\004type\"\'\n\014KReturnValue\022\027\n\004data\030\001 \001(" +
-      "\0132\t.KVariant\"$\n\tKFuncArgs\022\027\n\004args\030\001 \003(\0132" +
-      "\t.KVariantB\014\n\ngodot.wireb\006proto3"
+      "\n\021protos/wire.proto\"\037\n\007Vector2\022\t\n\001x\030\001 \001(" +
+      "\002\022\t\n\001y\030\002 \001(\002\":\n\004Rec2\022\032\n\010position\030\001 \001(\0132\010" +
+      ".Vector2\022\026\n\004size\030\002 \001(\0132\010.Vector2\"*\n\007Vect" +
+      "or3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\"\344\001\n" +
+      "\010KVariant\022\023\n\tnil_value\030\001 \001(\005H\000\022\024\n\nlong_v" +
+      "alue\030\002 \001(\003H\000\022\024\n\nreal_value\030\003 \001(\001H\000\022\026\n\014st" +
+      "ring_value\030\004 \001(\tH\000\022\024\n\nbool_value\030\005 \001(\010H\000" +
+      "\022!\n\rvector2_value\030\006 \001(\0132\010.Vector2H\000\022\033\n\nr" +
+      "ec2_value\030\007 \001(\0132\005.Rec2H\000\022!\n\rvector3_valu" +
+      "e\030\010 \001(\0132\010.Vector3H\000B\006\n\004type\"\'\n\014KReturnVa" +
+      "lue\022\027\n\004data\030\001 \001(\0132\t.KVariant\"$\n\tKFuncArg" +
+      "s\022\027\n\004args\030\001 \003(\0132\t.KVariantB\014\n\ngodot.wire" +
+      "b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3322,21 +5203,33 @@ public final class Wire {
     internal_static_Vector2_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Vector2_descriptor,
-        new java.lang.String[] { "Data", });
-    internal_static_KVariant_descriptor =
+        new java.lang.String[] { "X", "Y", });
+    internal_static_Rec2_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_Rec2_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Rec2_descriptor,
+        new java.lang.String[] { "Position", "Size", });
+    internal_static_Vector3_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_Vector3_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Vector3_descriptor,
+        new java.lang.String[] { "X", "Y", "Z", });
+    internal_static_KVariant_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_KVariant_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_KVariant_descriptor,
-        new java.lang.String[] { "NilValue", "LongValue", "RealValue", "StringValue", "BoolValue", "Vector2Value", "Type", });
+        new java.lang.String[] { "NilValue", "LongValue", "RealValue", "StringValue", "BoolValue", "Vector2Value", "Rec2Value", "Vector3Value", "Type", });
     internal_static_KReturnValue_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_KReturnValue_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_KReturnValue_descriptor,
         new java.lang.String[] { "Data", });
     internal_static_KFuncArgs_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_KFuncArgs_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_KFuncArgs_descriptor,
