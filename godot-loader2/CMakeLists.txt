@@ -15,7 +15,6 @@ set(SOURCES
         src/bridge.cpp
         src/native_kobject.cpp
         src/native_kfunction.cpp
-        src/native_kvariant.cpp
         src/icall_args.cpp
         src/native_transfer_context.cpp
         src/jni_utils.cpp
