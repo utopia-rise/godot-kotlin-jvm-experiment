@@ -1,4 +1,5 @@
 #include "icall_args.h"
+#include <math.h>
 
 static void(*TO_ICALL_ARG[27 /* KVariant::TypeCase count */])(ICallArg&, const KVariant&);
 static bool TO_ICALL_ARG_INIT = false;

@@ -8,10 +8,10 @@ class ICallArg {
 public:
     KVariant::TypeCase type;
     union {
-        long intValue;
-        double   realValue;
         bool boolValue;
         godot_string stringValue;
+        long intValue;
+        double realValue;
         void* ptrValue;
     } data;
 

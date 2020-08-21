@@ -23,8 +23,8 @@ class Simple : KObject() {
 
     fun _process(delta: Float) {
         val transferContext = BindingContext.transferContext
-        assert(!delta.isNaN())
-        transferContext.writeArguments(TValue(Math.toRadians(30.0) * delta))
+        val value = Math.toRadians(30.0) * delta
+        transferContext.writeArguments(TValue(value))
         transferContext.callMethod(hackPtr, "Spatial", "rotate_y", TValue.Type.NIL)
         transferContext.readReturnValue()
     }
