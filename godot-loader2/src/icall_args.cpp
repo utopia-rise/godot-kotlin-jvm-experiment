@@ -1,18 +1,19 @@
 #include "icall_args.h"
-#include <math.h>
 
-static void(*TO_ICALL_ARG[27 /* KVariant::TypeCase count */])(ICallArg&, const KVariant&);
+static void(*TO_ICALL_ARG[27 /* KVariant::TypeCase count */])(ICallValue&, const KVariant&);
 static bool TO_ICALL_ARG_INIT = false;
 static void initToICallArg();
 
-ICallArg::ICallArg(NativeTValue& value) {
+ICallValue::ICallValue(NativeTValue& value) {
     initToICallArg();
     type = value.data.type_case();
     auto converter = TO_ICALL_ARG[type - 1];
     converter(*this, value.data);
 }
 
-ICallArg::~ICallArg() {
+ICallValue::ICallValue(KVariant::TypeCase type) : type(type), data({}) {}
+
+ICallValue::~ICallValue() {
     if (type == KVariant::TypeCase::kStringValue) {
         auto& godot = Godot::instance();
         godot.gd->godot_string_destroy(&data.stringValue);
@@ -21,12 +22,11 @@ ICallArg::~ICallArg() {
 
 ICallArgs::ICallArgs(std::vector<NativeTValue>& args) {
     for (auto arg : args) {
-        iCallArgs.emplace_back(ICallArg(arg));
+        iCallArgs.emplace_back(ICallValue(arg));
     }
 }
 
-ICallArgs::~ICallArgs() {
-}
+ICallArgs::~ICallArgs() = default;
 
 std::vector<void*> ICallArgs::asRawData() {
     auto ret = std::vector<void*>();
@@ -37,23 +37,23 @@ std::vector<void*> ICallArgs::asRawData() {
     return ret;
 }
 
-void nilToRawData(ICallArg& raw, const KVariant& data) {
+void nilToRawData(ICallValue& raw, const KVariant& data) {
     raw.data.ptrValue = nullptr;
 }
 
-void intToRawData(ICallArg& raw, const KVariant& data) {
+void intToRawData(ICallValue& raw, const KVariant& data) {
     raw.data.intValue = data.long_value();
 }
 
-void realToRawData(ICallArg& raw, const KVariant& data) {
+void realToRawData(ICallValue& raw, const KVariant& data) {
     raw.data.realValue = data.real_value();
 }
 
-void boolToRawData(ICallArg& raw, const KVariant& data) {
+void boolToRawData(ICallValue& raw, const KVariant& data) {
     raw.data.boolValue = data.bool_value();
 }
 
-void stringToRawData(ICallArg& raw, const KVariant& data) {
+void stringToRawData(ICallValue& raw, const KVariant& data) {
     auto& godot = Godot::instance();
     godot.gd->godot_string_new(&raw.data.stringValue);
     godot.gd->godot_string_parse_utf8(&raw.data.stringValue, data.string_value().c_str());

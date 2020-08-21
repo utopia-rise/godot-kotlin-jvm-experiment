@@ -4,8 +4,7 @@
 #include "native_tvalue.h"
 #include <vector>
 
-class ICallArg {
-public:
+struct ICallValue {
     KVariant::TypeCase type;
     union {
         bool boolValue;
@@ -15,8 +14,9 @@ public:
         void* ptrValue;
     } data;
 
-    ICallArg(NativeTValue& value);
-    ~ICallArg();
+    ICallValue(KVariant::TypeCase type);
+    ICallValue(NativeTValue& value);
+    ~ICallValue();
 };
 
 class ICallArgs {
@@ -26,7 +26,7 @@ public:
 
     std::vector<void*> asRawData();
 private:
-    std::vector<ICallArg> iCallArgs;
+    std::vector<ICallValue> iCallArgs;
 };
 
 
