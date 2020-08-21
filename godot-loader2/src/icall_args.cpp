@@ -34,6 +34,7 @@ to_icall_from(kBoolValue) {
     dest.data.boolValue = src.bool_value();
 }
 
+// must match the value order of KVariant::TypeCase
 static void(*TO_ICALL_FROM[27 /* KVariant::TypeCase count */])(ICallValue&, const KVariant&) = {
         to_icall_from_index(kNilValue),
         to_icall_from_index(kLongValue),
@@ -65,6 +66,7 @@ from_icall_to(kBoolValue) {
     dest.set_bool_value(src.data.boolValue);
 }
 
+// must match the value order of KVariant::TypeCase
 static void(*FROM_ICALL_TO[27 /* KVariant::TypeCase count */])(KVariant&, const ICallValue&) = {
         from_icall_to_index(kNilValue),
         from_icall_to_index(kLongValue),

@@ -20,7 +20,7 @@ namespace jni {
         // todo: delete copy ctor and assignment?
         JObject(const JObject&) = default;
         JObject& operator=(const JObject&) = default;
-        JObject() : JObject(nullptr) {}
+        inline JObject() : JObject(nullptr) {}
 
         JObject newGlobalRef(Env& env);
         template <class T>
