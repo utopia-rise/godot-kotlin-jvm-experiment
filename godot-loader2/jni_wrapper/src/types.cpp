@@ -9,7 +9,7 @@ namespace jni {
     JObject JObject::newGlobalRef(Env& env) {
         auto ref = env.env->NewGlobalRef(obj);
         env.checkExceptions();
-        return {ref};
+        return JObject(ref);
     }
 
     void JObject::deleteGlobalRef(Env& env) {
@@ -25,7 +25,7 @@ namespace jni {
         unpack_args(args)
         auto ret = env.env->CallObjectMethodA((jclass) obj, method, args.data());
         env.checkExceptions();
-        return {ret};
+        return JObject(ret);
     }
 
     jint JObject::callIntMethod(Env& env, MethodId method, std::initializer_list<JValue> values) {
@@ -98,20 +98,20 @@ namespace jni {
             throw JniError("Failed to instantiated object!");
         }
         env.checkExceptions();
-        return {ret};
+        return JObject(ret);
     }
 
     JObject JClass::callStaticObjectMethod(Env &env, MethodId method, std::initializer_list<JValue> values) {
         unpack_args(args)
         auto ret = env.env->CallStaticObjectMethodA((jclass) obj, method, args.data());
         env.checkExceptions();
-        return {ret};
+        return JObject(ret);
     }
 
     JObject JClass::getStaticObjectField(Env& env, FieldId field) {
         auto value = env.env->GetStaticObjectField((jclass) obj, field);
         env.checkExceptions();
-        return {value};
+        return JObject(value);
     }
 
     JObjectArray JClass::newObjectArray(Env& env, int size, JObject initial) {
@@ -119,7 +119,7 @@ namespace jni {
         if (ret == nullptr) {
             throw JniError("Failed to instantiated object array!");
         }
-        return {ret};
+        return JObjectArray(ret);
     }
 
     int JArray::length(Env& env) {
@@ -132,6 +132,6 @@ namespace jni {
 
     JObject JObjectArray::get(Env& env, int index) {
         auto ret = env.env->GetObjectArrayElement((jobjectArray) obj, index);
-        return {ret};
+        return JObject(ret);
     }
 }

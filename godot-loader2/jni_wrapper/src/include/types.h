@@ -16,7 +16,7 @@ namespace jni {
     class JObject {
     public:
         jobject obj;
-        JObject(jobject);
+        explicit JObject(jobject);
         // todo: delete copy ctor and assignment?
         JObject(const JObject&) = default;
         JObject& operator=(const JObject&) = default;
@@ -40,19 +40,19 @@ namespace jni {
 
     class JString : public JObject {
     public:
-        JString(jstring str) : JObject(str) {}
+        explicit JString(jstring str) : JObject(str) {}
     };
 
     class JArray : public JObject {
     public:
-        JArray(jarray array) : JObject(array) {}
+        explicit JArray(jarray array) : JObject(array) {}
 
         int length(Env& env);
     };
 
     class JObjectArray : public JArray {
     public:
-        JObjectArray(jarray array) : JArray(array) {}
+        explicit JObjectArray(jarray array) : JArray(array) {}
 
         void set(Env& env, int index, JObject value);
         JObject get(Env& env, int index);
@@ -63,7 +63,7 @@ namespace jni {
 
     class JClass : public JObject {
     public:
-        JClass(jclass cls) : JObject(cls) {}
+        explicit JClass(jclass cls) : JObject(cls) {}
 
         JObject newInstance(Env& env, MethodId ctor, std::initializer_list<JValue> values = {});
         JObjectArray newObjectArray(Env& env, int size, JObject initial = {});

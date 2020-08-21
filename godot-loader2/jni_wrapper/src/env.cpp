@@ -25,13 +25,13 @@ namespace jni {
         if (cls == nullptr) {
             throw ClassNotFoundError(name);
         }
-        return {cls};
+        return JClass(cls);
     }
 
     JObject Env::newString(const char *str) {
         auto jstr = env->NewStringUTF(str);
         checkExceptions();
-        return {jstr};
+        return JObject(jstr);
     }
 
     bool Env::exceptionCheck() {

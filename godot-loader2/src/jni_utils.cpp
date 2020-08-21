@@ -9,7 +9,7 @@ jni::JClass loadClass(jni::Env& env, jni::JObject classLoader, const char* name)
     }
     auto str = env.newString(name);
     auto ret = classLoader.callObjectMethod(env, loadClassMethodId, {str});
-    return {(jclass) ret.obj};
+    return jni::JClass((jclass) ret.obj);
 }
 
 static std::vector<JClassHelper*> INSTANCES = {};

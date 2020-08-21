@@ -21,8 +21,8 @@ void NativeTransferContext::icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, 
     }
     auto& godot = Godot::instance();
     auto ptr = reinterpret_cast<godot_object*>(jPtr);
-    auto className = env.fromJString(jClassName);
-    auto method = env.fromJString(jMethod);
+    auto className = env.fromJString(jni::JString(jClassName));
+    auto method = env.fromJString(jni::JString(jMethod));
     auto mb = godot.gd->godot_method_bind_get_method(className.c_str(), method.c_str());
     assert(mb != nullptr);
     auto retICallValue = ICallValue((KVariant::TypeCase) expectedReturnType);
