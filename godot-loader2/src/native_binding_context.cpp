@@ -109,6 +109,14 @@ void NativeBindingContext::unRegisterClasses(void* nativescriptHandle) {
     endScope();
 }
 
+jni::JObject& NativeBindingContext::getClassLoader() {
+    return classLoader;
+}
+
+NativeTransferContext& NativeBindingContext::getTransferContext() {
+    return transferContext;
+}
+
 jni::JObject getCurrentThread(jni::Env& env) {
     auto cls = env.findClass("java/lang/Thread");
     auto currentThreadMethodId = cls.getStaticMethodId(env, "currentThread", "()Ljava/lang/Thread;");

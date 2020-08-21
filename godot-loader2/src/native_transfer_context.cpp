@@ -11,10 +11,11 @@ JClassHelper NativeTransferContext::JH = JClassHelper("godot.wire.TransferContex
 void NativeTransferContext::icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, jstring jClassName, jstring jMethod,
                                   jint expectedReturnType) {
     auto& bindingContext = NativeBindingContext::instance();
-    auto& transferContext = bindingContext.transferContext;
+    auto& transferContext = bindingContext.getTransferContext();
+    auto& classLoader = bindingContext.getClassLoader();
     jni::Env env(rawEnv);
-    auto buffer = transferContext.getBuffer(env, bindingContext.classLoader);
-    auto bufferCapacity = transferContext.getBufferCapacity(env, bindingContext.classLoader);
+    auto buffer = transferContext.getBuffer(env, classLoader);
+    auto bufferCapacity = transferContext.getBufferCapacity(env, classLoader);
     auto tArgs = NativeTransferContext::readArgs(buffer, bufferCapacity);
     auto icallArgs = ICallArgs();
     for (const auto& tArg : tArgs) {
@@ -28,9 +29,9 @@ void NativeTransferContext::icall(JNIEnv* rawEnv, jobject instance, jlong jPtr, 
     auto retICallValue = ICallValue((KVariant::TypeCase) expectedReturnType);
     godot.gd->godot_method_bind_ptrcall(mb, ptr, (const void**) icallArgs.asRawData().data(), &retICallValue.data);
     auto retValue = retICallValue.toKVariant();
-    if (transferContext.ensureCapacity(env, bindingContext.classLoader, retValue.ByteSizeLong())) {
-        buffer = transferContext.getBuffer(env, bindingContext.classLoader);
-        bufferCapacity = transferContext.getBufferCapacity(env, bindingContext.classLoader);
+    if (transferContext.ensureCapacity(env, classLoader, retValue.ByteSizeLong())) {
+        buffer = transferContext.getBuffer(env, classLoader);
+        bufferCapacity = transferContext.getBufferCapacity(env, classLoader);
     }
     NativeTransferContext::writeReturnValue(buffer, bufferCapacity, NativeTValue(retValue));
 }

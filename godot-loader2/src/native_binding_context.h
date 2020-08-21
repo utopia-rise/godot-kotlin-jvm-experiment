@@ -22,9 +22,9 @@ public:
     void registerClasses(void* nativescriptHandle);
     void unRegisterClasses(void* nativescriptHandle);
 
-    jni::JObject classLoader;
 
-    NativeTransferContext transferContext;
+    jni::JObject& getClassLoader();
+    NativeTransferContext& getTransferContext();
 
     static JClassHelper JH;
 private:
@@ -34,6 +34,9 @@ private:
     godot_object* library = nullptr;
     std::string libraryPath;
     std::string projectDir;
+
+    jni::JObject classLoader;
+    NativeTransferContext transferContext;
 };
 
 

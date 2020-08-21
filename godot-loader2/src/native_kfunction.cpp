@@ -46,7 +46,7 @@ int NativeKFunction::getParameterCount(jni::Env& env, jni::JObject& classLoader)
 
 NativeTValue NativeKFunction::invoke(jni::Env& env, jni::JObject classLoader, NativeKObject* instance, const std::vector<NativeTValue>& args) {
     auto& bindingContext = NativeBindingContext::instance();
-    auto& transferContext = bindingContext.transferContext;
+    auto& transferContext = bindingContext.getTransferContext();
     auto invokeMethod = JH.getMethodId(
             env,
             classLoader,

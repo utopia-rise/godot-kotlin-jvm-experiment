@@ -7,8 +7,9 @@ void* createInstance(void* instance, void* methodData) {
     bindingContext.startScope();
     auto& env = jni::Jvm::currentEnv();
     auto handle = (NativeClassHandle*) methodData;
-    auto kotlinInstance = handle->wrap(env, bindingContext.classLoader, instance);
-    kotlinInstance->_onInit(env, bindingContext.classLoader);
+    auto& classLoader = bindingContext.getClassLoader();
+    auto kotlinInstance = handle->wrap(env, classLoader, instance);
+    kotlinInstance->_onInit(env, classLoader);
     bindingContext.endScope();
     return kotlinInstance;
 }
@@ -28,7 +29,8 @@ void destroyInstance(void* instance, void* methodData, void* classData) {
     bindingContext.startScope();
     auto& env = jni::Jvm::currentEnv();
     auto kotlinInstance = (NativeKObject*) classData;
-    kotlinInstance->_onDestroy(env, bindingContext.classLoader);
+    auto& classLoader = bindingContext.getClassLoader();
+    kotlinInstance->_onDestroy(env, classLoader);
     kotlinInstance->dispose(env);
     delete kotlinInstance;
     bindingContext.endScope();
@@ -51,7 +53,7 @@ godot_variant invokeMethod(void* instance, void* methodData, void* classData, in
     auto kotlinInstance = (NativeKObject*) classData;
     auto handle = (NativeKFunction*) methodData;
 
-    auto parameterCount = handle->getParameterCount(env, bindingContext.classLoader);
+    auto parameterCount = handle->getParameterCount(env, bindingContext.getClassLoader());
     if (parameterCount != numArgs) {
         std::stringstream ss;
         ss << "Invalid number of args, expecting " << parameterCount << " but received " << numArgs;
@@ -59,12 +61,12 @@ godot_variant invokeMethod(void* instance, void* methodData, void* classData, in
     }
 
     auto convertedArgs = std::vector<NativeTValue>();
-
+    convertedArgs.reserve(numArgs);
     for (auto i = 0; i < numArgs; i++) {
         convertedArgs.emplace_back(NativeTValue(*args[i]));
     }
 
-    auto res = handle->invoke(env, bindingContext.classLoader, kotlinInstance, convertedArgs).toGVariant();
+    auto res = handle->invoke(env, bindingContext.getClassLoader(), kotlinInstance, convertedArgs).toGVariant();
     bindingContext.endScope();
     return res;
 }
