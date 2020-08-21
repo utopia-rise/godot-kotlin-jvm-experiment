@@ -4,7 +4,7 @@
 
 namespace jni {
     JavaVM* Jvm::vm = nullptr;
-    Env Jvm::env = Env(nullptr);
+    Env* Jvm::env = nullptr;
     int Jvm::version = 0;
 
     void Jvm::init(const InitArgs& initArgs) {
@@ -57,8 +57,8 @@ namespace jni {
     }
 
     Env& Jvm::attach() {
-        if (Jvm::env.isValid()) {
-            return Jvm::env;
+        if (Jvm::env != nullptr && Jvm::env->isValid()) {
+            return *Jvm::env;
         }
         JNIEnv* env;
         auto result = vm->GetEnv((void**) &env, version);
@@ -68,8 +68,8 @@ namespace jni {
                 throw JniError("Failed to attach vm to current thread!");
             }
         }
-        Jvm::env = Env(env);
-        return Jvm::env;
+        Jvm::env = new Env(env);
+        return *Jvm::env;
     }
 
     void Jvm::detach() {
@@ -77,7 +77,8 @@ namespace jni {
         if (result != JNI_OK) {
             throw JniError("Failed to detach vm to current thread!");
         }
-        Jvm::env = Env(nullptr);
+        delete Jvm::env;
+        Jvm::env = nullptr;
     }
 
     Env& Jvm::currentEnv() {

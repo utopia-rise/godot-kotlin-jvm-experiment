@@ -27,7 +27,7 @@ void NativeBindingContext::bind(godot_object *library, const std::string& librar
     auto bootstrapJar = std::string(projectDir);
     bootstrapJar.append("build/libs/bootstrap.jar");
     startScope();
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     // set class loader here
     std::cout << "Creating class loader to load " << bootstrapJar << std::endl;
     classLoader = createClassLoader(env, bootstrapJar).newGlobalRef(env);
@@ -66,12 +66,12 @@ void NativeBindingContext::unbind(bool destroyJvm) {
 }
 
 void NativeBindingContext::startScope() {
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     env.pushLocalFrame(100);
 }
 
 void NativeBindingContext::endScope() {
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     env.popLocalFrame();
 }
 
@@ -95,7 +95,7 @@ std::vector<NativeClassHandle*> getClasses(jni::Env& env, jni::JObject classLoad
 
 void NativeBindingContext::registerClasses(void* nativescriptHandle) {
     startScope();
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     auto classHandles = getClasses(env, classLoader);
     for (auto handle : classHandles) {
         handle->registerClass(env, classLoader, nativescriptHandle);

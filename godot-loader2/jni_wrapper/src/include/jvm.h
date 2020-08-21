@@ -25,7 +25,7 @@ namespace jni {
     private:
         Jvm() = default;
         static JavaVM* vm;
-        static Env env;
+        static Env* env;
         static jint version;
 
         static JavaVM* create(const InitArgs&);

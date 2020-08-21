@@ -5,7 +5,7 @@
 void* createInstance(void* instance, void* methodData) {
     auto& bindingContext = NativeBindingContext::instance();
     bindingContext.startScope();
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     auto handle = (NativeClassHandle*) methodData;
     auto kotlinInstance = handle->wrap(env, bindingContext.classLoader, instance);
     kotlinInstance->_onInit(env, bindingContext.classLoader);
@@ -16,7 +16,7 @@ void* createInstance(void* instance, void* methodData) {
 void disposeClassHandle(void* ref) {
     auto& bindingContext = NativeBindingContext::instance();
     bindingContext.startScope();
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     auto handle = (NativeClassHandle*) ref;
     handle->dispose(env);
     delete handle;
@@ -26,7 +26,7 @@ void disposeClassHandle(void* ref) {
 void destroyInstance(void* instance, void* methodData, void* classData) {
     auto& bindingContext = NativeBindingContext::instance();
     bindingContext.startScope();
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     auto kotlinInstance = (NativeKObject*) classData;
     kotlinInstance->_onDestroy(env, bindingContext.classLoader);
     kotlinInstance->dispose(env);
@@ -37,7 +37,7 @@ void destroyInstance(void* instance, void* methodData, void* classData) {
 void disposeFuncHandle(void* ref) {
     auto& bindingContext = NativeBindingContext::instance();
     bindingContext.startScope();
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     auto handle = (NativeKFunction*) ref;
     handle->dispose(env);
     delete handle;
@@ -47,7 +47,7 @@ void disposeFuncHandle(void* ref) {
 godot_variant invokeMethod(void* instance, void* methodData, void* classData, int numArgs, godot_variant** args) {
     auto& bindingContext = NativeBindingContext::instance();
     bindingContext.startScope();
-    auto env = jni::Jvm::currentEnv();
+    auto& env = jni::Jvm::currentEnv();
     auto kotlinInstance = (NativeKObject*) classData;
     auto handle = (NativeKFunction*) methodData;
 
