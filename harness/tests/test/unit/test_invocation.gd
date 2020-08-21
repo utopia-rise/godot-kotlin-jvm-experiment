@@ -1,8 +1,15 @@
 extends "res://addons/gut/test.gd"
 
 var CMP_EPSILON = 0.0001
-var Invocation = load("res://src/gdns/kotlin/godot/tests/Invocation.gdns")
-var instance =  Invocation.new()
+var Invocation = preload("res://src/gdns/kotlin/godot/tests/Invocation.gdns")
+var instance
+
+func before_each():
+    instance = Invocation.new()
+
+func after_each():
+    instance.free()
+    instance = null
 
 func test_long_value():
     var expected = 1972

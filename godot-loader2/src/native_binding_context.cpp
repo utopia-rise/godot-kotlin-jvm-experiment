@@ -14,14 +14,17 @@ NativeBindingContext& NativeBindingContext::instance() {
     return bindingContext;
 }
 
-void NativeBindingContext::bind(godot_object *library, const std::string& libraryPath) {
+void NativeBindingContext::bind(bool inEditor, godot_object *library, const std::string& libraryPath) {
     this->library = library;
     this->libraryPath = libraryPath;
     projectDir = libraryPath.substr(0, libraryPath.find_last_of('/') + 1);
     std::cout << "project_dir: " << projectDir << std::endl;
     auto args = jni::InitArgs();
     args.option("-Xcheck:jni");
-    args.option("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005");
+    // TODO: find a way to configure this, via some file res://.godot-kt.yml perhaps?
+    if (!inEditor) {
+        args.option("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005");
+    }
     jni::Jvm::init(args);
 
     auto bootstrapJar = std::string(projectDir);

@@ -23,6 +23,7 @@ void Godot::init(godot_gdnative_init_options* options) {
     auto& bindingContext = NativeBindingContext::instance();
     auto libraryPath = fromGDString(options->active_library_path);
     bindingContext.bind(
+            options->in_editor,
             options->gd_native_library,
             libraryPath
     );

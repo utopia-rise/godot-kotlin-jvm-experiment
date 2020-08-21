@@ -13,7 +13,7 @@ public:
 
     static NativeBindingContext& instance();
 
-    void bind(godot_object* library, const std::string& libraryPath);
+    void bind(bool inEditor, godot_object* library, const std::string& libraryPath);
     void unbind(bool destroyJvm);
 
     void startScope();
