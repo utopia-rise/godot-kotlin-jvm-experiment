@@ -8,8 +8,8 @@ import godot.wire.TValue
 class Entry : GodotEntry() {
     override fun Registry.registerClasses() {
         registerClass("Simple", "Object", ::Simple) {
-            function(KFunc0("benchmarkSimpleAdd", Simple::benchmarkSimpleAdd) { TValue(it) })
-            function(KFunc0("benchmarkAvg", Simple::benchmarkAvg) { TValue(it) })
+            function(KFunc0("benchmarkSimpleAdd", Simple::benchmarkSimpleAdd, ::TValue))
+            function(KFunc0("benchmarkAvg", Simple::benchmarkAvg, ::TValue))
         }
     }
 }

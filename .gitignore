@@ -7,5 +7,4 @@ build
 
 **/.idea/*
 
-jre/*
-jre
+**/jre
