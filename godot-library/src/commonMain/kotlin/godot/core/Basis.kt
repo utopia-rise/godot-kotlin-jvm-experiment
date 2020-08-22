@@ -355,7 +355,7 @@ class Basis() : CoreType {
     }
 
     internal fun invert() {
-        inline fun cofac(row1: Int, col1: Int, row2: Int, col2: Int): RealT {
+        fun cofac(row1: Int, col1: Int, row2: Int, col2: Int): RealT {
             return this._get(row1)[col1] * this._get(row2)[col2] - this._get(row1)[col2] * this._get(row2)[col1]
         }
 

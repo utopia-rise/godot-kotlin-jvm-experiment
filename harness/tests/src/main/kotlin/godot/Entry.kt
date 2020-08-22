@@ -17,6 +17,12 @@ class Entry : GodotEntry() {
             function(KFunc1("vector2Value", Invocation::vector2Value, ::TValue, TValue::asVector2))
             function(KFunc1("rect2Value", Invocation::rect2Value, ::TValue, TValue::asRect2))
             function(KFunc1("vector3Value", Invocation::vector3Value, ::TValue, TValue::asVector3))
+            function(KFunc1("transform2dValue", Invocation::transform2DValue, ::TValue, TValue::asTransform2D))
+            function(KFunc1("planeValue", Invocation::planeValue, ::TValue, TValue::asPlane))
+            function(KFunc1("quatValue", Invocation::quatValue, ::TValue, TValue::asQuat))
+            function(KFunc1("aabbValue", Invocation::aabbValue, ::TValue, TValue::asAABB))
+            function(KFunc1("basisValue", Invocation::basisValue, ::TValue, TValue::asBasis))
+            function(KFunc1("transformValue", Invocation::transformValue, ::TValue, TValue::asTransform))
         }
     }
 }

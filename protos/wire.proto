@@ -24,23 +24,31 @@ message Transform2D {
 }
 
 message Plane {
-
+  Vector3 normal = 1;
+  float d = 2;
 }
 
 message Quat {
-
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float w = 4;
 }
 
 message AABB {
-
+  Vector3 position = 1;
+  Vector3 size = 2;
 }
 
 message Basis {
-
+  Vector3 x = 1;
+  Vector3 y = 2;
+  Vector3 z = 3;
 }
 
 message Transform {
-
+  Basis basis = 1;
+  Vector3 origin = 2;
 }
 
 message KVariant {
@@ -58,7 +66,7 @@ message KVariant {
     Quat quat_value = 11;
     AABB aabb_value = 12;
     Basis basis_value = 13;
-    Transform transfrom_value = 14;
+    Transform transform_value = 14;
   }
 }
 

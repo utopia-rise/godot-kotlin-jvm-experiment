@@ -1,8 +1,6 @@
 package godot.tests
 
-import godot.core.Rect2
-import godot.core.Vector2
-import godot.core.Vector3
+import godot.core.*
 import godot.internal.KObject
 
 class Invocation : KObject() {
@@ -15,4 +13,10 @@ class Invocation : KObject() {
     fun vector2Value(value: Vector2) = value
     fun rect2Value(value: Rect2) = value
     fun vector3Value(value: Vector3) = value
+    fun transform2DValue(value: Transform2D) = value
+    fun planeValue(value: Plane) = value
+    fun quatValue(value: Quat) = value
+    fun aabbValue(value: AABB) = value
+    fun basisValue(value: Basis) = value
+    fun transformValue(value: Transform) = value
 }

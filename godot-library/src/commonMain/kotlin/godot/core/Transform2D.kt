@@ -5,6 +5,7 @@ import godot.internal.CoreType
 import godot.internal.RealT
 import godot.internal.isEqualApprox
 import godot.internal.toRealT
+import kotlin.jvm.JvmOverloads
 import kotlin.math.acos
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -139,11 +140,6 @@ class Transform2D(
     fun basisXformInv(v: Vector2) = Vector2(this._x.dot(v), this._y.dot(v))
 
     /**
-     * Returns the transform’s origin (translation).
-     */
-    fun getOrigin() = this._origin
-
-    /**
      * Returns the transform’s rotation (in radians).
      */
     fun getRotation(): RealT {
@@ -167,8 +163,8 @@ class Transform2D(
      * Returns a transform interpolated between this transform and another by a given weight (0-1).
      */
     fun interpolateWith(transform: Transform2D, c: RealT): Transform2D {
-        val p1 = getOrigin()
-        val p2 = transform.getOrigin()
+        val p1 = origin
+        val p2 = transform.origin
 
         val r1 = getRotation()
         val r2 = transform.getRotation()
