@@ -10,6 +10,7 @@ class Entry : GodotEntry() {
         registerClass("Simple", "Object", ::Simple) {
             function(KFunc0("benchmarkSimpleAdd", Simple::benchmarkSimpleAdd, ::TValue))
             function(KFunc0("benchmarkAvg", Simple::benchmarkAvg, ::TValue))
+            function(KFunc0("benchmarkVectors", Simple::benchmarkVectors, ::TValue))
             function(KFunc0("benchmarkVectors2Only", Simple::benchmarkVectors2Only, ::TValue))
         }
     }
