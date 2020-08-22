@@ -1,6 +1,8 @@
 package godot.benchmark
 
+import godot.core.Transform
 import godot.core.Vector2
+import godot.core.Vector3
 import godot.internal.KObject
 
 class Simple : KObject() {
@@ -18,6 +20,22 @@ class Simple : KObject() {
         }
         return total / size
     }
+
+    fun benchmarkVectors(): Vector3 {
+        var b = Transform()
+        b = b.rotated(Vector3.UP, Math.toRadians(60.0))
+        b = b.scaled(Vector3(0.5, 0.5, 0.5))
+
+        var s = Vector3()
+        for (i in 0 until 1000) {
+            var v = Vector3(i, i, i)
+            v = b.xform(v)
+            s += v
+        }
+
+        return s
+    }
+
 
     fun benchmarkVectors2Only(): Vector2 {
         var s = Vector2()

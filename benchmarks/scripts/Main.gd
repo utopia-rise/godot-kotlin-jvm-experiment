@@ -24,7 +24,7 @@ func _init():
     __save_report(report)
 
 
-func __run_benchmark(benchmark, report, iterations=3, runs=10, warmups=5):
+func __run_benchmark(benchmark, report, iterations=3, runs=10, warmups=15):
     var stats = Stats.new()
     print("Running benchmark: %s" % str(benchmark))
     for warmup in range(warmups):
