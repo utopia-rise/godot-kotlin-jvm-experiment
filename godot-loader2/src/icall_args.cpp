@@ -39,6 +39,19 @@ to_icall_from(kVector2Value) {
     dest.data.vector2Value.y = src.vector2_value().y();
 }
 
+to_icall_from(kRect2Value) {
+    dest.data.rect2Value.position.x = src.rect2_value().position().x();
+    dest.data.rect2Value.position.y = src.rect2_value().position().y();
+    dest.data.rect2Value.size.x = src.rect2_value().size().x();
+    dest.data.rect2Value.size.y = src.rect2_value().size().y();
+}
+
+to_icall_from(kVector3Value) {
+    dest.data.vector3Value.x = src.vector3_value().x();
+    dest.data.vector3Value.y = src.vector3_value().y();
+    dest.data.vector3Value.z = src.vector3_value().z();
+}
+
 // must match the value order of KVariant::TypeCase
 static void(*TO_ICALL_FROM[27 /* KVariant::TypeCase count */])(ICallValue&, const KVariant&) = {
         to_icall_from_index(kNilValue),
@@ -47,6 +60,8 @@ static void(*TO_ICALL_FROM[27 /* KVariant::TypeCase count */])(ICallValue&, cons
         to_icall_from_index(kStringValue),
         to_icall_from_index(kBoolValue),
         to_icall_from_index(kVector2Value),
+        to_icall_from_index(kRect2Value),
+        to_icall_from_index(kVector3Value),
 };
 
 from_icall_to(kNilValue) {
@@ -79,6 +94,23 @@ from_icall_to(kVector2Value) {
     dest.set_allocated_vector2_value(vec2);
 }
 
+from_icall_to(kRect2Value) {
+    auto rect2 = Rect2::default_instance().New();
+    rect2->mutable_position()->set_x(src.data.rect2Value.position.x);
+    rect2->mutable_position()->set_y(src.data.rect2Value.position.y);
+    rect2->mutable_size()->set_x(src.data.rect2Value.size.x);
+    rect2->mutable_size()->set_y(src.data.rect2Value.size.y);
+    dest.set_allocated_rect2_value(rect2);
+}
+
+from_icall_to(kVector3Value) {
+    auto vec3 = Vector3::default_instance().New();
+    vec3->set_x(src.data.vector3Value.x);
+    vec3->set_y(src.data.vector3Value.y);
+    vec3->set_z(src.data.vector3Value.z);
+    dest.set_allocated_vector3_value(vec3);
+}
+
 // must match the value order of KVariant::TypeCase
 static void(*FROM_ICALL_TO[27 /* KVariant::TypeCase count */])(KVariant&, const ICallValue&) = {
         from_icall_to_index(kNilValue),
@@ -87,6 +119,8 @@ static void(*FROM_ICALL_TO[27 /* KVariant::TypeCase count */])(KVariant&, const 
         from_icall_to_index(kStringValue),
         from_icall_to_index(kBoolValue),
         from_icall_to_index(kVector2Value),
+        from_icall_to_index(kRect2Value),
+        from_icall_to_index(kVector3Value),
 };
 
 ICallValue::ICallValue(const KVariant& value) {

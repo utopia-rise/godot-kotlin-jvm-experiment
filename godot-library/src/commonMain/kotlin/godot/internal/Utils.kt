@@ -3,6 +3,7 @@ package godot.internal
 import kotlin.math.abs
 
 typealias RealT = Double
+internal typealias NaturalT = Long
 
 typealias VoidPtr = Long
 const val nullptr: VoidPtr = 0L

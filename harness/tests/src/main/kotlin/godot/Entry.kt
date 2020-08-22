@@ -15,6 +15,8 @@ class Entry : GodotEntry() {
             function(KFunc1("boolValue", Invocation::boolValue, ::TValue, TValue::asBool))
             function(KFunc1("stringValue", Invocation::stringValue, ::TValue, TValue::asString))
             function(KFunc1("vector2Value", Invocation::vector2Value, ::TValue, TValue::asVector2))
+            function(KFunc1("rect2Value", Invocation::rect2Value, ::TValue, TValue::asRect2))
+            function(KFunc1("vector3Value", Invocation::vector3Value, ::TValue, TValue::asVector3))
         }
     }
 }

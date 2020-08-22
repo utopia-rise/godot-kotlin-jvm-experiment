@@ -35,6 +35,14 @@ func test_bool_value():
     var expected = false
     assert_eq(expected, instance.bool_value(expected))
 
-func test_vector_2():
+func test_vector2():
     var expected = Vector2(32, 0.5)
     assert_eq(expected, instance.vector2_value(expected))
+
+func test_rect2():
+    var expected = Rect2(Vector2(0.5, 1.0), Vector2(3.0, 2.0))
+    assert_eq(expected, instance.rect2_value(expected))
+
+func test_vector3():
+    var expected = Vector3(32, 0.5, 0.05)
+    assert_eq(expected, instance.vector3_value(expected))

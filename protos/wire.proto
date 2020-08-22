@@ -6,7 +6,7 @@ message Vector2 {
   float y = 2;
 }
 
-message Rec2 {
+message Rect2 {
   Vector2 position = 1;
   Vector2 size = 2;
 }
@@ -25,7 +25,7 @@ message KVariant {
     string string_value = 4;
     bool bool_value = 5;
     Vector2 vector2_value = 6;
-    Rec2 rec2_value = 7;
+    Rect2 rect2_value = 7;
     Vector3 vector3_value = 8;
   }
 }

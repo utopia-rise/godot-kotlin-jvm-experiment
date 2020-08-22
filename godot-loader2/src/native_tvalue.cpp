@@ -45,6 +45,25 @@ to_kvariant_from(GODOT_VARIANT_TYPE_VECTOR2) {
     des.set_allocated_vector2_value(vec2);
 }
 
+to_kvariant_from(GODOT_VARIANT_TYPE_RECT2) {
+    auto layout = (layouts::godot_variant_layout*) &src;
+    auto rect2 = Rect2::default_instance().New();
+    rect2->mutable_position()->set_x(layout->data._rect2.position.x);
+    rect2->mutable_position()->set_y(layout->data._rect2.position.y);
+    rect2->mutable_size()->set_x(layout->data._rect2.size.x);
+    rect2->mutable_size()->set_y(layout->data._rect2.size.y);
+    des.set_allocated_rect2_value(rect2);
+}
+
+to_kvariant_from(GODOT_VARIANT_TYPE_VECTOR3) {
+    auto layout = (layouts::godot_variant_layout*) &src;
+    auto vec3 = Vector3::default_instance().New();
+    vec3->set_x(layout->data._vect3.x);
+    vec3->set_y(layout->data._vect3.y);
+    vec3->set_z(layout->data._vect3.z);
+    des.set_allocated_vector3_value(vec3);
+}
+
 // must match the value order of godot_variant_type
 static void(*TO_KVARIANT_FROM[27 /* godot_variant_type count */])(KVariant&, const godot_variant&) = {
         to_kvariant_from_index(GODOT_VARIANT_TYPE_NIL),
@@ -53,6 +72,8 @@ static void(*TO_KVARIANT_FROM[27 /* godot_variant_type count */])(KVariant&, con
         to_kvariant_from_index(GODOT_VARIANT_TYPE_REAL),
         to_kvariant_from_index(GODOT_VARIANT_TYPE_STRING),
         to_kvariant_from_index(GODOT_VARIANT_TYPE_VECTOR2),
+        to_kvariant_from_index(GODOT_VARIANT_TYPE_RECT2),
+        to_kvariant_from_index(GODOT_VARIANT_TYPE_VECTOR3),
 };
 
 #define to_gvariant_from(type) \
@@ -97,6 +118,23 @@ to_gvariant_from(kVector2Value) {
     layout->data._vect2.y = src.vector2_value().y();
 }
 
+to_gvariant_from(kRect2Value) {
+    auto layout = (layouts::godot_variant_layout*) &des;
+    layout->type = GODOT_VARIANT_TYPE_RECT2;
+    layout->data._rect2.position.x = src.rect2_value().position().x();
+    layout->data._rect2.position.y = src.rect2_value().position().y();
+    layout->data._rect2.size.x = src.rect2_value().size().x();
+    layout->data._rect2.size.y = src.rect2_value().size().y();
+}
+
+to_gvariant_from(kVector3Value) {
+    auto layout = (layouts::godot_variant_layout*) &des;
+    layout->type = GODOT_VARIANT_TYPE_VECTOR3;
+    layout->data._vect3.x = src.vector3_value().x();
+    layout->data._vect3.y = src.vector3_value().y();
+    layout->data._vect3.z = src.vector3_value().z();
+}
+
 // must match the value order of KVariant::TypeCase
 static void(*TO_GVARIANT_FROM[27 /* KVariant::TypeCase count */])(godot_variant&, const KVariant&) = {
         to_gvariant_from_index(kNilValue),
@@ -105,6 +143,8 @@ static void(*TO_GVARIANT_FROM[27 /* KVariant::TypeCase count */])(godot_variant&
         to_gvariant_from_index(kStringValue),
         to_gvariant_from_index(kBoolValue),
         to_gvariant_from_index(kVector2Value),
+        to_gvariant_from_index(kRect2Value),
+        to_gvariant_from_index(kVector3Value),
 };
 
 NativeTValue::NativeTValue(KVariant  data) : data(std::move(data)) {}

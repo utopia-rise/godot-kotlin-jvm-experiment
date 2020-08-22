@@ -1,6 +1,8 @@
 package godot.wire
 
+import godot.core.Rect2
 import godot.core.Vector2
+import godot.core.Vector3
 
 expect class TValue {
     constructor(value: Unit)
@@ -11,6 +13,8 @@ expect class TValue {
     constructor(value: String)
     constructor(value: Boolean)
     constructor(value: Vector2)
+    constructor(value: Rect2)
+    constructor(value: Vector3)
 
     fun asNil(): Unit
     fun asInt(): Int
@@ -20,6 +24,8 @@ expect class TValue {
     fun asString(): String
     fun asBool(): Boolean
     fun asVector2(): Vector2
+    fun asRect2(): Rect2
+    fun asVector3(): Vector3
 
     enum class Type {
         NIL,
@@ -27,6 +33,8 @@ expect class TValue {
         DOUBLE,
         STRING,
         BOOL,
-        VECTOR2
+        VECTOR2,
+        RECT2,
+        VECTOR3
     }
 }

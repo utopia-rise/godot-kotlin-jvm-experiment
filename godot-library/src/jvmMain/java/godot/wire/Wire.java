@@ -576,8 +576,8 @@ public final class Wire {
 
   }
 
-  public interface Rec2OrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Rec2)
+  public interface Rect2OrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Rect2)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -611,25 +611,25 @@ public final class Wire {
     godot.wire.Wire.Vector2OrBuilder getSizeOrBuilder();
   }
   /**
-   * Protobuf type {@code Rec2}
+   * Protobuf type {@code Rect2}
    */
-  public static final class Rec2 extends
+  public static final class Rect2 extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Rec2)
-      Rec2OrBuilder {
+      // @@protoc_insertion_point(message_implements:Rect2)
+      Rect2OrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use Rec2.newBuilder() to construct.
-    private Rec2(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use Rect2.newBuilder() to construct.
+    private Rect2(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Rec2() {
+    private Rect2() {
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new Rec2();
+      return new Rect2();
     }
 
     @java.lang.Override
@@ -637,7 +637,7 @@ public final class Wire {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Rec2(
+    private Rect2(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -702,15 +702,15 @@ public final class Wire {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return godot.wire.Wire.internal_static_Rec2_descriptor;
+      return godot.wire.Wire.internal_static_Rect2_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return godot.wire.Wire.internal_static_Rec2_fieldAccessorTable
+      return godot.wire.Wire.internal_static_Rect2_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              godot.wire.Wire.Rec2.class, godot.wire.Wire.Rec2.Builder.class);
+              godot.wire.Wire.Rect2.class, godot.wire.Wire.Rect2.Builder.class);
     }
 
     public static final int POSITION_FIELD_NUMBER = 1;
@@ -812,10 +812,10 @@ public final class Wire {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof godot.wire.Wire.Rec2)) {
+      if (!(obj instanceof godot.wire.Wire.Rect2)) {
         return super.equals(obj);
       }
-      godot.wire.Wire.Rec2 other = (godot.wire.Wire.Rec2) obj;
+      godot.wire.Wire.Rect2 other = (godot.wire.Wire.Rect2) obj;
 
       if (hasPosition() != other.hasPosition()) return false;
       if (hasPosition()) {
@@ -851,69 +851,69 @@ public final class Wire {
       return hash;
     }
 
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(byte[] data)
+    public static godot.wire.Wire.Rect2 parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(java.io.InputStream input)
+    public static godot.wire.Wire.Rect2 parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static godot.wire.Wire.Rec2 parseDelimitedFrom(java.io.InputStream input)
+    public static godot.wire.Wire.Rect2 parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static godot.wire.Wire.Rec2 parseDelimitedFrom(
+    public static godot.wire.Wire.Rect2 parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static godot.wire.Wire.Rec2 parseFrom(
+    public static godot.wire.Wire.Rect2 parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -926,7 +926,7 @@ public final class Wire {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(godot.wire.Wire.Rec2 prototype) {
+    public static Builder newBuilder(godot.wire.Wire.Rect2 prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -942,26 +942,26 @@ public final class Wire {
       return builder;
     }
     /**
-     * Protobuf type {@code Rec2}
+     * Protobuf type {@code Rect2}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Rec2)
-        godot.wire.Wire.Rec2OrBuilder {
+        // @@protoc_insertion_point(builder_implements:Rect2)
+        godot.wire.Wire.Rect2OrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return godot.wire.Wire.internal_static_Rec2_descriptor;
+        return godot.wire.Wire.internal_static_Rect2_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return godot.wire.Wire.internal_static_Rec2_fieldAccessorTable
+        return godot.wire.Wire.internal_static_Rect2_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                godot.wire.Wire.Rec2.class, godot.wire.Wire.Rec2.Builder.class);
+                godot.wire.Wire.Rect2.class, godot.wire.Wire.Rect2.Builder.class);
       }
 
-      // Construct using godot.wire.Wire.Rec2.newBuilder()
+      // Construct using godot.wire.Wire.Rect2.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -997,17 +997,17 @@ public final class Wire {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return godot.wire.Wire.internal_static_Rec2_descriptor;
+        return godot.wire.Wire.internal_static_Rect2_descriptor;
       }
 
       @java.lang.Override
-      public godot.wire.Wire.Rec2 getDefaultInstanceForType() {
-        return godot.wire.Wire.Rec2.getDefaultInstance();
+      public godot.wire.Wire.Rect2 getDefaultInstanceForType() {
+        return godot.wire.Wire.Rect2.getDefaultInstance();
       }
 
       @java.lang.Override
-      public godot.wire.Wire.Rec2 build() {
-        godot.wire.Wire.Rec2 result = buildPartial();
+      public godot.wire.Wire.Rect2 build() {
+        godot.wire.Wire.Rect2 result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -1015,8 +1015,8 @@ public final class Wire {
       }
 
       @java.lang.Override
-      public godot.wire.Wire.Rec2 buildPartial() {
-        godot.wire.Wire.Rec2 result = new godot.wire.Wire.Rec2(this);
+      public godot.wire.Wire.Rect2 buildPartial() {
+        godot.wire.Wire.Rect2 result = new godot.wire.Wire.Rect2(this);
         if (positionBuilder_ == null) {
           result.position_ = position_;
         } else {
@@ -1065,16 +1065,16 @@ public final class Wire {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof godot.wire.Wire.Rec2) {
-          return mergeFrom((godot.wire.Wire.Rec2)other);
+        if (other instanceof godot.wire.Wire.Rect2) {
+          return mergeFrom((godot.wire.Wire.Rect2)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(godot.wire.Wire.Rec2 other) {
-        if (other == godot.wire.Wire.Rec2.getDefaultInstance()) return this;
+      public Builder mergeFrom(godot.wire.Wire.Rect2 other) {
+        if (other == godot.wire.Wire.Rect2.getDefaultInstance()) return this;
         if (other.hasPosition()) {
           mergePosition(other.getPosition());
         }
@@ -1096,11 +1096,11 @@ public final class Wire {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        godot.wire.Wire.Rec2 parsedMessage = null;
+        godot.wire.Wire.Rect2 parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (godot.wire.Wire.Rec2) e.getUnfinishedMessage();
+          parsedMessage = (godot.wire.Wire.Rect2) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1360,41 +1360,41 @@ public final class Wire {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:Rec2)
+      // @@protoc_insertion_point(builder_scope:Rect2)
     }
 
-    // @@protoc_insertion_point(class_scope:Rec2)
-    private static final godot.wire.Wire.Rec2 DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:Rect2)
+    private static final godot.wire.Wire.Rect2 DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new godot.wire.Wire.Rec2();
+      DEFAULT_INSTANCE = new godot.wire.Wire.Rect2();
     }
 
-    public static godot.wire.Wire.Rec2 getDefaultInstance() {
+    public static godot.wire.Wire.Rect2 getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Rec2>
-        PARSER = new com.google.protobuf.AbstractParser<Rec2>() {
+    private static final com.google.protobuf.Parser<Rect2>
+        PARSER = new com.google.protobuf.AbstractParser<Rect2>() {
       @java.lang.Override
-      public Rec2 parsePartialFrom(
+      public Rect2 parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Rec2(input, extensionRegistry);
+        return new Rect2(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Rec2> parser() {
+    public static com.google.protobuf.Parser<Rect2> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Rec2> getParserForType() {
+    public com.google.protobuf.Parser<Rect2> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public godot.wire.Wire.Rec2 getDefaultInstanceForType() {
+    public godot.wire.Wire.Rect2 getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2090,19 +2090,19 @@ public final class Wire {
     godot.wire.Wire.Vector2OrBuilder getVector2ValueOrBuilder();
 
     /**
-     * <code>.Rec2 rec2_value = 7;</code>
-     * @return Whether the rec2Value field is set.
+     * <code>.Rect2 rect2_value = 7;</code>
+     * @return Whether the rect2Value field is set.
      */
-    boolean hasRec2Value();
+    boolean hasRect2Value();
     /**
-     * <code>.Rec2 rec2_value = 7;</code>
-     * @return The rec2Value.
+     * <code>.Rect2 rect2_value = 7;</code>
+     * @return The rect2Value.
      */
-    godot.wire.Wire.Rec2 getRec2Value();
+    godot.wire.Wire.Rect2 getRect2Value();
     /**
-     * <code>.Rec2 rec2_value = 7;</code>
+     * <code>.Rect2 rect2_value = 7;</code>
      */
-    godot.wire.Wire.Rec2OrBuilder getRec2ValueOrBuilder();
+    godot.wire.Wire.Rect2OrBuilder getRect2ValueOrBuilder();
 
     /**
      * <code>.Vector3 vector3_value = 8;</code>
@@ -2207,14 +2207,14 @@ public final class Wire {
               break;
             }
             case 58: {
-              godot.wire.Wire.Rec2.Builder subBuilder = null;
+              godot.wire.Wire.Rect2.Builder subBuilder = null;
               if (typeCase_ == 7) {
-                subBuilder = ((godot.wire.Wire.Rec2) type_).toBuilder();
+                subBuilder = ((godot.wire.Wire.Rect2) type_).toBuilder();
               }
               type_ =
-                  input.readMessage(godot.wire.Wire.Rec2.parser(), extensionRegistry);
+                  input.readMessage(godot.wire.Wire.Rect2.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((godot.wire.Wire.Rec2) type_);
+                subBuilder.mergeFrom((godot.wire.Wire.Rect2) type_);
                 type_ = subBuilder.buildPartial();
               }
               typeCase_ = 7;
@@ -2277,7 +2277,7 @@ public final class Wire {
       STRING_VALUE(4),
       BOOL_VALUE(5),
       VECTOR2_VALUE(6),
-      REC2_VALUE(7),
+      RECT2_VALUE(7),
       VECTOR3_VALUE(8),
       TYPE_NOT_SET(0);
       private final int value;
@@ -2302,7 +2302,7 @@ public final class Wire {
           case 4: return STRING_VALUE;
           case 5: return BOOL_VALUE;
           case 6: return VECTOR2_VALUE;
-          case 7: return REC2_VALUE;
+          case 7: return RECT2_VALUE;
           case 8: return VECTOR3_VALUE;
           case 0: return TYPE_NOT_SET;
           default: return null;
@@ -2447,35 +2447,35 @@ public final class Wire {
       return godot.wire.Wire.Vector2.getDefaultInstance();
     }
 
-    public static final int REC2_VALUE_FIELD_NUMBER = 7;
+    public static final int RECT2_VALUE_FIELD_NUMBER = 7;
     /**
-     * <code>.Rec2 rec2_value = 7;</code>
-     * @return Whether the rec2Value field is set.
+     * <code>.Rect2 rect2_value = 7;</code>
+     * @return Whether the rect2Value field is set.
      */
     @java.lang.Override
-    public boolean hasRec2Value() {
+    public boolean hasRect2Value() {
       return typeCase_ == 7;
     }
     /**
-     * <code>.Rec2 rec2_value = 7;</code>
-     * @return The rec2Value.
+     * <code>.Rect2 rect2_value = 7;</code>
+     * @return The rect2Value.
      */
     @java.lang.Override
-    public godot.wire.Wire.Rec2 getRec2Value() {
+    public godot.wire.Wire.Rect2 getRect2Value() {
       if (typeCase_ == 7) {
-         return (godot.wire.Wire.Rec2) type_;
+         return (godot.wire.Wire.Rect2) type_;
       }
-      return godot.wire.Wire.Rec2.getDefaultInstance();
+      return godot.wire.Wire.Rect2.getDefaultInstance();
     }
     /**
-     * <code>.Rec2 rec2_value = 7;</code>
+     * <code>.Rect2 rect2_value = 7;</code>
      */
     @java.lang.Override
-    public godot.wire.Wire.Rec2OrBuilder getRec2ValueOrBuilder() {
+    public godot.wire.Wire.Rect2OrBuilder getRect2ValueOrBuilder() {
       if (typeCase_ == 7) {
-         return (godot.wire.Wire.Rec2) type_;
+         return (godot.wire.Wire.Rect2) type_;
       }
-      return godot.wire.Wire.Rec2.getDefaultInstance();
+      return godot.wire.Wire.Rect2.getDefaultInstance();
     }
 
     public static final int VECTOR3_VALUE_FIELD_NUMBER = 8;
@@ -2546,7 +2546,7 @@ public final class Wire {
         output.writeMessage(6, (godot.wire.Wire.Vector2) type_);
       }
       if (typeCase_ == 7) {
-        output.writeMessage(7, (godot.wire.Wire.Rec2) type_);
+        output.writeMessage(7, (godot.wire.Wire.Rect2) type_);
       }
       if (typeCase_ == 8) {
         output.writeMessage(8, (godot.wire.Wire.Vector3) type_);
@@ -2589,7 +2589,7 @@ public final class Wire {
       }
       if (typeCase_ == 7) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, (godot.wire.Wire.Rec2) type_);
+          .computeMessageSize(7, (godot.wire.Wire.Rect2) type_);
       }
       if (typeCase_ == 8) {
         size += com.google.protobuf.CodedOutputStream
@@ -2638,8 +2638,8 @@ public final class Wire {
               .equals(other.getVector2Value())) return false;
           break;
         case 7:
-          if (!getRec2Value()
-              .equals(other.getRec2Value())) return false;
+          if (!getRect2Value()
+              .equals(other.getRect2Value())) return false;
           break;
         case 8:
           if (!getVector3Value()
@@ -2688,8 +2688,8 @@ public final class Wire {
           hash = (53 * hash) + getVector2Value().hashCode();
           break;
         case 7:
-          hash = (37 * hash) + REC2_VALUE_FIELD_NUMBER;
-          hash = (53 * hash) + getRec2Value().hashCode();
+          hash = (37 * hash) + RECT2_VALUE_FIELD_NUMBER;
+          hash = (53 * hash) + getRect2Value().hashCode();
           break;
         case 8:
           hash = (37 * hash) + VECTOR3_VALUE_FIELD_NUMBER;
@@ -2882,10 +2882,10 @@ public final class Wire {
           }
         }
         if (typeCase_ == 7) {
-          if (rec2ValueBuilder_ == null) {
+          if (rect2ValueBuilder_ == null) {
             result.type_ = type_;
           } else {
-            result.type_ = rec2ValueBuilder_.build();
+            result.type_ = rect2ValueBuilder_.build();
           }
         }
         if (typeCase_ == 8) {
@@ -2971,8 +2971,8 @@ public final class Wire {
             mergeVector2Value(other.getVector2Value());
             break;
           }
-          case REC2_VALUE: {
-            mergeRec2Value(other.getRec2Value());
+          case RECT2_VALUE: {
+            mergeRect2Value(other.getRect2Value());
             break;
           }
           case VECTOR3_VALUE: {
@@ -3394,71 +3394,71 @@ public final class Wire {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          godot.wire.Wire.Rec2, godot.wire.Wire.Rec2.Builder, godot.wire.Wire.Rec2OrBuilder> rec2ValueBuilder_;
+          godot.wire.Wire.Rect2, godot.wire.Wire.Rect2.Builder, godot.wire.Wire.Rect2OrBuilder> rect2ValueBuilder_;
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
-       * @return Whether the rec2Value field is set.
+       * <code>.Rect2 rect2_value = 7;</code>
+       * @return Whether the rect2Value field is set.
        */
       @java.lang.Override
-      public boolean hasRec2Value() {
+      public boolean hasRect2Value() {
         return typeCase_ == 7;
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
-       * @return The rec2Value.
+       * <code>.Rect2 rect2_value = 7;</code>
+       * @return The rect2Value.
        */
       @java.lang.Override
-      public godot.wire.Wire.Rec2 getRec2Value() {
-        if (rec2ValueBuilder_ == null) {
+      public godot.wire.Wire.Rect2 getRect2Value() {
+        if (rect2ValueBuilder_ == null) {
           if (typeCase_ == 7) {
-            return (godot.wire.Wire.Rec2) type_;
+            return (godot.wire.Wire.Rect2) type_;
           }
-          return godot.wire.Wire.Rec2.getDefaultInstance();
+          return godot.wire.Wire.Rect2.getDefaultInstance();
         } else {
           if (typeCase_ == 7) {
-            return rec2ValueBuilder_.getMessage();
+            return rect2ValueBuilder_.getMessage();
           }
-          return godot.wire.Wire.Rec2.getDefaultInstance();
+          return godot.wire.Wire.Rect2.getDefaultInstance();
         }
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
+       * <code>.Rect2 rect2_value = 7;</code>
        */
-      public Builder setRec2Value(godot.wire.Wire.Rec2 value) {
-        if (rec2ValueBuilder_ == null) {
+      public Builder setRect2Value(godot.wire.Wire.Rect2 value) {
+        if (rect2ValueBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           type_ = value;
           onChanged();
         } else {
-          rec2ValueBuilder_.setMessage(value);
+          rect2ValueBuilder_.setMessage(value);
         }
         typeCase_ = 7;
         return this;
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
+       * <code>.Rect2 rect2_value = 7;</code>
        */
-      public Builder setRec2Value(
-          godot.wire.Wire.Rec2.Builder builderForValue) {
-        if (rec2ValueBuilder_ == null) {
+      public Builder setRect2Value(
+          godot.wire.Wire.Rect2.Builder builderForValue) {
+        if (rect2ValueBuilder_ == null) {
           type_ = builderForValue.build();
           onChanged();
         } else {
-          rec2ValueBuilder_.setMessage(builderForValue.build());
+          rect2ValueBuilder_.setMessage(builderForValue.build());
         }
         typeCase_ = 7;
         return this;
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
+       * <code>.Rect2 rect2_value = 7;</code>
        */
-      public Builder mergeRec2Value(godot.wire.Wire.Rec2 value) {
-        if (rec2ValueBuilder_ == null) {
+      public Builder mergeRect2Value(godot.wire.Wire.Rect2 value) {
+        if (rect2ValueBuilder_ == null) {
           if (typeCase_ == 7 &&
-              type_ != godot.wire.Wire.Rec2.getDefaultInstance()) {
-            type_ = godot.wire.Wire.Rec2.newBuilder((godot.wire.Wire.Rec2) type_)
+              type_ != godot.wire.Wire.Rect2.getDefaultInstance()) {
+            type_ = godot.wire.Wire.Rect2.newBuilder((godot.wire.Wire.Rect2) type_)
                 .mergeFrom(value).buildPartial();
           } else {
             type_ = value;
@@ -3466,18 +3466,18 @@ public final class Wire {
           onChanged();
         } else {
           if (typeCase_ == 7) {
-            rec2ValueBuilder_.mergeFrom(value);
+            rect2ValueBuilder_.mergeFrom(value);
           }
-          rec2ValueBuilder_.setMessage(value);
+          rect2ValueBuilder_.setMessage(value);
         }
         typeCase_ = 7;
         return this;
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
+       * <code>.Rect2 rect2_value = 7;</code>
        */
-      public Builder clearRec2Value() {
-        if (rec2ValueBuilder_ == null) {
+      public Builder clearRect2Value() {
+        if (rect2ValueBuilder_ == null) {
           if (typeCase_ == 7) {
             typeCase_ = 0;
             type_ = null;
@@ -3488,50 +3488,50 @@ public final class Wire {
             typeCase_ = 0;
             type_ = null;
           }
-          rec2ValueBuilder_.clear();
+          rect2ValueBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
+       * <code>.Rect2 rect2_value = 7;</code>
        */
-      public godot.wire.Wire.Rec2.Builder getRec2ValueBuilder() {
-        return getRec2ValueFieldBuilder().getBuilder();
+      public godot.wire.Wire.Rect2.Builder getRect2ValueBuilder() {
+        return getRect2ValueFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
+       * <code>.Rect2 rect2_value = 7;</code>
        */
       @java.lang.Override
-      public godot.wire.Wire.Rec2OrBuilder getRec2ValueOrBuilder() {
-        if ((typeCase_ == 7) && (rec2ValueBuilder_ != null)) {
-          return rec2ValueBuilder_.getMessageOrBuilder();
+      public godot.wire.Wire.Rect2OrBuilder getRect2ValueOrBuilder() {
+        if ((typeCase_ == 7) && (rect2ValueBuilder_ != null)) {
+          return rect2ValueBuilder_.getMessageOrBuilder();
         } else {
           if (typeCase_ == 7) {
-            return (godot.wire.Wire.Rec2) type_;
+            return (godot.wire.Wire.Rect2) type_;
           }
-          return godot.wire.Wire.Rec2.getDefaultInstance();
+          return godot.wire.Wire.Rect2.getDefaultInstance();
         }
       }
       /**
-       * <code>.Rec2 rec2_value = 7;</code>
+       * <code>.Rect2 rect2_value = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          godot.wire.Wire.Rec2, godot.wire.Wire.Rec2.Builder, godot.wire.Wire.Rec2OrBuilder> 
-          getRec2ValueFieldBuilder() {
-        if (rec2ValueBuilder_ == null) {
+          godot.wire.Wire.Rect2, godot.wire.Wire.Rect2.Builder, godot.wire.Wire.Rect2OrBuilder> 
+          getRect2ValueFieldBuilder() {
+        if (rect2ValueBuilder_ == null) {
           if (!(typeCase_ == 7)) {
-            type_ = godot.wire.Wire.Rec2.getDefaultInstance();
+            type_ = godot.wire.Wire.Rect2.getDefaultInstance();
           }
-          rec2ValueBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              godot.wire.Wire.Rec2, godot.wire.Wire.Rec2.Builder, godot.wire.Wire.Rec2OrBuilder>(
-                  (godot.wire.Wire.Rec2) type_,
+          rect2ValueBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              godot.wire.Wire.Rect2, godot.wire.Wire.Rect2.Builder, godot.wire.Wire.Rect2OrBuilder>(
+                  (godot.wire.Wire.Rect2) type_,
                   getParentForChildren(),
                   isClean());
           type_ = null;
         }
         typeCase_ = 7;
         onChanged();;
-        return rec2ValueBuilder_;
+        return rect2ValueBuilder_;
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -5147,10 +5147,10 @@ public final class Wire {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Vector2_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Rec2_descriptor;
+    internal_static_Rect2_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Rec2_fieldAccessorTable;
+      internal_static_Rect2_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Vector3_descriptor;
   private static final 
@@ -5181,18 +5181,18 @@ public final class Wire {
   static {
     java.lang.String[] descriptorData = {
       "\n\021protos/wire.proto\"\037\n\007Vector2\022\t\n\001x\030\001 \001(" +
-      "\002\022\t\n\001y\030\002 \001(\002\":\n\004Rec2\022\032\n\010position\030\001 \001(\0132\010" +
-      ".Vector2\022\026\n\004size\030\002 \001(\0132\010.Vector2\"*\n\007Vect" +
-      "or3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\"\344\001\n" +
-      "\010KVariant\022\023\n\tnil_value\030\001 \001(\005H\000\022\024\n\nlong_v" +
-      "alue\030\002 \001(\003H\000\022\024\n\nreal_value\030\003 \001(\001H\000\022\026\n\014st" +
-      "ring_value\030\004 \001(\tH\000\022\024\n\nbool_value\030\005 \001(\010H\000" +
-      "\022!\n\rvector2_value\030\006 \001(\0132\010.Vector2H\000\022\033\n\nr" +
-      "ec2_value\030\007 \001(\0132\005.Rec2H\000\022!\n\rvector3_valu" +
-      "e\030\010 \001(\0132\010.Vector3H\000B\006\n\004type\"\'\n\014KReturnVa" +
-      "lue\022\027\n\004data\030\001 \001(\0132\t.KVariant\"$\n\tKFuncArg" +
-      "s\022\027\n\004args\030\001 \003(\0132\t.KVariantB\014\n\ngodot.wire" +
-      "b\006proto3"
+      "\002\022\t\n\001y\030\002 \001(\002\";\n\005Rect2\022\032\n\010position\030\001 \001(\0132" +
+      "\010.Vector2\022\026\n\004size\030\002 \001(\0132\010.Vector2\"*\n\007Vec" +
+      "tor3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\"\346\001" +
+      "\n\010KVariant\022\023\n\tnil_value\030\001 \001(\005H\000\022\024\n\nlong_" +
+      "value\030\002 \001(\003H\000\022\024\n\nreal_value\030\003 \001(\001H\000\022\026\n\014s" +
+      "tring_value\030\004 \001(\tH\000\022\024\n\nbool_value\030\005 \001(\010H" +
+      "\000\022!\n\rvector2_value\030\006 \001(\0132\010.Vector2H\000\022\035\n\013" +
+      "rect2_value\030\007 \001(\0132\006.Rect2H\000\022!\n\rvector3_v" +
+      "alue\030\010 \001(\0132\010.Vector3H\000B\006\n\004type\"\'\n\014KRetur" +
+      "nValue\022\027\n\004data\030\001 \001(\0132\t.KVariant\"$\n\tKFunc" +
+      "Args\022\027\n\004args\030\001 \003(\0132\t.KVariantB\014\n\ngodot.w" +
+      "ireb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -5204,11 +5204,11 @@ public final class Wire {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Vector2_descriptor,
         new java.lang.String[] { "X", "Y", });
-    internal_static_Rec2_descriptor =
+    internal_static_Rect2_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_Rec2_fieldAccessorTable = new
+    internal_static_Rect2_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Rec2_descriptor,
+        internal_static_Rect2_descriptor,
         new java.lang.String[] { "Position", "Size", });
     internal_static_Vector3_descriptor =
       getDescriptor().getMessageTypes().get(2);
@@ -5221,7 +5221,7 @@ public final class Wire {
     internal_static_KVariant_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_KVariant_descriptor,
-        new java.lang.String[] { "NilValue", "LongValue", "RealValue", "StringValue", "BoolValue", "Vector2Value", "Rec2Value", "Vector3Value", "Type", });
+        new java.lang.String[] { "NilValue", "LongValue", "RealValue", "StringValue", "BoolValue", "Vector2Value", "Rect2Value", "Vector3Value", "Type", });
     internal_static_KReturnValue_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_KReturnValue_fieldAccessorTable = new
