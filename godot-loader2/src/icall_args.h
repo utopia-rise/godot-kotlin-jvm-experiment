@@ -16,6 +16,12 @@ struct ICallValue {
         layouts::godot_vector2_layout vector2Value;
         layouts::godot_rect2_layout  rect2Value;
         layouts::godot_vector3_layout vector3Value;
+        layouts::godot_transform2d_layout transform2DValue;
+        layouts::godot_plane_layout  planeValue;
+        layouts::godot_quat_layout  quatValue;
+        layouts::godot_aabb_layout aabbValue;
+        layouts::godot_basis_layout basisLayout;
+        layouts::godot_transform_layout transformValue;
     } data;
 
     explicit ICallValue(KVariant::TypeCase type);

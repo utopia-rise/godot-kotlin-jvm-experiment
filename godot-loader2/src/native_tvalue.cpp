@@ -37,7 +37,7 @@ to_kvariant_from(GODOT_VARIANT_TYPE_BOOL) {
     des.set_bool_value(value);
 }
 
-Vector2* to_wire_vector2(const layouts::godot_vector2_layout& from) {
+inline Vector2* to_wire_vector2(const layouts::godot_vector2_layout& from) {
     auto vec2 = Vector2::default_instance().New();
     vec2->set_x(from.x);
     vec2->set_y(from.y);
@@ -52,14 +52,12 @@ to_kvariant_from(GODOT_VARIANT_TYPE_VECTOR2) {
 to_kvariant_from(GODOT_VARIANT_TYPE_RECT2) {
     auto layout = (layouts::godot_variant_layout*) &src;
     auto rect2 = Rect2::default_instance().New();
-    rect2->mutable_position()->set_x(layout->data._rect2.position.x);
-    rect2->mutable_position()->set_y(layout->data._rect2.position.y);
-    rect2->mutable_size()->set_x(layout->data._rect2.size.x);
-    rect2->mutable_size()->set_y(layout->data._rect2.size.y);
+    rect2->set_allocated_position(to_wire_vector2(layout->data._rect2.position));
+    rect2->set_allocated_size(to_wire_vector2(layout->data._rect2.size));
     des.set_allocated_rect2_value(rect2);
 }
 
-Vector3* to_wire_vector3(const layouts::godot_vector3_layout& from) {
+inline Vector3* to_wire_vector3(const layouts::godot_vector3_layout& from) {
     auto vec3 = Vector3::default_instance().New();
     vec3->set_x(from.x);
     vec3->set_y(from.y);
@@ -107,7 +105,7 @@ to_kvariant_from(GODOT_VARIANT_TYPE_AABB) {
     des.set_allocated_aabb_value(aabb);
 }
 
-Basis* to_wire_basis(const layouts::godot_basis_layout* data) {
+inline Basis* to_wire_basis(const layouts::godot_basis_layout* data) {
     auto basis = Basis::default_instance().New();
     basis->set_allocated_x(to_wire_vector3(data->x));
     basis->set_allocated_y(to_wire_vector3(data->y));
@@ -181,7 +179,7 @@ to_gvariant_from(kBoolValue) {
     godot.gd->godot_variant_new_bool(&des, src.bool_value());
 }
 
-layouts::godot_vector2_layout to_godot_vector2(const Vector2& data) {
+inline layouts::godot_vector2_layout to_godot_vector2(const Vector2& data) {
     layouts::godot_vector2_layout ret;
     ret.x = data.x();
     ret.y = data.y();
@@ -197,13 +195,11 @@ to_gvariant_from(kVector2Value) {
 to_gvariant_from(kRect2Value) {
     auto layout = (layouts::godot_variant_layout*) &des;
     layout->type = GODOT_VARIANT_TYPE_RECT2;
-    layout->data._rect2.position.x = src.rect2_value().position().x();
-    layout->data._rect2.position.y = src.rect2_value().position().y();
-    layout->data._rect2.size.x = src.rect2_value().size().x();
-    layout->data._rect2.size.y = src.rect2_value().size().y();
+    layout->data._rect2.position = to_godot_vector2(src.rect2_value().position());
+    layout->data._rect2.size = to_godot_vector2(src.rect2_value().size());
 }
 
-layouts::godot_vector3_layout to_godot_vector3(const Vector3& data) {
+inline layouts::godot_vector3_layout to_godot_vector3(const Vector3& data) {
     layouts::godot_vector3_layout ret;
     ret.x = data.x();
     ret.y = data.y();
@@ -250,7 +246,7 @@ to_gvariant_from(kAabbValue) {
     gd.gd->godot_variant_new_aabb(&des, (godot_aabb*) &aabb);
 }
 
-layouts::godot_basis_layout to_godot_basis(const Basis& data) {
+inline layouts::godot_basis_layout to_godot_basis(const Basis& data) {
     layouts::godot_basis_layout ret;
     ret.x = to_godot_vector3(data.x());
     ret.y = to_godot_vector3(data.y());
