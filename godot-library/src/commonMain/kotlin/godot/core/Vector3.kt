@@ -282,12 +282,11 @@ class Vector3(
     /**
      * Returns the outer product with b.
      */
-// TODO: fix me
-//    fun outer(b: Vector3) = Basis(
-//        Vector3(x * b.x, x * b.y, x * b.z),
-//        Vector3(y * b.x, y * b.y, y * b.z),
-//        Vector3(z * b.x, z * b.y, z * b.z)
-//    )
+    fun outer(b: Vector3) = Basis(
+        Vector3(x * b.x, x * b.y, x * b.z),
+        Vector3(y * b.x, y * b.y, y * b.z),
+        Vector3(z * b.x, z * b.y, z * b.z)
+    )
 
     /**
      * Returns a vector composed of the fposmod of this vector’s components and mod.
@@ -330,11 +329,10 @@ class Vector3(
     }
 
     internal fun rotate(axis: Vector3, phi: RealT) {
-//        val ret = Basis(axis, phi).xform(this)
-//        this.x = ret.x
-//        this.y = ret.y
-//        this.z = ret.z
-        TODO("Implement basis!")
+        val ret = Basis(axis, phi).xform(this)
+        this.x = ret.x
+        this.y = ret.y
+        this.z = ret.z
     }
 
     /**

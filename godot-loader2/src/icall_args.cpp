@@ -55,10 +55,10 @@ to_icall_from(kVector3Value) {
 // must match the value order of KVariant::TypeCase
 static void(*TO_ICALL_FROM[27 /* KVariant::TypeCase count */])(ICallValue&, const KVariant&) = {
         to_icall_from_index(kNilValue),
+        to_icall_from_index(kBoolValue),
         to_icall_from_index(kLongValue),
         to_icall_from_index(kRealValue),
         to_icall_from_index(kStringValue),
-        to_icall_from_index(kBoolValue),
         to_icall_from_index(kVector2Value),
         to_icall_from_index(kRect2Value),
         to_icall_from_index(kVector3Value),
@@ -114,10 +114,10 @@ from_icall_to(kVector3Value) {
 // must match the value order of KVariant::TypeCase
 static void(*FROM_ICALL_TO[27 /* KVariant::TypeCase count */])(KVariant&, const ICallValue&) = {
         from_icall_to_index(kNilValue),
+        from_icall_to_index(kBoolValue),
         from_icall_to_index(kLongValue),
         from_icall_to_index(kRealValue),
         from_icall_to_index(kStringValue),
-        from_icall_to_index(kBoolValue),
         from_icall_to_index(kVector2Value),
         from_icall_to_index(kRect2Value),
         from_icall_to_index(kVector3Value),

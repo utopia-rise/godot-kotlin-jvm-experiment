@@ -138,10 +138,10 @@ to_gvariant_from(kVector3Value) {
 // must match the value order of KVariant::TypeCase
 static void(*TO_GVARIANT_FROM[27 /* KVariant::TypeCase count */])(godot_variant&, const KVariant&) = {
         to_gvariant_from_index(kNilValue),
+        to_gvariant_from_index(kBoolValue),
         to_gvariant_from_index(kLongValue),
         to_gvariant_from_index(kRealValue),
         to_gvariant_from_index(kStringValue),
-        to_gvariant_from_index(kBoolValue),
         to_gvariant_from_index(kVector2Value),
         to_gvariant_from_index(kRect2Value),
         to_gvariant_from_index(kVector3Value),

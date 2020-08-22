@@ -17,16 +17,48 @@ message Vector3 {
   float z = 3;
 }
 
+message Transform2D {
+  Vector2 x = 1;
+  Vector2 y = 2;
+  Vector2 origin = 3;
+}
+
+message Plane {
+
+}
+
+message Quat {
+
+}
+
+message AABB {
+
+}
+
+message Basis {
+
+}
+
+message Transform {
+
+}
+
 message KVariant {
   oneof type {
     int32 nil_value = 1;
-    int64 long_value = 2;
-    double real_value = 3;
-    string string_value = 4;
-    bool bool_value = 5;
+    bool bool_value = 2;
+    int64 long_value = 3;
+    double real_value = 4;
+    string string_value = 5;
     Vector2 vector2_value = 6;
     Rect2 rect2_value = 7;
     Vector3 vector3_value = 8;
+    Transform2D transform2D_value = 9;
+    Plane plane_value = 10;
+    Quat quat_value = 11;
+    AABB aabb_value = 12;
+    Basis basis_value = 13;
+    Transform transfrom_value = 14;
   }
 }
 
