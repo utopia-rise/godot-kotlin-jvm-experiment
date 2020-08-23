@@ -1,5 +1,7 @@
 # godot-kotlin-jvm
 
+**NOTE:** This is just a PoC (Proof of concept) repository! The work here is finished as we have "proven our concept" ;-). The "real" implementation is in [this](https://github.com/utopia-rise/godot-jvm) repository.
+
 This repository contains different approaches to achieve running kotlin on the jvm inside godot:
 
 | Branch | Description |
